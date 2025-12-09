@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Deals Gorilla</title>
+    <title>Deals Gorilla register</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,11 +12,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .bg-nav {
+        .bg-nav{
             background: #EDEDED40;
             border-top: 1px solid #DEDEDE
         }
-
         #site-header {
             transition: transform 220ms ease, box-shadow 200ms ease;
             will-change: transform;
@@ -97,8 +96,8 @@
             background-size: cover;
             background-position: center;
             border-radius: 0px;
-            padding: 8px 0;
-            margin: 0;
+            padding: 0;
+            margin: px 0;
             box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06) inset;
             border: 2px solid rgba(255, 255, 255, 0.04);
         }
@@ -130,6 +129,11 @@
 
         #flash-track::-webkit-scrollbar {
             display: none;
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
         }
 
         .card-border {
@@ -188,33 +192,26 @@
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
         }
 
-        /* Hide default checkbox */
+        /* checkbox */
         .custom-checkbox {
             appearance: none;
             -webkit-appearance: none;
             width: 20px;
             height: 20px;
-            border: 2px solid #cbd5e1;
+            border: none;
             /* light grey border */
             border-radius: 3px;
             cursor: pointer;
             position: relative;
             background-color: #fff;
         }
-
-        /* On Hover */
         .custom-checkbox:hover {
-            border-color: #3b82f6;
-            /* Tailwind Blue-500 */
+            border: none;
         }
-
-        /* Checked Style */
         .custom-checkbox:checked {
-            border-color: #3b82f6;
+            border: none;
             background-color: #fff;
         }
-
-        /* Checkmark */
         .custom-checkbox:checked::after {
             content: "✔";
             font-size: 14px;
@@ -226,19 +223,52 @@
             font-weight: bold;
         }
 
-
-
-
-        .add-cart-btn {
-            transition: transform .28s cubic-bezier(.2, .9, .3, 1), opacity .28s;
-            transform: translateY(16px);
-            opacity: 0;
+        .content-card {
+            border-radius: 8px;
+        }
+        .custom-checkbox input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
         }
 
-        .group:hover .add-cart-btn,
-        .group:focus-within .add-cart-btn {
-            transform: translateY(0);
-            opacity: 1;
+        .custom-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            border: 1.5px solid #d1d5db;
+            display: inline-block;
+            vertical-align: middle;
+            background: white;
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked {
+            background: linear-gradient(180deg, #f59e0b, #f97316);
+            border-color: transparent;
+            position: relative;
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked::after {
+            content: "✓";
+            color: white;
+            font-size: 11px;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            display: inline-block;
+            text-align: center;
+            transform: translateY(-4px);
+        }
+        .captcha-placeholder {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            background: #fff;
+            padding: 10px;
+        }
+
+        @media (min-width: 1024px) {
+            .content-card {
+                overflow: hidden;
+            }
         }
 
         @media (max-width: 640px) {
@@ -257,16 +287,6 @@
             .promo-cta a {
                 padding: 8px 12px;
                 font-size: 13px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .add-cart-btn {
-                position: static;
-                transform: none;
-                opacity: 1;
-                margin-top: .75rem;
-                border-radius: .5rem;
             }
         }
     </style>
@@ -296,10 +316,10 @@
                             <div class="md:hidden flex items-center justify-end"> <button id="mobile-search-btn" aria-label="Open search" class="p-2 rounded-full hover:bg-gray-100"> <img src="assets/images/search.svg" alt="Search" class="h-6 w-6"> </button> </div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <a href="#" class="flex items-center gap-2"> <img src="assets/images/wish_list.svg" alt="Wish List" class="h-6"> <span class="hidden sm:inline">Wish List</span> </a>
-                        <a href="#" class="flex items-center gap-2"> <img src="assets/images/login.svg" alt="Login" class="h-6"> <span class="hidden sm:inline">Login</span> </a>
-                        <a href="#" class="flex items-center gap-2 relative"> <img src="assets/images/cart.svg" alt="Cart" class="h-6"> <span class="hidden sm:inline">Cart</span> <span class="absolute -top-3 -left-3 bg-red-500 text-white text-xs rounded-full px-1.5">3</span> </a>
+                    <div class="flex items-center gap-4"> 
+                        <a href="#" class="flex items-center gap-2"> <img src="assets/images/wish_list.svg" alt="Wish List" class="h-6"> <span class="hidden sm:inline">Wish List</span> </a> 
+                        <a href="#" class="flex items-center gap-2"> <img src="assets/images/login.svg" alt="Login" class="h-6"> <span class="hidden sm:inline">Login</span> </a> 
+                        <a href="#" class="flex items-center gap-2 relative"> <img src="assets/images/cart.svg" alt="Cart" class="h-6"> <span class="hidden sm:inline">Cart</span> <span class="absolute -top-3 -left-3 bg-red-500 text-white text-xs rounded-full px-1.5">3</span> </a> 
                     </div>
                 </div>
             </div>
@@ -488,394 +508,98 @@
         </div>
     </header>
 
+    <main class="max-w-7xl mx-auto p-6 my-10">
+        <div class="bg-white panel content-card overflow-hidden lg:flex lg:shadow-lg rounded-md">
+            <!-- Login form -->
+            <div class="lg:w-1/2 px-8 py-10 md:px-12 md:py-14">
+                <h1 class="text-2xl sm:text-3xl font-extrabold mb-0">Create account</h1>
+                <p class=" mb-6">Create your account to get started — it's quick and easy.</p>
 
+                <form class="space-y-4" action="#" method="POST" onsubmit="event.preventDefault(); alert('Account created (demo)')">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="block">
+                            <span class="sr-only">First name</span>
+                            <input required name="first" placeholder="First Name" type="text"
+                                class="w-full rounded border border-gray-200 bg-gray-50 px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-200" />
+                        </label>
 
-
-    <!-- Breadcrumb Section -->
-    <section class="w-full bg-white py-3">
-        <div class="max-w-7xl mx-auto px-4">
-            <nav class="text-sm text-gray-400">
-                <a href="#" class="hover:text-gray-600">Home</a>
-                <span class="mx-1">></span>
-                <span class="text-gray-500">Product</span>
-            </nav>
-        </div>
-    </section>
-
-    <main class="max-w-7xl mx-auto p-6">
-        <div class="mb-6">
-            <div class="lg:flex lg:items-center lg:justify-between">
-                <div class="flex items-center gap-3 mb-3 lg:mb-0">
-                    <div class="flex items-center gap-2">
-                        <button aria-pressed="true" class="p-2 border rounded text-slate-700 bg-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            </svg></button>
-                        <button class="p-2 border rounded text-slate-600 bg-white/90"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
-                            </svg></button>
-                        <button id="mobileFiltersBtn" class="lg:hidden ml-2 text-sm text-violet-700 underline">Filters</button>
+                        <label class="block">
+                            <span class="sr-only">Last name</span>
+                            <input required name="last" placeholder="Last Name" type="text"
+                                class="w-full rounded border border-gray-200 bg-gray-50 px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-200" />
+                        </label>
                     </div>
 
-                    <div class="text-sm text-slate-600 pl-3 border-l border-slate-200">There are <span class="font-semibold text-slate-800">24</span> products.</div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <label for="sort" class="text-sm text-slate-600 hidden sm:inline">Sort by:</label>
-                    <select id="sort" class="text-sm border rounded px-3 py-2 bg-white">
-                        <option>Relevance</option>
-                        <option>Price: Low to High</option>
-                        <option>Price: High to Low</option>
-                        <option>Newest</option>
-                    </select>
+                    <div>
+                        <label class="block">
+                            <span class="sr-only">Email</span>
+                            <input required name="email" placeholder="Email Address" type="email"
+                                class="w-full rounded border border-gray-200 bg-gray-50 px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-200" />
+                        </label>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="block">
+                            <span class="sr-only">Password</span>
+                            <input required name="password" placeholder="Password" type="password"
+                                class="w-full rounded border border-gray-200 bg-gray-50 px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-200" />
+                        </label>
+
+                        <label class="block">
+                            <span class="sr-only">Confirm password</span>
+                            <input required name="confirm" placeholder="Confirm Password" type="password"
+                                class="w-full rounded border border-gray-200 bg-gray-50 px-4 py-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-200" />
+                        </label>
+                    </div>
+
+                    <div class="space-y-3 mt-3">
+                        <label class="custom-checkbox gap-3 text-sm text-slate-700">
+                            <input type="checkbox" name="newsletter" />
+                            <span>Sign Up for Newsletter to Get £160 Off Coupon Bundle</span>
+                        </label>
+                    </div>
+
+                    <div class="mt-3">
+                        <div class="captcha-placeholder">
+                            <div class="flex items-center gap-4">
+                                <div class="text-sm text-slate-600">I'm not a robot — reCAPTCHA placeholder</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                            class="w-full bg-amber-400 hover:bg-amber-500 text-white rounded-md py-3 font-semibold mt-4">
+                            Register
+                        </button>
+                    </div>
+                </form>
+                <div class="mt-8 text-xs text-slate-500">
+                    By logging in you agree to our <a href="#" class="underline">Terms & Conditions</a>.
                 </div>
             </div>
-        </div>
-
-        <div class="lg:flex lg:gap-8">
-            <aside id="filters" class="hidden lg:block w-72 shrink-0">
-                <div class="bg-white p-4 rounded card-border">
-                    <h4 class="text-sm font-semibold mb-3">Categories</h4>
-                    <ul class="space-y-2 text-sm text-slate-700">
-                        <li><label class="flex items-center gap-2"><input type="checkbox" class="custom-checkbox" /> Camera Lenses <span class="ml-auto text-xs text-slate-500">(8)</span></label></li>
-                        <li><label class="flex items-center gap-2"><input type="checkbox" class="custom-checkbox" /> Monitors <span class="ml-auto text-xs text-slate-500">(12)</span></label></li>
-                        <li><label class="flex items-center gap-2"><input type="checkbox" class="custom-checkbox" /> Projectors <span class="ml-auto text-xs text-slate-500">(16)</span></label></li>
-                        <li><label class="flex items-center gap-2"><input type="checkbox" class="custom-checkbox" /> VR Headset <span class="ml-auto text-xs text-slate-500">(13)</span></label></li>
-                    </ul>
-
-                    <hr class="my-4 border-slate-100">
-
-                    <h4 class="text-sm font-semibold mb-3">Price</h4>
-                    <div class="text-sm text-slate-600 mb-3">$16.00 - $260.00</div>
-                    <input type="range" min="0" max="100" value="30" class="w-full">
-
-                    <hr class="my-4 border-slate-100">
-
-                    <h4 class="text-sm font-semibold mb-3">Color</h4>
-                    <div class="grid grid-cols-4 gap-2">
-                        <button class="w-7 h-7 rounded-full bg-black border"></button>
-                        <button class="w-7 h-7 rounded-full bg-blue-600 border"></button>
-                        <button class="w-7 h-7 rounded-full bg-slate-400 border"></button>
-                        <button class="w-7 h-7 rounded-full bg-green-500 border"></button>
-                    </div>
-
-                    <hr class="my-4 border-slate-100">
-
-                    <h4 class="text-sm font-semibold mb-3">Selections</h4>
-                    <ul class="space-y-2 text-sm text-slate-700">
-                        <li><label class="flex items-center gap-2"><input type="checkbox" class="custom-checkbox" /> Projectors <span class="ml-auto text-xs text-slate-500">(16)</span></label></li>
-                        <li><label class="flex items-center gap-2"><input type="checkbox" class="custom-checkbox" /> VR Headset <span class="ml-auto text-xs text-slate-500">(13)</span></label></li>
-                    </ul>
+            <div class="lg:w-1/2 relative">
+                <div class="h-64 sm:h-80 lg:h-full bg-cover bg-center"
+                    style="background-image: url('assets/images/login-bg.webp');">
+                    <div class="h-full w-full bg-gradient-to-b from-transparent to-white/60"></div>
                 </div>
-            </aside>
-
-            <div id="mobileFilters" class="fixed inset-0 z-40 hidden">
-                <div id="mobileFiltersBackdrop" class="absolute inset-0 bg-black/40"></div>
-                <div class="absolute left-0 top-0 bottom-0 w-80 bg-white p-4 overflow-auto">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold">Filters</h3>
-                        <button id="mobileFiltersClose" class="text-slate-600">Close</button>
-                    </div>
-                    <div class="space-y-4">
-                        <div>
-                            <h4 class="text-sm font-semibold mb-2">Categories</h4>
-                            <label class="flex items-center gap-2"><input type="checkbox" /> Camera Lenses</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" /> Monitors</label>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-semibold mb-2">Price</h4>
-                            <input type="range" min="0" max="100" value="30" class="w-full">
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-semibold mb-2">Selections</h4>
-                            <label class="flex items-center gap-2"><input type="checkbox" /> Discounted</label>
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div class="max-w-sm w-full px-6 py-3 pointer-events-auto">
+                        <div class="bg-white/90 backdrop-blur-sm rounded-md p-6 text-center">
+                            <h3 class="text-2xl font-semibold text-slate-800 mb-2">Return to Sign in</h3>
+                            <p class="text-sm text-slate-500 mb-4">Already have an account?</p>
+                            <a href="/login"
+                                class="inline-block w-full text-center pointer-events-auto cta-pill bg-slate-800 hover:bg-slate-900 text-white font-medium rounded-md py-3">
+                                Sign In
+                            </a>
                         </div>
                     </div>
                 </div>
+                <div class="hidden lg:block absolute -left-6 top-0 bottom-0 w-6 bg-transparent"></div>
             </div>
-
-            <!-- PRODUCT main -->
-            <section class="flex-1">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    <!-- Card 1 -->
-                    <article class="group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
-                        <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
-                        <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Add to wishlist" title="Add to wishlist">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
-                                    <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
-                                </svg>
-                            </button>
-
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Quick view" title="Quick view">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
-                                    <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="12" cy="12" r="2.2" fill="currentColor" />
-                                </svg>
-                            </button>
-
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Add to cart" title="Add to cart">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
-                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
-                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
-                            <img src="assets/images/product02.png" alt="Product" class="object-contain max-h-full">
-                        </div>
-                        <p class="text-sm text-slate-500 mb-1">Cartify</p>
-                        <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="text-yellow-400 text-sm">★★★★★</div>
-                            <div class="text-xs text-slate-400">(3)</div>
-                        </div>
-                        <div class="text-blue-600 font-semibold text-lg">$200.00</div>
-                        <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
-                            role="button" tabindex="0" aria-label="Add product to cart">
-                            <span class="inline-flex items-center justify-center gap-2">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
-                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
-                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
-                                </svg>
-                                Add To Cart
-                            </span>
-                        </div>
-                    </article>
-                    <article class="group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
-                        <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
-                        <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Add to wishlist" title="Add to wishlist">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
-                                    <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
-                                </svg>
-                            </button>
-
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Quick view" title="Quick view">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
-                                    <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="12" cy="12" r="2.2" fill="currentColor" />
-                                </svg>
-                            </button>
-
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Add to cart" title="Add to cart">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
-                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
-                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
-                            <img src="assets/images/product03.png" alt="Product" class="object-contain max-h-full">
-                        </div>
-                        <p class="text-sm text-slate-500 mb-1">Cartify</p>
-                        <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="text-yellow-400 text-sm">★★★★★</div>
-                            <div class="text-xs text-slate-400">(3)</div>
-                        </div>
-                        <div class="text-blue-600 font-semibold text-lg">$200.00</div>
-                        <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
-                            role="button" tabindex="0" aria-label="Add product to cart">
-                            <span class="inline-flex items-center justify-center gap-2">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
-                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
-                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
-                                </svg>
-                                Add To Cart
-                            </span>
-                        </div>
-                    </article>
-                    <article class="group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
-                        <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
-                        <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Add to wishlist" title="Add to wishlist">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
-                                    <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
-                                </svg>
-                            </button>
-
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Quick view" title="Quick view">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
-                                    <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="12" cy="12" r="2.2" fill="currentColor" />
-                                </svg>
-                            </button>
-
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Add to cart" title="Add to cart">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
-                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
-                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
-                            <img src="assets/images/product02.png" alt="Product" class="object-contain max-h-full">
-                        </div>
-                        <p class="text-sm text-slate-500 mb-1">Cartify</p>
-                        <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="text-yellow-400 text-sm">★★★★★</div>
-                            <div class="text-xs text-slate-400">(3)</div>
-                        </div>
-                        <div class="text-blue-600 font-semibold text-lg">$200.00</div>
-                        <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
-                            role="button" tabindex="0" aria-label="Add product to cart">
-                            <span class="inline-flex items-center justify-center gap-2">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
-                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
-                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
-                                </svg>
-                                Add To Cart
-                            </span>
-                        </div>
-                    </article>
-                    <article class="group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
-                        <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
-                        <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Add to wishlist" title="Add to wishlist">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
-                                    <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
-                                </svg>
-                            </button>
-
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Quick view" title="Quick view">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
-                                    <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="12" cy="12" r="2.2" fill="currentColor" />
-                                </svg>
-                            </button>
-
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Add to cart" title="Add to cart">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
-                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
-                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
-                            <img src="assets/images/product04.png" alt="Product" class="object-contain max-h-full">
-                        </div>
-                        <p class="text-sm text-slate-500 mb-1">Cartify</p>
-                        <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="text-yellow-400 text-sm">★★★★★</div>
-                            <div class="text-xs text-slate-400">(3)</div>
-                        </div>
-                        <div class="text-blue-600 font-semibold text-lg">$200.00</div>
-                        <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
-                            role="button" tabindex="0" aria-label="Add product to cart">
-                            <span class="inline-flex items-center justify-center gap-2">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
-                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
-                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
-                                </svg>
-                                Add To Cart
-                            </span>
-                        </div>
-                    </article>
-                    <article class="group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
-                        <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
-                        <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Add to wishlist" title="Add to wishlist">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
-                                    <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
-                                </svg>
-                            </button>
-
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Quick view" title="Quick view">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
-                                    <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="12" cy="12" r="2.2" fill="currentColor" />
-                                </svg>
-                            </button>
-
-                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
-                                aria-label="Add to cart" title="Add to cart">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
-                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
-                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
-                            <img src="assets/images/product003.png" alt="Product" class="object-contain max-h-full">
-                        </div>
-                        <p class="text-sm text-slate-500 mb-1">Cartify</p>
-                        <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="text-yellow-400 text-sm">★★★★★</div>
-                            <div class="text-xs text-slate-400">(3)</div>
-                        </div>
-                        <div class="text-blue-600 font-semibold text-lg">$200.00</div>
-                        <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
-                            role="button" tabindex="0" aria-label="Add product to cart">
-                            <span class="inline-flex items-center justify-center gap-2">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
-                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
-                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
-                                </svg>
-                                Add To Cart
-                            </span>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Pagination / footer -->
-                <div class="mt-8 flex items-center justify-between">
-                    <div class="text-sm text-slate-600">Showing 1-24 of 24 item(s)</div>
-                    <div class="flex items-center gap-2">
-                        <button class="px-3 py-1 border rounded">Prev</button>
-                        <button class="px-3 py-1 border rounded">1</button>
-                        <button class="px-3 py-1 border rounded">2</button>
-                        <button class="px-3 py-1 border rounded">Next</button>
-                    </div>
-                </div>
-            </section>
         </div>
     </main>
 
-
-    <!-- Promo banner-->
-    <section class="promo-strip">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="promo-inner flex items-center justify-between gap-4">
-                <div class="promo-center text-center flex-1">
-                    <p class="promo-text text-sm sm:text-base md:text-lg font-medium">
-                        Unlock <span class="font-bold">4 for 2</span> on selected Sanctuary Spa, Champneys & more. Or <span class="font-bold">3 for 2</span> on selected Soap & Glory!
-                    </p>
-                </div>
-
-                <div class="shrink-0">
-                    <a href="#" class="inline-flex items-center gap-2 bg-violet-700 hover:bg-violet-800 text-white px-3 py-2 rounded-lg text-sm sm:text-base font-medium shadow-md transition">
-                        SHOP NOW
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
     <!-- Footer Start  -->
     <footer class="footer-outer">
         <div class="bg-gradient-to-r from-white via-violet-50 to-white">
@@ -1164,24 +888,6 @@
             })();
 
         });
-    </script>
-
-    <script>
-        const mobileBtn = document.getElementById('mobileFiltersBtn');
-        const mobileFilters = document.getElementById('mobileFilters');
-        const mobileClose = document.getElementById('mobileFiltersClose');
-        const mobileBackdrop = document.getElementById('mobileFiltersBackdrop');
-
-        function openMobileFilters() {
-            mobileFilters.classList.remove('hidden');
-        }
-
-        function closeMobileFilters() {
-            mobileFilters.classList.add('hidden');
-        }
-        if (mobileBtn) mobileBtn.addEventListener('click', openMobileFilters);
-        if (mobileClose) mobileClose.addEventListener('click', closeMobileFilters);
-        if (mobileBackdrop) mobileBackdrop.addEventListener('click', closeMobileFilters);
     </script>
 </body>
 

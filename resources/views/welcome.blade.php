@@ -12,6 +12,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        .bg-nav {
+            background: #EDEDED40;
+            border-top: 1px solid #DEDEDE
+        }
+
+        .bg-banner {
+            background: #222222;
+        }
+
         #site-header {
             transition: transform 220ms ease, box-shadow 200ms ease;
             will-change: transform;
@@ -93,7 +102,7 @@
             background-position: center;
             border-radius: 0px;
             padding: 8px 0;
-            margin: 12px 0;
+            margin: 0;
             box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06) inset;
             border: 2px solid rgba(255, 255, 255, 0.04);
         }
@@ -125,6 +134,89 @@
 
         #flash-track::-webkit-scrollbar {
             display: none;
+        }
+
+        /* Icon products */
+        .card-icons {
+            transition: transform .28s cubic-bezier(.2, .9, .3, 1), opacity .28s;
+            transform: translateY(-6px) translateX(8px) scale(.98);
+            opacity: 0;
+        }
+
+        .group:hover .card-icons,
+        .group:focus-within .card-icons {
+            transform: translateY(0) translateX(0) scale(1);
+            opacity: 1;
+        }
+
+        .card-icons .icon-btn {
+            transform: translateY(6px);
+            opacity: 0;
+            transition: transform .28s cubic-bezier(.2, .9, .3, 1), opacity .28s;
+        }
+
+        .group:hover .card-icons .icon-btn:nth-child(1) {
+            transition-delay: .05s;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .group:hover .card-icons .icon-btn:nth-child(2) {
+            transition-delay: .10s;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .group:hover .card-icons .icon-btn:nth-child(3) {
+            transition-delay: .15s;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .add-cart-btn {
+            transition: transform .28s cubic-bezier(.2, .9, .3, 1), opacity .28s;
+            transform: translateY(16px);
+            opacity: 0;
+        }
+
+        .group:hover .add-cart-btn,
+        .group:focus-within .add-cart-btn {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .product-image {
+            background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+        }
+
+        .group:hover {
+            box-shadow: 0 8px 30px rgba(16, 24, 40, 0.08);
+            transform: translateY(-2px);
+            transition: all .18s ease-in-out;
+        }
+
+        @media (max-width: 480px) {
+            .card-icons {
+                opacity: 1;
+                transform: none;
+                position: static;
+                flex-direction: row;
+                gap: .5rem;
+                margin-top: .5rem;
+            }
+
+            .card-icons .icon-btn {
+                transform: none;
+                opacity: 1;
+            }
+
+            .add-cart-btn {
+                position: static;
+                transform: none;
+                opacity: 1;
+                margin-top: .75rem;
+                border-radius: .5rem;
+            }
         }
 
         @media (max-width: 640px) {
@@ -172,12 +264,16 @@
                             <div class="md:hidden flex items-center justify-end"> <button id="mobile-search-btn" aria-label="Open search" class="p-2 rounded-full hover:bg-gray-100"> <img src="assets/images/search.svg" alt="Search" class="h-6 w-6"> </button> </div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-4"> <a href="#" class="flex items-center gap-2"> <img src="assets/images/login.svg" alt="Login" class="h-6"> <span class="hidden sm:inline">Login</span> </a> <a href="#" class="flex items-center gap-2 relative"> <img src="assets/images/cart.svg" alt="Cart" class="h-6"> <span class="hidden sm:inline">Cart</span> <span class="absolute -top-3 -left-3 bg-red-500 text-white text-xs rounded-full px-1.5">3</span> </a> <a href="#" class="flex items-center gap-2"> <img src="assets/images/wish_list.svg" alt="Wish List" class="h-6"> <span class="hidden sm:inline">Wish List</span> </a> </div>
+                    <div class="flex items-center gap-4">
+                        <a href="#" class="flex items-center gap-2"> <img src="assets/images/wish_list.svg" alt="Wish List" class="h-6"> <span class="hidden sm:inline">Wish List</span> </a>
+                        <a href="#" class="flex items-center gap-2"> <img src="assets/images/login.svg" alt="Login" class="h-6"> <span class="hidden sm:inline">Login</span> </a>
+                        <a href="#" class="flex items-center gap-2 relative"> <img src="assets/images/cart.svg" alt="Cart" class="h-6"> <span class="hidden sm:inline">Cart</span> <span class="absolute -top-3 -left-3 bg-red-500 text-white text-xs rounded-full px-1.5">3</span> </a>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- nav Start -->
-        <nav class="bg-white shadow-sm">
+        <nav class="bg-nav shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-14">
                     <div class="flex items-center gap-4"> <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500" aria-label="Open menu"> <svg id="hamburger-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -366,7 +462,7 @@
         <div id="hero-slider" class="relative overflow-hidden  shadow-lg">
             <div class="relative h-[360px] md:h-[420px] lg:h-[520px]">
                 <!-- Slide 1 -->
-                <div class="slide absolute inset-0 hidden grid grid-cols-1 md:grid-cols-12 items-center gap-6 p-6 md:p-20 bg-gradient-to-r from-indigo-900/80 via-indigo-800/30 to-transparent text-white">
+                <div class="slide absolute inset-0 hidden grid grid-cols-1 md:grid-cols-12 items-center gap-6 p-6 md:p-20 bg-banner from-indigo-900/80 via-indigo-800/30 to-transparent text-white">
                     <div class="col-span-12 md:col-span-6 lg:col-span-5 max-w-xl mx-auto md:mx-0">
                         <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">Black Friday Sale <span class="text-violet-400">20% OFF</span></h2>
                         <p class="text-sm md:text-base text-gray-200 mb-4">Source premium brands and high margin products from a combined catalog of 500+ suppliers. All available with guaranteed authenticity.</p>
@@ -399,7 +495,7 @@
                     </div>
                 </div>
                 <!-- Slide 2 -->
-                <div class="slide absolute inset-0 hidden grid grid-cols-1 md:grid-cols-12 items-center gap-6 p-6 md:p-20 bg-gradient-to-r from-indigo-900/80 via-indigo-800/30 to-transparent text-white">
+                <div class="slide absolute inset-0 hidden grid grid-cols-1 md:grid-cols-12 items-center gap-6 p-6 md:p-20 bg-banner from-indigo-900/80 via-indigo-800/30 to-transparent text-white">
                     <div class="col-span-12 md:col-span-6 lg:col-span-5 max-w-xl mx-auto md:mx-0">
                         <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">ASUS FHD <span class="text-emerald-300">Gaming Laptop</span></h2>
                         <p class="text-sm md:text-base text-gray-200 mb-4">LSource premium brands and high margin products from a combined catalog of 500+ suppliers. All available with guaranteed authenticity.</p>
@@ -424,7 +520,7 @@
                     </div>
                 </div>
                 <!-- Slide 3 -->
-                <div class="slide absolute inset-0 hidden grid grid-cols-1 md:grid-cols-12 items-center gap-6 p-6 md:p-20 bg-gradient-to-r from-indigo-900/80 via-indigo-800/30 to-transparent text-white">
+                <div class="slide absolute inset-0 hidden grid grid-cols-1 md:grid-cols-12 items-center gap-6 p-6 md:p-20 bg-banner from-indigo-900/80 via-indigo-800/30 to-transparent text-white">
                     <div class="col-span-12 md:col-span-6 lg:col-span-5 max-w-xl mx-auto md:mx-0">
                         <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">Skincare Picks <span class="text-pink-300">Top Rated</span></h2>
                         <p class="text-sm md:text-base text-gray-200 mb-4">Source premium brands and high margin products from a combined catalog of 500+ suppliers. All available with guaranteed authenticity.</p>
@@ -696,436 +792,425 @@
         <section id="products-carousel" class="relative">
             <div class="overflow-hidden">
                 <div id="track" class="flex gap-6 transition-transform duration-300 will-change-transform">
-                    <!-- Product card -->
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-semibold">NEW</span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
+                    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-rows-2 auto-rows-fr">
+                        <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                            <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                            <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to wishlist" title="Add to wishlist">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                        <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Quick view" title="Quick view">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to cart" title="Add to cart">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                </button>
                             </div>
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/product02.png" alt="Product 1"
-                                    class="product-img max-h-full w-full object-contain" />
+                            <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                                <img src="assets/images/new_01.png" alt="Product" class="object-contain max-h-full">
                             </div>
-                            <h3 class="mt-3 text-sm font-semibold">Breed Dry Dog Food</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-violet-600 font-semibold">$100</div>
-                                <div class="text-sm text-gray-400"> <span class="rating-star">★★★★★</span> <span
-                                        class="text-xs text-slate-500 ml-1">(35)</span></div>
-                            </div>
-                            <div class="mt-4 flex items-center gap-2">
-                                <button
-                                    class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded text-sm font-medium">Add
-                                    to Cart</button>
+                            <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                            <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
 
-                            </div>
-                        </div>
-                    </article>
-
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-white/60 text-slate-600 px-2 py-1 rounded"> </span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="text-yellow-400 text-sm">★★★★★</div>
+                                <div class="text-xs text-slate-400">(3)</div>
                             </div>
 
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/product03.png" alt="Camera"
-                                    class="product-img max-h-full w-full object-contain" />
+                            <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                            <!-- Add to Cart Hover Button (slides in from bottom) -->
+                            <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                                role="button" tabindex="0" aria-label="Add product to cart">
+                                <!-- you can include icon + text -->
+                                <span class="inline-flex items-center justify-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                    Add To Cart
+                                </span>
+                            </div>
+                        </article>
+                        <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                            <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                            <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to wishlist" title="Add to wishlist">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                        <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Quick view" title="Quick view">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to cart" title="Add to cart">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                                <img src="assets/images/new_02.png" alt="Product" class="object-contain max-h-full">
+                            </div>
+                            <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                            <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
+
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="text-yellow-400 text-sm">★★★★★</div>
+                                <div class="text-xs text-slate-400">(3)</div>
                             </div>
 
-                            <h3 class="mt-3 text-sm font-semibold">CANON EOS DSLR Camera</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-slate-600 line-through font-semibold">$360</div>
-                                <div class="text-sm"> <span class="rating-star">★★★★☆</span> <span
-                                        class="text-xs text-slate-500 ml-1">(95)</span></div>
+                            <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                            <!-- Add to Cart Hover Button (slides in from bottom) -->
+                            <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                                role="button" tabindex="0" aria-label="Add product to cart">
+                                <!-- you can include icon + text -->
+                                <span class="inline-flex items-center justify-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                    Add To Cart
+                                </span>
+                            </div>
+                        </article>
+                        <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                            <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                            <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to wishlist" title="Add to wishlist">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                        <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Quick view" title="Quick view">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to cart" title="Add to cart">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                                <img src="assets/images/new_03.png" alt="Product" class="object-contain max-h-full">
+                            </div>
+                            <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                            <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
+
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="text-yellow-400 text-sm">★★★★★</div>
+                                <div class="text-xs text-slate-400">(3)</div>
                             </div>
 
-                            <div class="mt-4 flex items-center gap-2">
-                                <button class="flex-1 bg-black text-white px-3 py-2 rounded text-sm font-medium">Add to Cart</button>
+                            <div class="text-blue-600 font-semibold text-lg">$200.00</div>
 
+                            <!-- Add to Cart Hover Button (slides in from bottom) -->
+                            <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                                role="button" tabindex="0" aria-label="Add product to cart">
+                                <!-- you can include icon + text -->
+                                <span class="inline-flex items-center justify-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                    Add To Cart
+                                </span>
                             </div>
-                        </div>
-                    </article>
-
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-white/60 text-slate-600 px-2 py-1 rounded"> </span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
+                        </article>
+                        <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                            <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                            <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to wishlist" title="Add to wishlist">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                        <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Quick view" title="Quick view">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to cart" title="Add to cart">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                </button>
                             </div>
-
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/product04.png" alt="Laptop"
-                                    class="product-img max-h-full w-full object-contain" />
+                            <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                                <img src="assets/images/new_04.png" alt="Product" class="object-contain max-h-full">
                             </div>
+                            <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                            <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
 
-                            <h3 class="mt-3 text-sm font-semibold">ASUS FHD Gaming Laptop</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-violet-600 font-semibold">$700</div>
-                                <div class="text-sm"> <span class="rating-star">★★★★★</span> <span
-                                        class="text-xs text-slate-500 ml-1">(325)</span></div>
-                            </div>
-
-                            <div class="mt-4 flex items-center gap-2">
-                                <button
-                                    class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded text-sm font-medium">Add
-                                    to Cart</button>
-
-                            </div>
-                        </div>
-                    </article>
-
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-white/60 text-slate-600 px-2 py-1 rounded"> </span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="text-yellow-400 text-sm">★★★★★</div>
+                                <div class="text-xs text-slate-400">(3)</div>
                             </div>
 
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/product003.png" alt="Perfume"
-                                    class="product-img max-h-full w-full object-contain" />
+                            <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                            <!-- Add to Cart Hover Button (slides in from bottom) -->
+                            <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                                role="button" tabindex="0" aria-label="Add product to cart">
+                                <!-- you can include icon + text -->
+                                <span class="inline-flex items-center justify-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                    Add To Cart
+                                </span>
+                            </div>
+                        </article>
+                        <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                            <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                            <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to wishlist" title="Add to wishlist">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                        <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Quick view" title="Quick view">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to cart" title="Add to cart">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                                <img src="assets/images/new_02.png" alt="Product" class="object-contain max-h-full">
+                            </div>
+                            <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                            <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
+
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="text-yellow-400 text-sm">★★★★★</div>
+                                <div class="text-xs text-slate-400">(3)</div>
                             </div>
 
-                            <h3 class="mt-3 text-sm font-semibold">Curology Product Set</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-violet-600 font-semibold">$500</div>
-                                <div class="text-sm"> <span class="rating-star">★★★★★</span> <span
-                                        class="text-xs text-slate-500 ml-1">(145)</span></div>
+                            <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                            <!-- Add to Cart Hover Button (slides in from bottom) -->
+                            <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                                role="button" tabindex="0" aria-label="Add product to cart">
+                                <!-- you can include icon + text -->
+                                <span class="inline-flex items-center justify-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                    Add To Cart
+                                </span>
+                            </div>
+                        </article>
+                        <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                            <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                            <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to wishlist" title="Add to wishlist">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                        <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Quick view" title="Quick view">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to cart" title="Add to cart">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                                <img src="assets/images/new_03.png" alt="Product" class="object-contain max-h-full">
+                            </div>
+                            <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                            <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
+
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="text-yellow-400 text-sm">★★★★★</div>
+                                <div class="text-xs text-slate-400">(3)</div>
                             </div>
 
-                            <div class="mt-4 flex items-center gap-2">
-                                <button
-                                    class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded text-sm font-medium">Add
-                                    to Cart</button>
+                            <div class="text-blue-600 font-semibold text-lg">$200.00</div>
 
+                            <!-- Add to Cart Hover Button (slides in from bottom) -->
+                            <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                                role="button" tabindex="0" aria-label="Add product to cart">
+                                <!-- you can include icon + text -->
+                                <span class="inline-flex items-center justify-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                    Add To Cart
+                                </span>
                             </div>
-                        </div>
-                    </article>
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-white/60 text-slate-600 px-2 py-1 rounded"> </span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
+                        </article>
+                        <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                            <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                            <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to wishlist" title="Add to wishlist">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                        <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Quick view" title="Quick view">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to cart" title="Add to cart">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                </button>
                             </div>
+                            <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                                <img src="assets/images/new_02.png" alt="Product" class="object-contain max-h-full">
+                            </div>
+                            <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                            <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
 
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/product02.png" alt="Perfume"
-                                    class="product-img max-h-full w-full object-contain" />
-                            </div>
-
-                            <h3 class="mt-3 text-sm font-semibold">Curology Product Set</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-violet-600 font-semibold">$500</div>
-                                <div class="text-sm"> <span class="rating-star">★★★★★</span> <span
-                                        class="text-xs text-slate-500 ml-1">(145)</span></div>
-                            </div>
-
-                            <div class="mt-4 flex items-center gap-2">
-                                <button
-                                    class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded text-sm font-medium">Add
-                                    to Cart</button>
-
-                            </div>
-                        </div>
-                    </article>
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-white/60 text-slate-600 px-2 py-1 rounded"> </span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="text-yellow-400 text-sm">★★★★★</div>
+                                <div class="text-xs text-slate-400">(3)</div>
                             </div>
 
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/product02.png" alt="Perfume"
-                                    class="product-img max-h-full w-full object-contain" />
+                            <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                            <!-- Add to Cart Hover Button (slides in from bottom) -->
+                            <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                                role="button" tabindex="0" aria-label="Add product to cart">
+                                <!-- you can include icon + text -->
+                                <span class="inline-flex items-center justify-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                    Add To Cart
+                                </span>
+                            </div>
+                        </article>
+                        <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                            <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                            <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to wishlist" title="Add to wishlist">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                        <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Quick view" title="Quick view">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                    </svg>
+                                </button>
+                                <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                    aria-label="Add to cart" title="Add to cart">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                                <img src="assets/images/new_03.png" alt="Product" class="object-contain max-h-full">
+                            </div>
+                            <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                            <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
+
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="text-yellow-400 text-sm">★★★★★</div>
+                                <div class="text-xs text-slate-400">(3)</div>
                             </div>
 
-                            <h3 class="mt-3 text-sm font-semibold">Curology Product Set</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-violet-600 font-semibold">$500</div>
-                                <div class="text-sm"> <span class="rating-star">★★★★★</span> <span
-                                        class="text-xs text-slate-500 ml-1">(145)</span></div>
+                            <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                            <!-- Add to Cart Hover Button (slides in from bottom) -->
+                            <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                                role="button" tabindex="0" aria-label="Add product to cart">
+                                <!-- you can include icon + text -->
+                                <span class="inline-flex items-center justify-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                        <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                        <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                    </svg>
+                                    Add To Cart
+                                </span>
                             </div>
-
-                            <div class="mt-4 flex items-center gap-2">
-                                <button
-                                    class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded text-sm font-medium">Add
-                                    to Cart</button>
-
-                            </div>
-                        </div>
-                    </article>
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-white/60 text-slate-600 px-2 py-1 rounded"> </span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/product02.png" alt="Perfume"
-                                    class="product-img max-h-full w-full object-contain" />
-                            </div>
-
-                            <h3 class="mt-3 text-sm font-semibold">Curology Product Set</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-violet-600 font-semibold">$500</div>
-                                <div class="text-sm"> <span class="rating-star">★★★★★</span> <span
-                                        class="text-xs text-slate-500 ml-1">(145)</span></div>
-                            </div>
-
-                            <div class="mt-4 flex items-center gap-2">
-                                <button
-                                    class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded text-sm font-medium">Add
-                                    to Cart</button>
-
-                            </div>
-                        </div>
-                    </article>
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-white/60 text-slate-600 px-2 py-1 rounded"> </span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/product02.png" alt="Perfume"
-                                    class="product-img max-h-full w-full object-contain" />
-                            </div>
-
-                            <h3 class="mt-3 text-sm font-semibold">Curology Product Set</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-violet-600 font-semibold">$500</div>
-                                <div class="text-sm"> <span class="rating-star">★★★★★</span> <span
-                                        class="text-xs text-slate-500 ml-1">(145)</span></div>
-                            </div>
-
-                            <div class="mt-4 flex items-center gap-2">
-                                <button
-                                    class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded text-sm font-medium">Add
-                                    to Cart</button>
-
-                            </div>
-                        </div>
-                    </article>
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-semibold">NEW</span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/new_01.png" alt="Product 1"
-                                    class="product-img max-h-full w-full object-contain" />
-                            </div>
-                            <h3 class="mt-3 text-sm font-semibold">Breed Dry Dog Food</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-violet-600 font-semibold">$100</div>
-                                <div class="text-sm text-gray-400"> <span class="rating-star">★★★★★</span> <span
-                                        class="text-xs text-slate-500 ml-1">(35)</span></div>
-                            </div>
-                            <div class="mt-4 flex items-center gap-2">
-                                <button
-                                    class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded text-sm font-medium">Add
-                                    to Cart</button>
-
-                            </div>
-                        </div>
-                    </article>
-
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-white/60 text-slate-600 px-2 py-1 rounded"> </span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/new_02.png" alt="Camera"
-                                    class="product-img max-h-full w-full object-contain" />
-                            </div>
-
-                            <h3 class="mt-3 text-sm font-semibold">CANON EOS DSLR Camera</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-slate-600 line-through font-semibold">$360</div>
-                                <div class="text-sm"> <span class="rating-star">★★★★☆</span> <span
-                                        class="text-xs text-slate-500 ml-1">(95)</span></div>
-                            </div>
-
-                            <div class="mt-4 flex items-center gap-2">
-                                <button class="flex-1 bg-black text-white px-3 py-2 rounded text-sm font-medium">Add to Cart</button>
-
-                            </div>
-                        </div>
-                    </article>
-
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-white/60 text-slate-600 px-2 py-1 rounded"> </span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/new_03.png" alt="Laptop"
-                                    class="product-img max-h-full w-full object-contain" />
-                            </div>
-
-                            <h3 class="mt-3 text-sm font-semibold">ASUS FHD Gaming Laptop</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-violet-600 font-semibold">$700</div>
-                                <div class="text-sm"> <span class="rating-star">★★★★★</span> <span
-                                        class="text-xs text-slate-500 ml-1">(325)</span></div>
-                            </div>
-
-                            <div class="mt-4 flex items-center gap-2">
-                                <button
-                                    class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded text-sm font-medium">Add
-                                    to Cart</button>
-
-                            </div>
-                        </div>
-                    </article>
-
-                    <article
-                        class="product-card flex-shrink-0 w-[calc(100%/1-1rem)] sm:w-[calc(100%/2-1rem)] md:w-[calc(100%/3-1rem)] lg:w-[calc(100%/4-1rem)]">
-                        <div class="bg-white rounded-lg p-4 card-transition card-hover relative h-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-xs bg-white/60 text-slate-600 px-2 py-1 rounded"> </span>
-                                <div class="flex items-center gap-2">
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/heart_small.svg" alt="Perfume" />
-                                    </button>
-                                    <button class="p-1 rounded-full hover:bg-gray-100">
-                                        <img src="assets/images/quick_view.svg" alt="Perfume" />
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div
-                                class="w-full h-40 md:h-44 lg:h-48 flex items-center justify-center bg-gray-50 rounded overflow-hidden">
-                                <img src="assets/images/new_04.png" alt="Perfume"
-                                    class="product-img max-h-full w-full object-contain" />
-                            </div>
-
-                            <h3 class="mt-3 text-sm font-semibold">Curology Product Set</h3>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="text-violet-600 font-semibold">$500</div>
-                                <div class="text-sm"> <span class="rating-star">★★★★★</span> <span
-                                        class="text-xs text-slate-500 ml-1">(145)</span></div>
-                            </div>
-
-                            <div class="mt-4 flex items-center gap-2">
-                                <button
-                                    class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded text-sm font-medium">Add
-                                    to Cart</button>
-
-                            </div>
-                        </div>
-                    </article>
-
+                        </article>
+                        
+                    </div>
                 </div>
             </div>
             <!-- pagination dots -->
@@ -1222,172 +1307,318 @@
             <!-- Products carousel -->
             <div class="relative">
                 <div id="flash-track" class="flex gap-6 overflow-x-auto scroll-smooth pb-3">
-                    <!-- Product card (repeat) -->
-                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px] bg-white rounded-xl shadow-sm border p-4 flex flex-col">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-semibold">-40%</span>
-                            <div class="flex items-center gap-2">
-                                <button class="p-1 rounded-full hover:bg-gray-100"><img src="assets/images/heart_small.svg" alt="wishlist" class="w-4 h-4"></button>
-                            </div>
+                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                        <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                        <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to wishlist" title="Add to wishlist">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                    <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Quick view" title="Quick view">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to cart" title="Add to cart">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                            </button>
                         </div>
-                        <div class="flex-1 flex items-center justify-center mb-3">
-                            <img src="assets/images/new_01.png" alt="Havit Gamepad" class="max-h-40 object-contain">
+                        <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                            <img src="assets/images/new_01.png" alt="Product" class="object-contain max-h-full">
                         </div>
-                        <h3 class="text-sm font-semibold mb-1">HAVIT HV-G92 Gamepad</h3>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <div class="text-sm text-slate-500 line-through">$160</div>
-                                <div class="text-violet-600 font-semibold">$120</div>
-                            </div>
-                            <div class="text-xs text-slate-400"><span class="rating-star">★★★★★</span> (<span class="text-yellow-400">88</span>)</div>
+                        <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                        <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
+
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="text-yellow-400 text-sm">★★★★★</div>
+                            <div class="text-xs text-slate-400">(3)</div>
                         </div>
-                        <div class="mt-4">
-                            <a href="#" class="block text-center bg-black text-white px-3 py-2 rounded-md font-medium hover:opacity-95">Add To Cart</a>
+
+                        <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                        <!-- Add to Cart Hover Button (slides in from bottom) -->
+                        <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                            role="button" tabindex="0" aria-label="Add product to cart">
+                            <!-- you can include icon + text -->
+                            <span class="inline-flex items-center justify-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                                Add To Cart
+                            </span>
                         </div>
                     </article>
+                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                        <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                        <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to wishlist" title="Add to wishlist">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                    <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Quick view" title="Quick view">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to cart" title="Add to cart">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                            <img src="assets/images/new_02.png" alt="Product" class="object-contain max-h-full">
+                        </div>
+                        <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                        <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
 
-                    <!-- copy and adjust product cards - swap images/text -->
-                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px] bg-white rounded-xl shadow-sm border p-4 flex flex-col">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-semibold">-35%</span>
-                            <div class="flex items-center gap-2">
-                                <button class="p-1 rounded-full hover:bg-gray-100"><img src="assets/images/heart_small.svg" alt="wishlist" class="w-4 h-4"></button>
-                            </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="text-yellow-400 text-sm">★★★★★</div>
+                            <div class="text-xs text-slate-400">(3)</div>
                         </div>
-                        <div class="flex-1 flex items-center justify-center mb-3">
-                            <img src="assets/images/new_02.png" alt="Keyboard" class="max-h-40 object-contain">
-                        </div>
-                        <h3 class="text-sm font-semibold mb-1">AK-900 Wired Keyboard</h3>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <div class="text-sm text-slate-500 line-through">$1160</div>
-                                <div class="text-violet-600 font-semibold">$960</div>
-                            </div>
-                            <div class="text-xs text-slate-400"><span class="rating-star">★★★★★</span> (<span class="text-yellow-400">75</span>)</div>
-                        </div>
-                        <div class="mt-4">
-                            <a href="#" class="block text-center bg-black text-white px-3 py-2 rounded-md font-medium hover:opacity-95">Add To Cart</a>
+
+                        <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                        <!-- Add to Cart Hover Button (slides in from bottom) -->
+                        <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                            role="button" tabindex="0" aria-label="Add product to cart">
+                            <!-- you can include icon + text -->
+                            <span class="inline-flex items-center justify-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                                Add To Cart
+                            </span>
                         </div>
                     </article>
+                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                        <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                        <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to wishlist" title="Add to wishlist">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                    <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Quick view" title="Quick view">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to cart" title="Add to cart">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                            <img src="assets/images/new_03.png" alt="Product" class="object-contain max-h-full">
+                        </div>
+                        <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                        <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
 
-                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px] bg-white rounded-xl shadow-sm border p-4 flex flex-col">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-semibold">-30%</span>
-                            <div class="flex items-center gap-2">
-                                <button class="p-1 rounded-full hover:bg-gray-100"><img src="assets/images/heart_small.svg" alt="wishlist" class="w-4 h-4"></button>
-                            </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="text-yellow-400 text-sm">★★★★★</div>
+                            <div class="text-xs text-slate-400">(3)</div>
                         </div>
-                        <div class="flex-1 flex items-center justify-center mb-3">
-                            <img src="assets/images/new_03.png" alt="Monitor" class="max-h-40 object-contain">
-                        </div>
-                        <h3 class="text-sm font-semibold mb-1">IPS LCD Gaming Monitor</h3>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <div class="text-sm text-slate-500 line-through">$490</div>
-                                <div class="text-violet-600 font-semibold">$370</div>
-                            </div>
-                            <div class="text-xs text-slate-400"><span class="rating-star">★★★★★</span> (<span class="text-yellow-400">99</span>)</div>
-                        </div>
-                        <div class="mt-4">
-                            <a href="#" class="block text-center bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded-md font-medium">Add To Cart</a>
+
+                        <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                        <!-- Add to Cart Hover Button (slides in from bottom) -->
+                        <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                            role="button" tabindex="0" aria-label="Add product to cart">
+                            <!-- you can include icon + text -->
+                            <span class="inline-flex items-center justify-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                                Add To Cart
+                            </span>
                         </div>
                     </article>
+                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                        <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                        <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to wishlist" title="Add to wishlist">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                    <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Quick view" title="Quick view">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to cart" title="Add to cart">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                            <img src="assets/images/new_04.png" alt="Product" class="object-contain max-h-full">
+                        </div>
+                        <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                        <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
 
-                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px] bg-white rounded-xl shadow-sm border p-4 flex flex-col">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-semibold">-25%</span>
-                            <div class="flex items-center gap-2">
-                                <button class="p-1 rounded-full hover:bg-gray-100"><img src="assets/images/heart_small.svg" alt="wishlist" class="w-4 h-4"></button>
-                            </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="text-yellow-400 text-sm">★★★★★</div>
+                            <div class="text-xs text-slate-400">(3)</div>
                         </div>
-                        <div class="flex-1 flex items-center justify-center mb-3">
-                            <img src="assets/images/new_04.png" alt="Chair" class="max-h-40 object-contain">
-                        </div>
-                        <h3 class="text-sm font-semibold mb-1">S-Series Comfort Chair</h3>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <div class="text-sm text-slate-500 line-through">$400</div>
-                                <div class="text-violet-600 font-semibold">$375</div>
-                            </div>
-                            <div class="text-xs text-slate-400"><span class="rating-star">★★★★★</span> (<span class="text-yellow-400">99</span>)</div>
-                        </div>
-                        <div class="mt-4">
-                            <a href="#" class="block text-center bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded-md font-medium">Add To Cart</a>
+
+                        <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                        <!-- Add to Cart Hover Button (slides in from bottom) -->
+                        <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                            role="button" tabindex="0" aria-label="Add product to cart">
+                            <!-- you can include icon + text -->
+                            <span class="inline-flex items-center justify-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                                Add To Cart
+                            </span>
                         </div>
                     </article>
+                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                        <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                        <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to wishlist" title="Add to wishlist">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                    <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Quick view" title="Quick view">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to cart" title="Add to cart">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                            <img src="assets/images/new_02.png" alt="Product" class="object-contain max-h-full">
+                        </div>
+                        <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                        <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
 
-                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px] bg-white rounded-xl shadow-sm border p-4 flex flex-col">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-semibold">-25%</span>
-                            <div class="flex items-center gap-2">
-                                <button class="p-1 rounded-full hover:bg-gray-100"><img src="assets/images/heart_small.svg" alt="wishlist" class="w-4 h-4"></button>
-                            </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="text-yellow-400 text-sm">★★★★★</div>
+                            <div class="text-xs text-slate-400">(3)</div>
                         </div>
-                        <div class="flex-1 flex items-center justify-center mb-3">
-                            <img src="assets/images/new_04.png" alt="Chair" class="max-h-40 object-contain">
-                        </div>
-                        <h3 class="text-sm font-semibold mb-1">S-Series Comfort Chair</h3>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <div class="text-sm text-slate-500 line-through">$400</div>
-                                <div class="text-violet-600 font-semibold">$375</div>
-                            </div>
-                            <div class="text-xs text-slate-400"><span class="rating-star">★★★★★</span> (<span class="text-yellow-400">99</span>)</div>
-                        </div>
-                        <div class="mt-4">
-                            <a href="#" class="block text-center bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded-md font-medium">Add To Cart</a>
+
+                        <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                        <!-- Add to Cart Hover Button (slides in from bottom) -->
+                        <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                            role="button" tabindex="0" aria-label="Add product to cart">
+                            <!-- you can include icon + text -->
+                            <span class="inline-flex items-center justify-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                                Add To Cart
+                            </span>
                         </div>
                     </article>
+                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px]  p-4 flex flex-col group relative bg-white border border-slate-200 rounded-lg p-4 shadow-sm overflow-hidden">
+                        <span class="absolute top-3 left-3 bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-1 rounded z-10">NEW</span>
+                        <div class="absolute top-3 right-3 flex flex-col gap-3 z-20 card-icons">
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to wishlist" title="Add to wishlist">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-red-500">
+                                    <path d="M12 21s-7.5-4.35-9.5-7.5C.5 9.75 5 5 9 6.5 11 7.4 12 9 12 9s1-1.6 3-2.5c4-1.5 8.5 3.25 6.5 7.5C19.5 16.65 12 21 12 21z" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Quick view" title="Quick view">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M12 5c5 0 9 4 9 7s-4 7-9 7-9-4-9-7 4-7 9-7z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn w-9 h-9 flex items-center justify-center bg-white border rounded-full shadow-sm hover:bg-gray-50"
+                                aria-label="Add to cart" title="Add to cart">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-slate-600">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
+                            <img src="assets/images/new_03.png" alt="Product" class="object-contain max-h-full">
+                        </div>
+                        <p class="text-sm text-slate-500 mb-1">Cartify</p>
+                        <h3 class="text-sm font-semibold text-slate-800 leading-tight mb-2">New Featured MacBook Pro With Apple M1 Pro Chip</h3>
 
-                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px] bg-white rounded-xl shadow-sm border p-4 flex flex-col">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-semibold">-25%</span>
-                            <div class="flex items-center gap-2">
-                                <button class="p-1 rounded-full hover:bg-gray-100"><img src="assets/images/heart_small.svg" alt="wishlist" class="w-4 h-4"></button>
-                            </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="text-yellow-400 text-sm">★★★★★</div>
+                            <div class="text-xs text-slate-400">(3)</div>
                         </div>
-                        <div class="flex-1 flex items-center justify-center mb-3">
-                            <img src="assets/images/new_04.png" alt="Chair" class="max-h-40 object-contain">
-                        </div>
-                        <h3 class="text-sm font-semibold mb-1">S-Series Comfort Chair</h3>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <div class="text-sm text-slate-500 line-through">$400</div>
-                                <div class="text-violet-600 font-semibold">$375</div>
-                            </div>
-                            <div class="text-xs text-slate-400"><span class="rating-star">★★★★★</span> (<span class="text-yellow-400">99</span>)</div>
-                        </div>
-                        <div class="mt-4">
-                            <a href="#" class="block text-center bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded-md font-medium">Add To Cart</a>
+
+                        <div class="text-blue-600 font-semibold text-lg">$200.00</div>
+
+                        <!-- Add to Cart Hover Button (slides in from bottom) -->
+                        <div class="add-cart-btn absolute left-0 bottom-0 w-full bg-black text-white text-center py-3 opacity-0 transform translate-y-4"
+                            role="button" tabindex="0" aria-label="Add product to cart">
+                            <!-- you can include icon + text -->
+                            <span class="inline-flex items-center justify-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+                                    <path d="M3 3h2l.6 2M7 13h10l3-8H6.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <circle cx="10" cy="20" r="1" fill="currentColor" />
+                                    <circle cx="18" cy="20" r="1" fill="currentColor" />
+                                </svg>
+                                Add To Cart
+                            </span>
                         </div>
                     </article>
-
-                    <article class="min-w-[240px] sm:min-w-[260px] md:min-w-[280px] bg-white rounded-xl shadow-sm border p-4 flex flex-col">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-semibold">-25%</span>
-                            <div class="flex items-center gap-2">
-                                <button class="p-1 rounded-full hover:bg-gray-100"><img src="assets/images/heart_small.svg" alt="wishlist" class="w-4 h-4"></button>
-                            </div>
-                        </div>
-                        <div class="flex-1 flex items-center justify-center mb-3">
-                            <img src="assets/images/new_04.png" alt="Chair" class="max-h-40 object-contain">
-                        </div>
-                        <h3 class="text-sm font-semibold mb-1">S-Series Comfort Chair</h3>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <div class="text-sm text-slate-500 line-through">$400</div>
-                                <div class="text-violet-600 font-semibold">$375</div>
-                            </div>
-                            <div class="text-xs text-slate-400"><span class="rating-star">★★★★★</span> (<span class="text-yellow-400">99</span>)</div>
-                        </div>
-                        <div class="mt-4">
-                            <a href="#" class="block text-center bg-violet-600 hover:bg-violet-700 text-white px-3 py-2 rounded-md font-medium">Add To Cart</a>
-                        </div>
-                    </article>
-
-
-
-                    <!-- add more product cards as needed -->
                 </div>
 
                 <!-- dots / CTA row -->
@@ -2178,11 +2409,19 @@
     <script>
         (function() {
             const track = document.getElementById('track');
-            const prevBtn = document.getElementById('prev');
+            const prevBtn = document.getElementById('prev'); // optional buttons in HTML
             const nextBtn = document.getElementById('next');
             const dotsWrap = document.getElementById('dots');
             const container = document.getElementById('products-carousel');
-            const cards = Array.from(track.querySelectorAll('.product-card'));
+
+            if (!track || !container || !dotsWrap) return; // safety
+
+            // select the article cards inside the track (your markup uses <article>)
+            const cards = Array.from(track.querySelectorAll('article'));
+            if (cards.length === 0) {
+                console.warn('No product cards found — make sure cards are <article> elements inside #track.');
+            }
+
             let perView = 1;
             let currentIndex = 0;
             let pages = 1;
@@ -2195,6 +2434,7 @@
 
             function calcPerView() {
                 const w = window.innerWidth;
+                if (w >= 1920) return 4;
                 if (w >= 1024) return 4;
                 if (w >= 768) return 3;
                 if (w >= 640) return 2;
@@ -2203,7 +2443,7 @@
 
             function rebuild() {
                 perView = calcPerView();
-                pages = Math.ceil(cards.length / perView);
+                pages = Math.max(1, Math.ceil(cards.length / perView));
                 currentIndex = Math.min(currentIndex, pages - 1);
                 buildDots();
                 goTo(currentIndex, false);
@@ -2216,8 +2456,9 @@
                     b.className = 'w-2 h-2 rounded-full bg-slate-300/70';
                     b.dataset.index = i;
                     b.setAttribute('aria-label', 'Go to page ' + (i + 1));
+                    b.type = 'button';
                     b.addEventListener('click', () => {
-                        goTo(parseInt(b.dataset.index), true);
+                        goTo(parseInt(b.dataset.index, 10), true);
                         resetAutoplay();
                     });
                     dotsWrap.appendChild(b);
@@ -2233,23 +2474,45 @@
                 });
             }
 
+            function getGap() {
+                const style = getComputedStyle(track);
+                const gap = parseFloat(style.gap) || 0;
+                return gap;
+            }
+
             function goTo(index, smooth = true) {
+                if (cards.length === 0) return;
+
                 if (index < 0) index = 0;
                 if (index > pages - 1) index = pages - 1;
                 currentIndex = index;
 
                 const cardRect = cards[0].getBoundingClientRect();
-                const style = getComputedStyle(track);
-                const gap = parseFloat(style.gap) || 0;
-                const itemFullWidth = cardRect.width + gap;
+                const gap = getGap();
+                const itemFullWidth = cards[0].offsetWidth + gap;
 
-                const offset = itemFullWidth * perView * currentIndex;
-                if (!smooth) track.style.transition = 'none';
+                // total width of all items
+                const totalWidth = itemFullWidth * cards.length - gap; // subtract final gap
+                // offset desired
+                let offset = itemFullWidth * perView * currentIndex;
+                // max offset so last visible page aligns correctly
+                const maxOffset = Math.max(0, totalWidth - (itemFullWidth * perView - gap));
+                if (offset > maxOffset) offset = maxOffset;
+
+                if (!smooth) {
+                    track.style.transition = 'none';
+                } else {
+                    // ensure track has a transition class or style to animate (you have transition-transform in markup)
+                    track.style.transition = track.style.transition || '';
+                }
+
                 track.style.transform = `translateX(-${offset}px)`;
 
+                // restore transition after next frame if we turned it off
                 requestAnimationFrame(() => {
                     if (!smooth) track.style.transition = '';
                 });
+
                 updateDots();
             }
 
@@ -2263,9 +2526,9 @@
                 resetAutoplay();
             }
 
-            prevBtn.addEventListener('click', prev);
-            nextBtn.addEventListener('click', next);
-
+            // attach prev/next only if they exist
+            if (prevBtn) prevBtn.addEventListener('click', prev);
+            if (nextBtn) nextBtn.addEventListener('click', next);
 
             function startAutoplay() {
                 stopAutoplay();
@@ -2300,11 +2563,13 @@
             }, {
                 passive: true
             });
+
             container.addEventListener('touchmove', (e) => {
                 dist = e.touches[0].clientX - startX;
             }, {
                 passive: true
             });
+
             container.addEventListener('touchend', () => {
                 if (Math.abs(dist) > threshold) {
                     if (dist < 0) next();
@@ -2314,12 +2579,10 @@
                 dist = 0;
             });
 
-
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft') prev();
                 if (e.key === 'ArrowRight') next();
             });
-
 
             let rtimer = null;
             window.addEventListener('resize', () => {
@@ -2327,12 +2590,11 @@
                 rtimer = setTimeout(() => rebuild(), 120);
             });
 
-
+            // initial run
             window.requestAnimationFrame(() => {
                 rebuild();
                 startAutoplay();
             });
-
 
             window.productCarousel = {
                 goTo,
@@ -2344,6 +2606,7 @@
             };
         })();
     </script>
+
     <!--New Products Slider-->
     <script>
         (function() {
