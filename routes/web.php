@@ -16,7 +16,7 @@ Route::view('/product', 'product');
 
 
 // User Dashboard
-Route::middleware(['auth'])->controller(UserController::class)->group(function () {
+Route::middleware(['auth', 'prevent-back-history'])->controller(UserController::class)->group(function () {
     Route::get('/account', 'index')->name('user-account.index');
 });
 
