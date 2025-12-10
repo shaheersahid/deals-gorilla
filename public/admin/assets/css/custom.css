@@ -1,0 +1,35 @@
+/** Here custom styles defines **/
+
+.select2-container {
+    min-width: 200px !important;
+}
+
+.swal2-styled.swal2-confirm, .swal2-styled.swal2-cancel {
+    font-size: 0.9rem !important;
+    box-shadow: none !important;
+}
+
+#products-table tbody tr td,
+#categories-table tbody tr td,
+#sections-table tbody tr td{
+   vertical-align: middle;
+}
+
+.categories-btns {
+    max-width: 180px;
+    flex-wrap: wrap;
+}
+
+.invalid-feedback {
+    font-size: .9rem !important;
+}
+
+.border-round-dash {
+    border: 1px dashed var(--bs-border-color);
+    border-radius: .3rem;
+    margin-bottom: 5px;
+}
+
+.form-control, .btn {
+    min-height: 2.1rem;
+}

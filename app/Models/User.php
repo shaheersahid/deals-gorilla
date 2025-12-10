@@ -13,6 +13,14 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * Get the user's avatar image.
+     */
+    public function avatar()
+    {
+        return $this->morphOne(Image::class, 'image');
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
