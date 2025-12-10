@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\DashboardController;
 
 Route::view('/', 'welcome');
 Route::view('/product-detail', 'product-detail');
@@ -22,7 +23,7 @@ Route::middleware(['auth'])->controller(UserController::class)->group(function (
 
 // Admin Dashboard Routes
 Route::middleware(['auth', 'auth.admin'])->prefix('admin/dashboard')->group(function () {
-    Route::view('/', 'admin.content.index')->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('products/{product}/edit-meta-fields', [ProductController::class, 'editSeo'])->name('products.seo.edit');
     Route::put('products/{product}/update-meta-fields', [ProductController::class, 'updateSeo'])->name('products.seo.update');
