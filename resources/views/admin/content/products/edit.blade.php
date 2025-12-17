@@ -26,7 +26,7 @@
                             <div class="card-body">
                                 <div class="row mb-3">
                                     <div class="col-md-8">
-                                        <label for="name" class="form-label">Product Name <span class="text-danger">*</span></label>
+                                        <label for="name" class="form-label">Product Title <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $product->name) }}" required>
                                         @error('name')
                                             <div class="invalid-feedback">{{ $message }}</div>

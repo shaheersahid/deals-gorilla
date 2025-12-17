@@ -25,7 +25,7 @@
                             <div class="card-body">
                                 <div class="row mb-3">
                                     <div class="col-md-8">
-                                        <label for="name" class="form-label">Product Name <span class="text-danger">*</span></label>
+                                        <label for="name" class="form-label">Product Title <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
                                         @error('name')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -68,41 +68,6 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product Images -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Product Images</h5>
-                            </div>
-                            <div class="card-body">
-                                <!-- Main Thumbnail -->
-                                <div class="mb-4">
-                                    <label for="thumbnail" class="form-label">Main Thumbnail</label>
-                                    <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/*" onchange="ProductForm.handleThumbnailSelect(this)">
-                                    <div class="mt-2" id="thumbnail-preview-container" style="display: none;">
-                                        <div class="position-relative d-inline-block">
-                                            <img id="thumbnail-preview" src="" alt="Thumbnail Preview" class="img-thumbnail" style="max-height: 200px;">
-                                            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" onclick="ProductForm.removeThumbnail()">
-                                                <i class="fa fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <hr>
-
-                                <!-- Gallery Images -->
-                                <div class="mb-3">
-                                    <label for="images" class="form-label">Gallery Images <span class="text-muted">(Max 9)</span></label>
-                                    <div class="input-group">
-                                        <input type="file" class="form-control" id="images" name="images[]" multiple accept="image/*" onchange="ProductForm.handleGallerySelect(this)">
-                                        <span class="input-group-text" id="gallery-count">0/9</span>
-                                    </div>
-                                    <small class="text-muted">Images will be appended. Click remove on preview to delete.</small>
-                                    <div class="row mt-2" id="gallery-preview"></div>
                                 </div>
                             </div>
                         </div>
@@ -163,6 +128,41 @@
                                 </div>
                                 <div class="text-center text-muted py-4" id="no-variants-message">
                                     <p>No variants added yet. Click "Add Variant" to create product variations.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <!-- Product Images -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Product Images</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Main Thumbnail -->
+                                <div class="mb-4">
+                                    <label for="thumbnail" class="form-label">Main Thumbnail</label>
+                                    <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/*" onchange="ProductForm.handleThumbnailSelect(this)">
+                                    <div class="mt-2" id="thumbnail-preview-container" style="display: none;">
+                                        <div class="position-relative d-inline-block">
+                                            <img id="thumbnail-preview" src="" alt="Thumbnail Preview" class="img-thumbnail" style="max-height: 200px;">
+                                            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" onclick="ProductForm.removeThumbnail()">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+
+                                <!-- Gallery Images -->
+                                <div class="mb-3">
+                                    <label for="images" class="form-label">Gallery Images <span class="text-muted">(Max 9)</span></label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="images" name="images[]" multiple accept="image/*" onchange="ProductForm.handleGallerySelect(this)">
+                                        <span class="input-group-text" id="gallery-count">0/9</span>
+                                    </div>
+                                    <small class="text-muted">Images will be appended. Click remove on preview to delete.</small>
+                                    <div class="row mt-2" id="gallery-preview"></div>
                                 </div>
                             </div>
                         </div>
