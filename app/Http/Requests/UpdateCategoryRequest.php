@@ -13,17 +13,20 @@ class UpdateCategoryRequest extends FormRequest
 
     public function rules(): array
     {
-        $categoryId = $this->route('category') ? $this->route('category')->id : $this->id;
-
         return [
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $categoryId,
-            'title' => 'nullable|string|max:255',
-            'icon' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|integer',
+            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $this->route('category')->id,
+            'parent_id' => 'nullable|exists:categories,id',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'is_active' => 'boolean',
-            'show_on_homepage' => 'boolean',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'parent_id' => 'parent category',
         ];
     }
 }

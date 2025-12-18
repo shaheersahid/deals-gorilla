@@ -14,10 +14,8 @@ class User extends Authenticatable
 
     /**
      * Get the user's avatar image.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function avatar(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    public function avatar()
     {
         return $this->morphOne(Image::class, 'image');
     }

@@ -62,42 +62,22 @@ class Order extends Model
         ];
     }
 
-    /**
-     * Get the user who placed the order.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user()
     {
         return $this->belongsTo(\App\Models\User::class);
     }
 
-    /**
-     * Get the items in the order.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function items(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function items()
     {
         return $this->hasMany(OrderItem::class);
     }
 
-    /**
-     * Get the shipping address for the order.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function shippingAddress(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function shippingAddress()
     {
         return $this->belongsTo(\App\Models\Address::class, 'shipping_address_id');
     }
 
-    /**
-     * Get the billing address for the order.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function billingAddress(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function billingAddress()
     {
         return $this->belongsTo(\App\Models\Address::class, 'billing_address_id');
     }

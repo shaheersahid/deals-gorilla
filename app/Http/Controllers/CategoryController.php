@@ -5,35 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Services\DataTableService;
-use \Illuminate\Http\JsonResponse;
-use \Illuminate\Contracts\View\View;
-use \Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
-use App\Http\Requests\ToggleCategoryStatusRequest;
 
 class CategoryController extends Controller
 {
-    protected $dataTableService;
-
-    public function __construct(DataTableService $dataTableService)
-    {
-        $this->dataTableService = $dataTableService;
-    }
-
     /**
      * Display a listing of the resource.
-     * 
-     * @param Request $request
-     * @return View|JsonResponse
      */
-    public function index(Request $request): View|JsonResponse
+    public function index(Request $request)
     {
         if ($request->ajax()) {
             $categories = Category::with('parent');
-            return $this->dataTableService->categoriesTable($categories);
+            return DataTables::of($categories)
+                ->addColumn('parentCategory', function ($category) {
+                    return $category->parent ? $category->parent->name : '<span class="text-muted">None</span>';
+                })
+                ->addColumn('totalProducts', function ($category) {
+                    return $category->products()->count();
+                })
+                ->addColumn('status', function ($category) {
+                    return $category->is_active 
+                        ? '<span class="badge bg-success">Active</span>' 
+                        : '<span class="badge bg-danger">Inactive</span>';
+                })
+                ->addColumn('action', function ($category) {
+                    return view('admin.content.categories.action', compact('category'))->render();
+                })
+                ->rawColumns(['parentCategory', 'status', 'action'])
+                ->make(true);
         }
 
         return view('admin.content.categories.index');
@@ -41,10 +40,8 @@ class CategoryController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * 
-     * @return View
      */
-    public function create(): View
+    public function create()
     {
         $categories = Category::where('parent_id', 0)->get();
         return view('admin.content.categories.create', compact('categories'));
@@ -52,17 +49,18 @@ class CategoryController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * 
-     * @param StoreCategoryRequest $request
-     * @return RedirectResponse
      */
-    public function store(StoreCategoryRequest $request): RedirectResponse
+    public function store(Request $request)
     {
-        $validated = $request->validated();
-
-        if ($request->has('show_on_homepage') && Category::where('show_on_homepage', true)->count() >= 4) {
-            return redirect()->back()->withInput()->with('error', 'Maximum 4 categories can be shown on the home page.');
-        }
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:categories,slug',
+            'title' => 'nullable|string|max:255',
+            'icon' => 'nullable|string|max:255',
+            'parent_id' => 'nullable|integer',
+            'description' => 'nullable|string',
+            'is_active' => 'boolean',
+        ]);
 
         $category = new Category();
         $category->name = $validated['name'];
@@ -72,7 +70,6 @@ class CategoryController extends Controller
         $category->parent_id = $validated['parent_id'] ?? 0;
         $category->description = $validated['description'] ?? null;
         $category->is_active = $request->has('is_active');
-        $category->show_on_homepage = $request->has('show_on_homepage');
         $category->save();
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
@@ -80,22 +77,16 @@ class CategoryController extends Controller
 
     /**
      * Display the specified resource.
-     * 
-     * @param Category $category
-     * @return View
      */
-    public function show(Category $category): View
+    public function show(Category $category)
     {
         return view('admin.content.categories.show', compact('category'));
     }
 
     /**
      * Show the form for editing the specified resource.
-     * 
-     * @param Category $category
-     * @return View
      */
-    public function edit(Category $category): View
+    public function edit(Category $category)
     {
         $categories = Category::where('parent_id', 0)->where('id', '!=', $category->id)->get();
         return view('admin.content.categories.edit', compact('category', 'categories'));
@@ -103,18 +94,18 @@ class CategoryController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * 
-     * @param UpdateCategoryRequest $request
-     * @param Category $category
-     * @return RedirectResponse
      */
-    public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
+    public function update(Request $request, Category $category)
     {
-        $validated = $request->validated();
-
-        if ($request->has('show_on_homepage') && !$category->show_on_homepage && Category::where('show_on_homepage', true)->count() >= 4) {
-            return redirect()->back()->withInput()->with('error', 'Maximum 4 categories can be shown on the home page.');
-        }
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
+            'title' => 'nullable|string|max:255',
+            'icon' => 'nullable|string|max:255',
+            'parent_id' => 'nullable|integer',
+            'description' => 'nullable|string',
+            'is_active' => 'boolean',
+        ]);
 
         $category->name = $validated['name'];
         $category->slug = $validated['slug'] ?? Str::slug($validated['name']);
@@ -123,7 +114,6 @@ class CategoryController extends Controller
         $category->parent_id = $validated['parent_id'] ?? 0;
         $category->description = $validated['description'] ?? null;
         $category->is_active = $request->has('is_active');
-        $category->show_on_homepage = $request->has('show_on_homepage');
         $category->save();
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
@@ -131,66 +121,13 @@ class CategoryController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * 
-     * @param Category $category
-     * @return RedirectResponse
      */
-    public function destroy(Category $category): RedirectResponse
+    public function destroy(Category $category)
     {
         Category::where('parent_id', $category->id)->update(['parent_id' => 0]);
         
         $category->delete();
 
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
-    }
-
-    /**
-     * Show products belonging to a category for reordering.
-     * 
-     * @param Request $request
-     * @param Category $category
-     * @return View|JsonResponse
-     */
-    public function products(Request $request, Category $category): View|JsonResponse
-    {
-        if ($request->ajax()) {
-            $products = $category->products()->orderBy('sort_order', 'asc');
-            return $this->dataTableService->categoryProductsTable($products);
-        }
-
-        return view('admin.content.categories.products', compact('category'));
-    }
-
-    /**
-     * Toggle category status (active/homepage) via AJAX.
-     * 
-     * @param ToggleCategoryStatusRequest $request
-     * @return JsonResponse
-     */
-    public function toggleStatus(ToggleCategoryStatusRequest $request): JsonResponse
-    {
-        $category = Category::findOrFail($request->id);
-        $type = $request->type;
-
-        if ($type == 'show_on_homepage' && $request->value == 1) {
-            $count = Category::where('show_on_homepage', true)->where('id', '!=', $category->id)->count();
-            if ($count >= 4) {
-                return response()->json([
-                    'success' => false,
-                    'message' => "Maximum 4 categories can be shown on the home page."
-                ], 422);
-            }
-        }
-
-        $category->$type = $request->value;
-        $category->save();
-
-        $label = $type == 'is_active' ? 'Status' : 'Home page status';
-        $status = $request->value ? 'enabled' : 'disabled';
-
-        return response()->json([
-            'success' => true,
-            'message' => "Category {$label} updated successfully!"
-        ]);
     }
 }

@@ -13,32 +13,17 @@ class ProductAttributeValue extends Model
         'custom_value',
     ];
 
-    /**
-     * Get the product associated with this value.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    /**
-     * Get the attribute associated with this value.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function attribute(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function attribute()
     {
         return $this->belongsTo(Attribute::class);
     }
 
-    /**
-     * Get the option associated with this value.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function option(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function option()
     {
         return $this->belongsTo(AttributeOption::class, 'attribute_option_id');
     }

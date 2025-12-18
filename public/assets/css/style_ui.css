@@ -1,0 +1,321 @@
+/* =========================
+   GLOBAL / BASE
+========================= */
+body {
+  overflow-x: hidden;
+}
+.bg-nav {
+    background: #EDEDED40;
+    border-top: 1px solid #DEDEDE
+}
+
+.bg-banner {
+    background: #222
+}
+
+.rating-star {
+    color: yellow
+}
+
+.backdrop-blur {
+    backdrop-filter: blur(6px)
+}
+
+.search-focus:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, .12)
+}
+
+/* =========================
+   HEADER
+========================= */
+/* #site-header {
+    transition: transform .22s ease, box-shadow .2s ease;
+    will-change: transform;
+    transform: translateY(0)
+}
+
+#site-header.hidden-up {
+    transform: translateY(-110%);
+    box-shadow: none
+}
+
+#site-header.visible {
+    transform: translateY(0);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .06)
+} */
+
+/* =========================
+   MEGA MENU
+========================= */
+#mega-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    max-width: 100%;
+    border-radius: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(6px);
+    transition: opacity .18s ease, transform .18s ease, left .16s ease, width .16s ease;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, .08);
+    will-change: transform, opacity
+}
+
+#mega-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0)
+}
+.input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    outline: none;
+  }
+  .input:focus {
+    border-color: #7c3aed;
+  }
+/* =========================
+   MOBILE MENU & SEARCH
+========================= */
+#mobile-menu {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 9998;
+    transform: translateX(-100%);
+    transition: transform .28s ease
+}
+
+#mobile-menu.translate-x-0 {
+    transform: translateX(0)
+}
+
+#mobile-search-full {
+    background: #fff;
+    height: 100vh;
+    z-index: 999;
+}
+
+/* =========================
+   PROMO STRIP
+========================= */
+.promo-strip {
+    background-image: linear-gradient(90deg, rgba(163, 28, 78, .45), rgba(192, 48, 100, .45) 40%, rgba(169, 30, 92, .45)), url("assets/images/shop_bg.png");
+    background-size: cover;
+    background-position: center;
+    padding: 8px 0;
+    box-shadow: inset 0 2px 0 rgba(0, 0, 0, .06)
+}
+
+.promo-inner {
+    padding: 10px;
+    align-items: center
+}
+
+.promo-text {
+    color: #fff;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .2)
+}
+
+.promo-cta a {
+    background: #fff;
+    color: #7c1d66;
+    border-radius: 8px;
+    padding: 8px 18px;
+    box-shadow: 0 6px 18px rgba(124, 29, 102, .12);
+    text-decoration: none
+}
+
+/* =========================
+   PRODUCT CARDS
+========================= */
+.group:hover {
+    box-shadow: 0 8px 30px rgba(16, 24, 40, .08);
+    transform: translateY(-2px);
+    transition: all .18s ease-in-out
+}
+
+.card-icons {
+    opacity: 0;
+    transform: translateY(-6px) translateX(8px) scale(.98);
+    transition: .28s
+}
+
+.group:hover .card-icons,
+.group:focus-within .card-icons {
+    opacity: 1;
+    transform: none
+}
+
+.icon-btn {
+    transition: .28s
+}
+
+.add-cart-btn {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: .28s
+}
+
+.group:hover .add-cart-btn,
+.group:focus-within .add-cart-btn {
+    opacity: 1;
+    transform: none
+}
+
+/* =========================
+   SCROLLBARS
+========================= */
+#flash-track,
+#thumbs {
+    scrollbar-width: none
+}
+
+#flash-track::-webkit-scrollbar,
+#thumbs::-webkit-scrollbar {
+    display: none
+}
+
+/* =========================
+   PRODUCT GRID / LIST UX
+========================= */
+#productGrid {
+    transition: all .3s ease;
+}
+.product-card {
+    transition: box-shadow .25s ease, transform .25s ease;
+}
+.product-card:hover {
+    box-shadow: 0 12px 28px rgba(0,0,0,.08);
+    transform: translateY(-2px);
+}
+.product-image img {
+    transition: transform .35s ease;
+}
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+.add-cart-btn {
+    transition: all .3s ease;
+}
+.product-card:hover .add-cart-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+.card-icons {
+    opacity: 0;
+    transform: translateX(6px);
+    transition: all .25s ease;
+}
+.product-card:hover .card-icons {
+    opacity: 1;
+    transform: translateX(0);
+}
+#productGrid.list-view {
+    grid-template-columns: 1fr;
+}
+
+.product-card.list-view {
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+}
+
+.product-card.list-view .product-image {
+    width: 35%;
+    height: auto;
+    margin-bottom: 0;
+}
+
+.product-card.list-view .product-content {
+    width: 65%;
+}
+/* =========================
+   BEAUTIFUL CUSTOM CHECKBOX
+========================= */
+.custom-checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #d1d5db; 
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    display: inline-grid;
+    place-content: center;
+    transition: all .2s ease;
+}
+.custom-checkbox:hover {
+    border-color: #7c3aed; 
+}
+.custom-checkbox::before {
+    content: "";
+    width: 8px;
+    height: 4px;
+    border-left: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(-45deg) scale(0);
+    transition: transform .15s ease;
+}
+.custom-checkbox:checked {
+    background-color: #7c3aed; /* violet */
+    border-color: #7c3aed;
+}
+
+.custom-checkbox:checked::before {
+    transform: rotate(-45deg) scale(1);
+}
+.custom-checkbox:focus-visible {
+    outline: 2px solid rgba(124, 58, 237, 0.4);
+    outline-offset: 2px;
+}
+.custom-checkbox:disabled {
+    background: #f3f4f6;
+    border-color: #e5e7eb;
+    cursor: not-allowed;
+}
+#cart-dropdown {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+/* =========================
+   RESPONSIVE
+========================= */
+
+#art-dropdown{
+    position: absolute;
+    z-index: 999;
+}
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:640px) {
+    .promo-left img {
+        display: none
+    }
+
+    .promo-text {
+        font-size: 13px
+    }
+
+    .promo-cta a {
+        font-size: 13px;
+        padding: 8px 12px
+    }
+}
+
+@media(max-width:480px) {
+
+    .card-icons,
+    .add-cart-btn {
+        opacity: 1;
+        transform: none;
+        position: static
+    }
+}

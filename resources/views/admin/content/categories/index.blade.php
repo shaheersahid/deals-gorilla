@@ -29,8 +29,6 @@
                                         <th>Name</th>
                                         <th>Parent Category</th>
                                         <th>Total Products</th>
-                                        <th>Show on Home</th>
-                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -68,63 +66,15 @@
                     },
                     {
                         data: 'totalProducts',
-                        name: 'totalProducts',
-                        className: 'text-center'
-                    },
-                    {
-                        data: 'homepage',
-                        name: 'homepage',
-                        orderable: false,
-                        searchable: false,
-                        className: 'text-center'
-                    },
-                    {
-                        data: 'status',
-                        name: 'is_active',
-                        orderable: false,
-                        searchable: false,
-                        className: 'text-center'
+                        name: 'totalProducts'
                     },
                     {
                         data: 'action',
                         name: 'action',
                         orderable: false,
-                        searchable: false,
-                        className: 'text-center'
+                        searchable: false
                     },
                 ]
-            });
-
-            // Handle Status and Homepage Toggles
-            $('#categories-table').on('change', '.toggle-status', function() {
-                var id = $(this).data('id');
-                var type = $(this).data('type');
-                var value = $(this).prop('checked') ? 1 : 0;
-                var checkbox = $(this);
-
-                $.ajax({
-                    url: "{{ route('categories.toggle-status') }}",
-                    method: 'POST',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        id: id,
-                        type: type,
-                        value: value
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            toastr.success(response.message);
-                        }
-                    },
-                    error: function(xhr) {
-                        checkbox.prop('checked', !checkbox.prop('checked'));
-                        var message = 'Something went wrong. Please try again.';
-                        if (xhr.responseJSON && xhr.responseJSON.message) {
-                            message = xhr.responseJSON.message;
-                        }
-                        toastr.error(message);
-                    }
-                });
             });
 
         });

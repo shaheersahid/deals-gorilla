@@ -13,6 +13,9 @@ use App\Http\Controllers\DashboardController;
 Route::view('/', 'welcome');
 Route::view('/product-detail', 'product-detail');
 Route::view('/product', 'product');
+Route::view('/cart', 'cart');
+Route::view('/wish-list', 'wish-list');
+Route::view('/checkout', 'checkout');
 
 
 // User Dashboard
@@ -27,14 +30,7 @@ Route::middleware(['auth', 'auth.admin'])->prefix('admin/dashboard')->group(func
 
     Route::get('products/{product}/edit-meta-fields', [ProductController::class, 'editSeo'])->name('products.seo.edit');
     Route::put('products/{product}/update-meta-fields', [ProductController::class, 'updateSeo'])->name('products.seo.update');
-    Route::get('products/{product}/faqs', [ProductController::class, 'manageFaqs'])->name('products.faqs');
-    Route::post('products/{product}/faqs', [ProductController::class, 'storeFaqs'])->name('products.faqs.store');
-    Route::post('products/toggle-status', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
-    Route::post('products/reorder', [ProductController::class, 'reorder'])->name('products.reorder');
     Route::resource('products', ProductController::class);
-
-    Route::get('categories/{category}/products', [CategoryController::class, 'products'])->name('categories.products');
-    Route::post('categories/toggle-status', [CategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
     Route::resource('categories', CategoryController::class);
     Route::resource('orders', OrderController::class)->except(['create', 'store', 'edit']);
     Route::resource('customers', UserController::class);

@@ -6,39 +6,51 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Attribute;
-use App\Services\ProductService;
-use App\Services\DataTableService;
-use Illuminate\Http\Request;
-use \Illuminate\Http\JsonResponse;
-use \Illuminate\Contracts\View\View;
-use \Illuminate\Http\RedirectResponse;
-use Yajra\DataTables\Facades\DataTables;
+use App\Models\ProductVariant;
+use App\Models\ProductSpecification;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Requests\UpdateProductSeoRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
-    protected $productService;
-    protected $dataTableService;
-
-    public function __construct(ProductService $productService, DataTableService $dataTableService)
-    {
-        $this->productService = $productService;
-        $this->dataTableService = $dataTableService;
-    }
-
     /**
      * Display a listing of the resource.
-     * 
-     * @param Request $request
-     * @return View|JsonResponse
      */
-    public function index(Request $request): View|JsonResponse
+    public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = $this->productService->getProductsQuery($request->all());
-            return $this->dataTableService->productsTable($query);
+            $products = Product::with(['category', 'brand']);
+            return DataTables::of($products)
+                ->addColumn('category_name', function ($product) {
+                    return $product->category ? $product->category->name : '<span class="text-muted">None</span>';
+                })
+                ->addColumn('brand_name', function ($product) {
+                    return $product->brand ? $product->brand->name : '<span class="text-muted">None</span>';
+                })
+                ->addColumn('price_display', function ($product) {
+                    if ($product->has_variants) {
+                        return '<span class="text-muted">Variants</span>';
+                    }
+                    return format_price($product->price);
+                })
+                ->addColumn('status', function ($product) {
+                    return get_active_badge($product->is_active);
+                })
+                ->addColumn('featured', function ($product) {
+                    return $product->is_featured 
+                        ? '<span class="badge bg-primary">Featured</span>' 
+                        : '<span class="text-muted">-</span>';
+                })
+                ->addColumn('action', function ($product) {
+                    return view('admin.content.products.action', compact('product'))->render();
+                })
+                ->rawColumns(['category_name', 'brand_name', 'price_display', 'status', 'featured', 'action'])
+                ->make(true);
         }
 
         return view('admin.content.products.index');
@@ -46,10 +58,8 @@ class ProductController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * 
-     * @return View
      */
-    public function create(): View
+    public function create()
     {
         $categories = Category::where('is_active', true)->get();
         $brands = Brand::all();
@@ -61,26 +71,118 @@ class ProductController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * 
-     * @param StoreProductRequest $request
-     * @return JsonResponse
      */
-    public function store(StoreProductRequest $request): JsonResponse
+    public function store(StoreProductRequest $request)
     {
-        try {
-            $this->productService->createProduct(
-                $request->validated(),
-                $request->file('thumbnail'),
-                $request->file('images', []),
-                $request->input('variants', [])
-            );
+        $validated = $request->validated();
 
+        DB::beginTransaction();
+        try {
+            // Create product
+            $product = new Product();
+            $product->name = $validated['name'];
+            $product->slug = $validated['slug'] ?? generate_slug($validated['name'], 'products');
+            $product->category_id = $validated['category_id'];
+            $product->brand_id = nullable_or_value($validated['brand_id'] ?? null);
+            $product->short_desc = nullable_or_value($validated['short_desc'] ?? null);
+            $product->description = $validated['description'];
+            $product->sku = $validated['sku'];
+            $product->price = nullable_or_value($validated['price'] ?? null);
+            $product->cost_price = nullable_or_value($validated['cost_price'] ?? null);
+            $product->video = nullable_or_value($validated['video'] ?? null);
+            $product->stock = $validated['stock'] ?? 0;
+            $product->is_featured = $request->has('is_featured');
+            $product->is_active = $request->has('is_active');
+            $product->has_variants = $request->has('has_variants');
+            $product->deal_enabled = $request->has('deal_enabled');
+            $product->deal_start = nullable_or_value($validated['deal_start'] ?? null);
+            $product->deal_end = nullable_or_value($validated['deal_end'] ?? null);
+            $product->save();
+
+            // Create specifications
+            if ($request->filled('weight') || $request->filled('length') || $request->filled('specs')) {
+                $specs = parse_specs($request->input('specs', []));
+                $product->specification()->create([
+                    'weight' => nullable_or_value($validated['weight'] ?? null),
+                    'weight_unit' => $validated['weight_unit'] ?? 'kg',
+                    'length' => nullable_or_value($validated['length'] ?? null),
+                    'width' => nullable_or_value($validated['width'] ?? null),
+                    'height' => nullable_or_value($validated['height'] ?? null),
+                    'dimension_unit' => $validated['dimension_unit'] ?? 'cm',
+                    'specs' => $specs,
+                ]);
+            }
+
+            // Create variants
+            if ($request->has('has_variants') && $request->filled('variants')) {
+                foreach ($request->input('variants', []) as $index => $variantData) {
+                    $variant = $product->variants()->create([
+                        'sku' => !empty($variantData['sku']) ? $variantData['sku'] : $product->sku . '-V' . ($index + 1),
+                        'price' => $variantData['price'],
+                        'stock' => $variantData['stock'] ?? 0,
+                        'is_active' => true,
+                        'sort_order' => $index,
+                    ]);
+
+                    // Attach variant attributes
+                    if (!empty($variantData['attributes'])) {
+                        foreach ($variantData['attributes'] as $attrId => $optionId) {
+                            if ($optionId) {
+                                $variant->attributeValues()->create([
+                                    'attribute_id' => $attrId,
+                                    'attribute_option_id' => $optionId,
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Upload Main Thumbnail
+            if ($request->hasFile('thumbnail')) {
+                $path = upload_file($request->file('thumbnail'), 'products');
+                $product->images()->create([
+                    'orig_path' => $path,
+                    'thumb_path' => $path,
+                    'description' => 'Main Thumbnail',
+                    'is_primary' => true,
+                    'order' => 0,
+                ]);
+            }
+
+            // Upload Gallery Images
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $index => $image) {
+                    $path = upload_file($image, 'products');
+                    $product->images()->create([
+                        'orig_path' => $path,
+                        'thumb_path' => $path,
+                        'description' => $image->getClientOriginalName(),
+                        'is_primary' => false,
+                        'order' => $index + 1,
+                    ]);
+                }
+            }
+
+            // Save FAQs
+            if ($request->filled('faqs')) {
+                foreach ($request->input('faqs') as $faq) {
+                    $product->faqs()->create([
+                        'question' => $faq['question'],
+                        'answer' => $faq['answer'],
+                    ]);
+                }
+            }
+
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'Product created successfully.',
                 'redirect' => route('products.index')
             ]);
+
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => 'Error creating product: ' . $e->getMessage()
@@ -90,11 +192,8 @@ class ProductController extends Controller
 
     /**
      * Display the specified resource.
-     * 
-     * @param Product $product
-     * @return View
      */
-    public function show(Product $product): View
+    public function show(Product $product)
     {
         $product->load(['category', 'brand', 'specification', 'variants.attributeValues.option', 'attributeValues.attribute', 'attributeValues.option']);
         return view('admin.content.products.show', compact('product'));
@@ -102,11 +201,8 @@ class ProductController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     * 
-     * @param Product $product
-     * @return View
      */
-    public function edit(Product $product): View
+    public function edit(Product $product)
     {
         $product->load(['specification', 'variants.attributeValues', 'attributeValues']);
         $categories = Category::where('is_active', true)->get();
@@ -119,29 +215,200 @@ class ProductController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * 
-     * @param UpdateProductRequest $request
-     * @param Product $product
-     * @return JsonResponse
      */
-    public function update(UpdateProductRequest $request, Product $product): JsonResponse
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        try {
-            $this->productService->updateProduct(
-                $product,
-                $request->validated(),
-                $request->file('thumbnail'),
-                $request->file('images', []),
-                $request->input('variants', []),
-                $request->input('delete_image_ids', [])
-            );
+        $validated = $request->validated();
 
+        DB::beginTransaction();
+        try {
+            // Update product
+            $product->name = $validated['name'];
+            $product->slug = $validated['slug'] ?? generate_slug($validated['name'], 'products');
+            $product->category_id = $validated['category_id'];
+            $product->brand_id = nullable_or_value($validated['brand_id'] ?? null);
+            $product->short_desc = nullable_or_value($validated['short_desc'] ?? null);
+            $product->description = $validated['description'];
+            if (!empty($validated['sku'])) {
+                $product->sku = $validated['sku'];
+            } else {
+                 $sku = \Illuminate\Support\Str::upper(\Illuminate\Support\Str::random(10));
+                 while (Product::where('sku', $sku)->where('id', '!=', $product->id)->exists()) {
+                    $sku = \Illuminate\Support\Str::upper(\Illuminate\Support\Str::random(10));
+                 }
+                 $product->sku = $sku;
+            }
+            $product->price = nullable_or_value($validated['price'] ?? null);
+            $product->cost_price = nullable_or_value($validated['cost_price'] ?? null);
+            $product->video = nullable_or_value($validated['video'] ?? null);
+            $product->stock = $validated['stock'] ?? 0;
+            $product->is_featured = $request->has('is_featured');
+            $product->is_active = $request->has('is_active');
+            $product->has_variants = $request->has('has_variants');
+            $product->deal_enabled = $request->has('deal_enabled');
+            $product->deal_start = nullable_or_value($validated['deal_start'] ?? null);
+            $product->deal_end = nullable_or_value($validated['deal_end'] ?? null);
+            $product->save();
+
+            // Update specifications
+            $specs = parse_specs($request->input('specs', []));
+            $specData = [
+                'weight' => nullable_or_value($validated['weight'] ?? null),
+                'weight_unit' => $validated['weight_unit'] ?? 'kg',
+                'length' => nullable_or_value($validated['length'] ?? null),
+                'width' => nullable_or_value($validated['width'] ?? null),
+                'height' => nullable_or_value($validated['height'] ?? null),
+                'dimension_unit' => $validated['dimension_unit'] ?? 'cm',
+                'specs' => $specs,
+            ];
+
+            if ($product->specification) {
+                $product->specification->update($specData);
+            } else {
+                $product->specification()->create($specData);
+            }
+
+            // Update variants
+            if ($request->has('has_variants')) {
+                // Get existing variant IDs
+                $existingVariantIds = $product->variants->pluck('id')->toArray();
+                $updatedVariantIds = [];
+
+                foreach ($request->input('variants', []) as $index => $variantData) {
+                    if (!empty($variantData['id'])) {
+                        // Update existing variant
+                        $variant = ProductVariant::find($variantData['id']);
+                        if ($variant && $variant->product_id == $product->id) {
+                            $variant->update([
+                                'sku' => !empty($variantData['sku']) ? $variantData['sku'] : $product->sku . '-V' . ($index + 1),
+                                'price' => $variantData['price'],
+                                'compare_price' => $variantData['compare_price'] ?? null,
+                                'stock' => $variantData['stock'] ?? 0,
+                                'sort_order' => $index,
+                            ]);
+                            $updatedVariantIds[] = $variant->id;
+
+                            // Update variant attributes
+                            $variant->attributeValues()->delete();
+                            if (!empty($variantData['attributes'])) {
+                                foreach ($variantData['attributes'] as $attrId => $optionId) {
+                                    if ($optionId) {
+                                        $variant->attributeValues()->create([
+                                            'attribute_id' => $attrId,
+                                            'attribute_option_id' => $optionId,
+                                        ]);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // Create new variant
+                        $variant = $product->variants()->create([
+                            'sku' => !empty($variantData['sku']) ? $variantData['sku'] : $product->sku . '-V' . ($index + 1),
+                            'price' => $variantData['price'],
+                            'compare_price' => $variantData['compare_price'] ?? null,
+                            'stock' => $variantData['stock'] ?? 0,
+                            'is_active' => true,
+                            'sort_order' => $index,
+                        ]);
+                        $updatedVariantIds[] = $variant->id;
+
+                        if (!empty($variantData['attributes'])) {
+                            foreach ($variantData['attributes'] as $attrId => $optionId) {
+                                if ($optionId) {
+                                    $variant->attributeValues()->create([
+                                        'attribute_id' => $attrId,
+                                        'attribute_option_id' => $optionId,
+                                    ]);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Delete removed variants
+                $variantsToDelete = array_diff($existingVariantIds, $updatedVariantIds);
+                ProductVariant::whereIn('id', $variantsToDelete)->delete();
+            } else {
+                // If variants disabled, remove all variants
+                $product->variants()->delete();
+            }
+
+            // Delete marked images
+            if ($request->filled('delete_image_ids')) {
+                foreach ($request->input('delete_image_ids') as $imageId) {
+                    $image = $product->images()->find($imageId);
+                    if ($image) {
+                        delete_file($image->orig_path);
+                        if ($image->thumb_path !== $image->orig_path) {
+                            delete_file($image->thumb_path);
+                        }
+                        $image->delete();
+                    }
+                }
+            }
+
+            // Update Main Thumbnail
+            if ($request->hasFile('thumbnail')) {
+                $path = upload_file($request->file('thumbnail'), 'products');
+                
+                // Find existing primary image
+                $existingPrimary = $product->images()->where('is_primary', true)->first();
+                if ($existingPrimary) {
+                    delete_file($existingPrimary->orig_path);
+                    if ($existingPrimary->thumb_path !== $existingPrimary->orig_path) {
+                        delete_file($existingPrimary->thumb_path);
+                    }
+                    $existingPrimary->update([
+                        'orig_path' => $path,
+                        'thumb_path' => $path,
+                        'description' => 'Main Thumbnail',
+                    ]);
+                } else {
+                    $product->images()->create([
+                        'orig_path' => $path,
+                        'thumb_path' => $path,
+                        'description' => 'Main Thumbnail',
+                        'is_primary' => true,
+                        'order' => 0,
+                    ]);
+                }
+            }
+
+            // Upload New Gallery Images
+            if ($request->hasFile('images')) {
+                $startOrder = $product->images()->max('order') + 1;
+                foreach ($request->file('images') as $index => $image) {
+                    $path = upload_file($image, 'products');
+                    $product->images()->create([
+                        'orig_path' => $path,
+                        'thumb_path' => $path,
+                        'description' => $image->getClientOriginalName(),
+                        'is_primary' => false,
+                        'order' => $startOrder + $index,
+                    ]);
+                }
+            }
+
+            $product->faqs()->delete();
+            if ($request->filled('faqs')) {
+                foreach ($request->input('faqs') as $faqData) {
+                    $product->faqs()->create([
+                        'question' => $faqData['question'],
+                        'answer' => $faqData['answer'],
+                    ]);
+                }
+            }
+
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'Product updated successfully.',
                 'redirect' => route('products.index')
             ]);
+            
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => 'Error updating product: ' . $e->getMessage()
@@ -151,27 +418,27 @@ class ProductController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * 
-     * @param Product $product
-     * @return RedirectResponse
      */
-    public function destroy(Product $product): RedirectResponse
+    public function destroy(Product $product)
     {
-        try {
-            $this->productService->deleteProduct($product);
-            return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error deleting product: ' . $e->getMessage());
+        // Delete image files
+        foreach ($product->images as $image) {
+            delete_file($image->orig_path);
+            if ($image->thumb_path !== $image->orig_path) {
+                delete_file($image->thumb_path);
+            }
         }
+        $product->images()->delete(); // Database records
+        
+        $product->delete();
+
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
 
     /**
-     * Show SEO settings page.
-     * 
-     * @param Product $product
-     * @return View
+     * Show the form for editing the SEO meta.
      */
-    public function editSeo(Product $product): View
+    public function editSeo(Product $product)
     {
         return view('admin.content.products.edit-meta-fields', [
             'product' => $product->load('seo'),
@@ -179,91 +446,21 @@ class ProductController extends Controller
     }
 
     /**
-     * Update SEO settings.
-     * 
-     * @param UpdateProductSeoRequest $request
-     * @param Product $product
-     * @return RedirectResponse
+     * Update the SEO meta.
      */
-    public function updateSeo(UpdateProductSeoRequest $request, Product $product): RedirectResponse
+    public function updateSeo(UpdateProductSeoRequest $request, Product $product)
     {
-        $this->productService->updateSeo($product, $request->validated());
+        $validated = $request->validated();
+
+        $data = [
+            'meta_fields' => $validated['meta_fields'] ?? [],
+            'open_graph_fields' => $validated['open_graph_fields'] ?? [],
+            'twitter_cards' => $validated['twitter_cards'] ?? [],
+            'schemas' => !empty($validated['schemas']) ? json_decode($validated['schemas'], true) : null,
+        ];
+
+        $product->seo()->updateOrCreate([], $data);
+
         return redirect()->route('products.index')->with('success', 'Product SEO updated successfully.');
-    }
-
-    /**
-     * Show FAQ settings page.
-     * 
-     * @param Product $product
-     * @return View
-     */
-    public function manageFaqs(Product $product): View
-    {
-        $product->load('faqs');
-        return view('admin.content.products.manage-faqs', compact('product'));
-    }
-
-    /**
-     * Update FAQ settings.
-     * 
-     * @param Request $request
-     * @param Product $product
-     * @return RedirectResponse
-     */
-    public function storeFaqs(Request $request, Product $product): RedirectResponse
-    {
-        $request->validate([
-            'faqs' => 'nullable|array',
-            'faqs.*.question' => 'required_with:faqs|string|max:255',
-            'faqs.*.answer' => 'required_with:faqs|string',
-        ]);
-
-        $this->productService->storeFaqs($product, $request->input('faqs', []));
-        return redirect()->route('products.faqs', $product)->with('success', 'FAQs updated successfully.');
-    }
-
-    /**
-     * Toggle product status via AJAX.
-     * 
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function toggleStatus(Request $request): JsonResponse
-    {
-        $request->validate([
-            'id' => 'required|exists:products,id',
-            'type' => 'required|in:is_active,is_featured',
-            'value' => 'required|boolean',
-        ]);
-
-        $this->productService->toggleStatus($request->id, $request->type, $request->value);
-
-        $label = $request->type == 'is_active' ? 'Status' : 'Featured status';
-        return response()->json([
-            'success' => true,
-            'message' => "Product {$label} updated successfully!"
-        ]);
-    }
-
-    /**
-     * Reorder products via drag and drop.
-     * 
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function reorder(Request $request): JsonResponse
-    {
-        $request->validate([
-            'order' => 'required|array',
-            'order.*.id' => 'required|exists:products,id',
-            'order.*.position' => 'required|integer',
-        ]);
-
-        $this->productService->reorderProducts($request->order);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Product order updated successfully!'
-        ]);
     }
 }

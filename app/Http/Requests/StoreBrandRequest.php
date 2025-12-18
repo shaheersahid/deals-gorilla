@@ -14,9 +14,11 @@ class StoreBrandRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:brands,name',
+            'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:brands,slug',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'description' => 'nullable|string',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
+            'is_active' => 'boolean',
         ];
     }
 }

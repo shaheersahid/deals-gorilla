@@ -7,16 +7,10 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use \Illuminate\Contracts\View\View;
 
 class DashboardController extends Controller
 {
-    /**
-     * Display the admin dashboard.
-     * 
-     * @return View
-     */
-    public function index(): View
+    public function index()
     {
         // 1. Total Sales (Revenue) - Sum of paid orders
         $totalSales = Order::where('payment_status', 'paid')->sum('total_amount');

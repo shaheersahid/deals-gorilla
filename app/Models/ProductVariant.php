@@ -26,22 +26,12 @@ class ProductVariant extends Model
         'is_active' => 'boolean',
     ];
 
-    /**
-     * Get the product that owns this variant.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    /**
-     * Get the attribute values for this variant.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function attributeValues(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function attributeValues()
     {
         return $this->hasMany(VariantAttributeValue::class, 'variant_id');
     }
@@ -67,19 +57,5 @@ class ProductVariant extends Model
     public function getInStockAttribute()
     {
         return $this->stock > 0;
-    }
-
-    /**
-     * Get the formatted image URL.
-     */
-    public function getImageUrlAttribute()
-    {
-        if (!$this->image) return asset('admin/assets/images/no-image.png');
-        
-        if (str_starts_with($this->image, 'http')) {
-            return $this->image;
-        }
-
-        return asset('storage/' . $this->image);
     }
 }

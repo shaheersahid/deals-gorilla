@@ -25,12 +25,7 @@ class ProductSpecification extends Model
         'specs' => 'array',
     ];
 
-    /**
-     * Get the product associated with this specification.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }

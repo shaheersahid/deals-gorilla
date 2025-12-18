@@ -1,10 +1,28 @@
+<!-- Promo banner-->
+<section class="promo-strip">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="promo-inner flex items-center justify-between gap-4">
+            <div class="promo-center text-center flex-1">
+                <p class="promo-text text-sm sm:text-base md:text-lg font-medium">
+                    Unlock <span class="font-bold">4 for 2</span> on selected Sanctuary Spa, Champneys & more. Or <span class="font-bold">3 for 2</span> on selected Soap & Glory!
+                </p>
+            </div>
+
+            <div class="shrink-0">
+                <a href="#" class="inline-flex items-center gap-2 bg-violet-700 hover:bg-violet-800 text-white px-3 py-2 rounded-lg text-sm sm:text-base font-medium shadow-md transition">
+                    SHOP NOW
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 <!-- Footer Start  -->
 <footer class="footer-outer">
     <div class="bg-gradient-to-r from-white via-violet-50 to-white">
         <div class="max-w-7xl mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                 <div>
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="logo" class="w-40 mb-4">
+                    <img src="assets/images/logo.png" alt="logo" class="w-40 mb-4">
                     <p class="text-gray-600 text-sm leading-relaxed">
                         When Looking At Its Layout. The Point Of Using Lorem Ipsum Is That It Has A More Less Normal Distribution
                         Of Letters.
@@ -41,7 +59,7 @@
                 </div>
 
                 <div class="flex justify-center md:justify-end">
-                    <img src="{{ asset('assets/images/map.png') }}" alt="world map" class="w-56 md:w-64 object-contain">
+                    <img src="assets/images/map.png" alt="world map" class="w-56 md:w-64 object-contain">
                 </div>
             </div>
 

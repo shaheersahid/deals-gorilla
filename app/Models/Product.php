@@ -26,11 +26,6 @@ class Product extends Model
         'deal_enabled',
         'deal_start',
         'deal_end',
-        'deal_price',
-        'display_price',
-        'percentage_off',
-        'is_out_of_stock',
-        'sort_order',
     ];
 
     protected $casts = [
@@ -43,11 +38,6 @@ class Product extends Model
         'deal_enabled' => 'boolean',
         'deal_start' => 'date',
         'deal_end' => 'date',
-        'deal_price' => 'decimal:2',
-        'display_price' => 'decimal:2',
-        'percentage_off' => 'decimal:2',
-        'is_out_of_stock' => 'boolean',
-        'sort_order' => 'integer',
     ];
 
     /**
@@ -74,90 +64,69 @@ class Product extends Model
 
     /**
      * Get the category.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
     /**
      * Get the brand.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function brand(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function brand()
     {
         return $this->belongsTo(Brand::class);
     }
 
     /**
      * Get the product's SEO meta.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function seo(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    public function seo()
     {
         return $this->morphOne(SeoMeta::class, 'seoable');
     }
 
     /**
      * Get the images for the product.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function images(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function images()
     {
         return $this->morphMany(Image::class, 'image');
     }
 
-    /**
-     * Get the FAQS for the product.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function faqs(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function faqs()
     {
         return $this->hasMany(ProductFaq::class);
     }
 
     /**
      * Get the variants for the product.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function variants(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function variants()
     {
         return $this->hasMany(ProductVariant::class)->orderBy('sort_order');
     }
 
     /**
      * Get the specification for the product.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function specification(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function specification()
     {
         return $this->hasOne(ProductSpecification::class);
     }
 
     /**
      * Get the attribute values for the product.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function attributeValues(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function attributeValues()
     {
         return $this->hasMany(ProductAttributeValue::class);
     }
 
     /**
      * Get all attributes with their values for this product.
-     * 
-     * @return \Illuminate\Support\Collection
      */
-    public function getAttributesWithValues(): \Illuminate\Support\Collection
+    public function getAttributesWithValues()
     {
         return $this->attributeValues()
             ->with(['attribute', 'option'])
@@ -196,93 +165,5 @@ class Product extends Model
             return $this->variants->where('is_active', true)->sum('stock');
         }
         return $this->stock;
-    }
-
-    /**
-     * Check if product has an active deal right now
-     * 
-     * @return bool
-     */
-    public function hasActiveDeal(): bool
-    {
-        if (!$this->deal_enabled) {
-            return false;
-        }
-        
-        $now = now();
-        
-        if ($this->deal_start && $now->lt($this->deal_start)) {
-            return false;
-        }
-        
-        if ($this->deal_end && $now->gt($this->deal_end)) {
-            return false;
-        }
-        
-        return true;
-    }
-
-    /**
-     * Get the effective price (considering active deals)
-     */
-    public function getEffectivePriceAttribute()
-    {
-        if ($this->hasActiveDeal() && $this->deal_price) {
-            return $this->deal_price;
-        }
-        
-        if ($this->display_price) {
-            return $this->display_price;
-        }
-        
-        return $this->price;
-    }
-
-    /**
-     * Sync main product price with minimum variant price
-     * Call after variant updates
-     * 
-     * @return void
-     */
-    public function syncPriceFromVariants(): void
-    {
-        if ($this->has_variants && $this->variants()->count() > 0) {
-            $minPrice = $this->variants()->min('price');
-            if ($minPrice && $this->price != $minPrice) {
-                $this->price = $minPrice;
-                $this->saveQuietly();
-            }
-        }
-    }
-
-    /**
-     * Sync main product stock with total variant stock
-     * Call after variant updates
-     * 
-     * @return void
-     */
-    public function syncStockFromVariants(): void
-    {
-        if ($this->has_variants) {
-            $totalStock = $this->variants()->sum('stock');
-            if ($this->stock != $totalStock) {
-                $this->stock = $totalStock;
-                $this->saveQuietly();
-            }
-        }
-    }
-
-    /**
-     * Check if product is available for purchase
-     * 
-     * @return bool
-     */
-    public function isAvailable(): bool
-    {
-        if ($this->is_out_of_stock) {
-            return false;
-        }
-        
-        return $this->total_stock > 0;
     }
 }

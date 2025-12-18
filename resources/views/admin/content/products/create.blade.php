@@ -32,9 +32,8 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="sku" class="form-label">SKU</label>
-                                        <input type="text" class="form-control @error('sku') is-invalid @enderror" id="sku" name="sku" value="{{ old('sku') }}" placeholder="Auto-generated if left empty">
-                                        <small class="text-muted">Leave empty to auto-generate</small>
+                                        <label for="sku" class="form-label">SKU <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('sku') is-invalid @enderror" id="sku" name="sku" value="{{ old('sku') }}" required>
                                         @error('sku')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -134,7 +133,7 @@
                         </div>
 
                                                 <!-- Product Images -->
-                        <div class="card" id="product-images-section">
+                        <div class="card">
                             <div class="card-header">
                                 <h5 class="card-title mb-0">Product Images</h5>
                             </div>
@@ -228,7 +227,7 @@
                                 <h5 class="card-title mb-0">Deal Settings</h5>
                             </div>
                             <div class="card-body">
-                                <div class="row mb-3">
+                                <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="deal_enabled" name="deal_enabled" value="1" {{ old('deal_enabled') ? 'checked' : '' }}>
@@ -244,45 +243,25 @@
                                         <input type="date" class="form-control" id="deal_end" name="deal_end" value="{{ old('deal_end') }}">
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label for="deal_price" class="form-label">Deal Price</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">$</span>
-                                            <input type="number" step="0.01" class="form-control @error('deal_price') is-invalid @enderror" id="deal_price" name="deal_price" value="{{ old('deal_price') }}">
-                                        </div>
-                                        <small class="text-muted">Discounted price for deals section</small>
-                                        @error('deal_price')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="display_price" class="form-label">Display Price</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">$</span>
-                                            <input type="number" step="0.01" class="form-control @error('display_price') is-invalid @enderror" id="display_price" name="display_price" value="{{ old('display_price') }}">
-                                        </div>
-                                        <small class="text-muted">Override for display price</small>
-                                        @error('display_price')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="percentage_off" class="form-label">Percentage Off</label>
-                                        <div class="input-group">
-                                            <input type="number" step="0.01" class="form-control @error('percentage_off') is-invalid @enderror" id="percentage_off" name="percentage_off" value="{{ old('percentage_off') }}" min="0" max="100">
-                                            <span class="input-group-text">%</span>
-                                        </div>
-                                        <small class="text-muted">Discount percentage for deals</small>
-                                        @error('percentage_off')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
+                            </div>
+                        </div>
+
+                        <!-- FAQs -->
+                        <div class="card" id="faqs-section">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">Product FAQs</h5>
+                                <button type="button" class="btn btn-sm btn-primary" id="add-faq">
+                                    <i class="fa fa-plus"></i> Add FAQ
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div id="faqs-container">
+                                    <div class="text-center text-muted p-3 d-none" id="no-faqs-message">
+                                        No FAQs added yet.
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
 
                     <!-- Sidebar -->
@@ -300,10 +279,6 @@
                                 <div class="form-check form-switch mb-3">
                                     <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" value="1" @checked(old('is_featured'))>
                                     <label class="form-check-label" for="is_featured">Featured Product</label>
-                                </div>
-                                <div class="form-check form-switch mb-3">
-                                    <input class="form-check-input" type="checkbox" id="is_out_of_stock" name="is_out_of_stock" value="1" @checked(old('is_out_of_stock'))>
-                                    <label class="form-check-label" for="is_out_of_stock">Mark as Out of Stock</label>
                                 </div>
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary">
@@ -375,22 +350,18 @@
                 </div>
                 @endforeach
             </div>
-            <div class="row mb-3">
-                <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-4">
                     <label class="form-label">SKU</label>
                     <input type="text" class="form-control" name="variants[__INDEX__][sku]" placeholder="Variant SKU">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label">Price <span class="text-danger">*</span></label>
                     <input type="number" step="0.01" class="form-control" name="variants[__INDEX__][price]" required>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label">Stock</label>
                     <input type="number" class="form-control" name="variants[__INDEX__][stock]" value="0" min="0">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Variant Image</label>
-                    <input type="file" class="form-control variant-image-input" name="variants[__INDEX__][image]" accept="image/*">
                 </div>
             </div>
         </div>
@@ -415,7 +386,6 @@
 @endsection
 
 @push('admin-scripts')
-<script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
 <script src="{{ asset('admin/assets/js/products.js') }}"></script>
 <script>
     $(function() {
@@ -427,38 +397,6 @@
             redirectUrl: "{{ route('products.index') }}",
             maxImages: 9
         });
-        
-        // Toggle product images section based on has_variants
-        $('#has_variants').on('change', function() {
-            if ($(this).is(':checked')) {
-                $('#product-images-section').slideUp();
-            } else {
-                $('#product-images-section').slideDown();
-            }
-        });
-        
-        // Initial state on page load
-        if ($('#has_variants').is(':checked')) {
-            $('#product-images-section').hide();
-        }
-        
-        // Initialize CKEditor for short description
-        ClassicEditor
-            .create(document.querySelector('#short_desc'), {
-                toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList']
-            })
-            .catch(error => {
-                console.error(error);
-            });
-        
-        // Initialize CKEditor for description
-        ClassicEditor
-            .create(document.querySelector('#description'), {
-                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo']
-            })
-            .catch(error => {
-                console.error(error);
-            });
     });
 </script>
 @endpush

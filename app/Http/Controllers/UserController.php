@@ -5,34 +5,31 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Services\DataTableService;
-use \Illuminate\Http\JsonResponse;
-use \Illuminate\Contracts\View\View;
-use \Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
-use App\Http\Requests\StoreCustomerRequest;
-use App\Http\Requests\UpdateCustomerRequest;
 
 class UserController extends Controller
 {
-    protected $dataTableService;
-
-    public function __construct(DataTableService $dataTableService)
-    {
-        $this->dataTableService = $dataTableService;
-    }
-
     /**
      * Display a listing of the resource (customers).
-     * 
-     * @param Request $request
-     * @return View|JsonResponse
      */
-    public function index(Request $request): View|JsonResponse
+    public function index(Request $request)
     {
         if ($request->ajax()) {
             $customers = User::where('is_admin', 0);
-            return $this->dataTableService->customersTable($customers);
+            return DataTables::of($customers)
+                ->addColumn('status', function ($user) {
+                    return $user->is_active 
+                        ? '<span class="badge bg-success">Active</span>' 
+                        : '<span class="badge bg-danger">Inactive</span>';
+                })
+                ->addColumn('created', function ($user) {
+                    return $user->created_at->format('M d, Y');
+                })
+                ->addColumn('action', function ($user) {
+                    return view('admin.content.customers.action', compact('user'))->render();
+                })
+                ->rawColumns(['status', 'action'])
+                ->make(true);
         }
 
         return view('admin.content.customers.index');
@@ -40,23 +37,23 @@ class UserController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * 
-     * @return View
      */
-    public function create(): View
+    public function create()
     {
         return view('admin.content.customers.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     * 
-     * @param StoreCustomerRequest $request
-     * @return RedirectResponse
      */
-    public function store(StoreCustomerRequest $request): RedirectResponse
+    public function store(Request $request)
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'is_active' => 'boolean',
+        ]);
 
         $user = new User();
         $user->name = $validated['name'];
@@ -71,36 +68,31 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     * 
-     * @param User $customer
-     * @return View
      */
-    public function show(User $customer): View
+    public function show(User $customer)
     {
         return view('admin.content.customers.show', compact('customer'));
     }
 
     /**
      * Show the form for editing the specified resource.
-     * 
-     * @param User $customer
-     * @return View
      */
-    public function edit(User $customer): View
+    public function edit(User $customer)
     {
         return view('admin.content.customers.edit', compact('customer'));
     }
 
     /**
      * Update the specified resource in storage.
-     * 
-     * @param UpdateCustomerRequest $request
-     * @param User $customer
-     * @return RedirectResponse
      */
-    public function update(UpdateCustomerRequest $request, User $customer): RedirectResponse
+    public function update(Request $request, User $customer)
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $customer->id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'is_active' => 'boolean',
+        ]);
 
         $customer->name = $validated['name'];
         $customer->email = $validated['email'];
@@ -115,11 +107,8 @@ class UserController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * 
-     * @param User $customer
-     * @return RedirectResponse
      */
-    public function destroy(User $customer): RedirectResponse
+    public function destroy(User $customer)
     {
         $customer->delete();
 

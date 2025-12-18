@@ -5,34 +5,29 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Services\DataTableService;
-use \Illuminate\Http\JsonResponse;
-use \Illuminate\Contracts\View\View;
-use \Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
-use App\Http\Requests\StoreBrandRequest;
-use App\Http\Requests\UpdateBrandRequest;
 
 class BrandController extends Controller
 {
-    protected $dataTableService;
-
-    public function __construct(DataTableService $dataTableService)
-    {
-        $this->dataTableService = $dataTableService;
-    }
-
     /**
      * Display a listing of the resource.
-     * 
-     * @param Request $request
-     * @return View|JsonResponse
      */
-    public function index(Request $request): View|JsonResponse
+    public function index(Request $request)
     {
         if ($request->ajax()) {
             $brands = Brand::query();
-            return $this->dataTableService->brandsTable($brands);
+            return DataTables::of($brands)
+                ->addColumn('logo_preview', function ($brand) {
+                    if ($brand->logo) {
+                        return '<img src="' . asset('storage/' . $brand->logo) . '" alt="' . $brand->name . '" style="height: 40px;">';
+                    }
+                    return '<span class="text-muted">No logo</span>';
+                })
+                ->addColumn('action', function ($brand) {
+                    return view('admin.content.brands.action', compact('brand'))->render();
+                })
+                ->rawColumns(['logo_preview', 'action'])
+                ->make(true);
         }
 
         return view('admin.content.brands.index');
@@ -40,23 +35,22 @@ class BrandController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * 
-     * @return View
      */
-    public function create(): View
+    public function create()
     {
         return view('admin.content.brands.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     * 
-     * @param StoreBrandRequest $request
-     * @return RedirectResponse
      */
-    public function store(StoreBrandRequest $request): RedirectResponse
+    public function store(Request $request)
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:brands,name',
+            'slug' => 'nullable|string|max:255|unique:brands,slug',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ]);
 
         $brand = new Brand();
         $brand->name = $validated['name'];
@@ -73,36 +67,30 @@ class BrandController extends Controller
 
     /**
      * Display the specified resource.
-     * 
-     * @param Brand $brand
-     * @return View
      */
-    public function show(Brand $brand): View
+    public function show(Brand $brand)
     {
         return view('admin.content.brands.show', compact('brand'));
     }
 
     /**
      * Show the form for editing the specified resource.
-     * 
-     * @param Brand $brand
-     * @return View
      */
-    public function edit(Brand $brand): View
+    public function edit(Brand $brand)
     {
         return view('admin.content.brands.edit', compact('brand'));
     }
 
     /**
      * Update the specified resource in storage.
-     * 
-     * @param UpdateBrandRequest $request
-     * @param Brand $brand
-     * @return RedirectResponse
      */
-    public function update(UpdateBrandRequest $request, Brand $brand): RedirectResponse
+    public function update(Request $request, Brand $brand)
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:brands,name,' . $brand->id,
+            'slug' => 'nullable|string|max:255|unique:brands,slug,' . $brand->id,
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ]);
 
         $brand->name = $validated['name'];
         $brand->slug = $validated['slug'] ?? Str::slug($validated['name']);
@@ -121,11 +109,8 @@ class BrandController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * 
-     * @param Brand $brand
-     * @return RedirectResponse
      */
-    public function destroy(Brand $brand): RedirectResponse
+    public function destroy(Brand $brand)
     {
         // Delete logo if exists
         if ($brand->logo && \Storage::disk('public')->exists($brand->logo)) {

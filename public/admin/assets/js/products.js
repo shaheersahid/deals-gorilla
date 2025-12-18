@@ -124,10 +124,16 @@ const ProductForm = (function () {
             contentType: false,
             success: function (response) {
                 if (response.success) {
-                    toastr.success(response.message || 'Product saved successfully!');
-                    setTimeout(function () {
-                        window.location.href = config.redirectUrl;
-                    }, 1500);
+                    Swal.fire({
+                        title: 'Success!',
+                        text: response.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = config.redirectUrl;
+                        }
+                    });
                 }
             },
             error: function (xhr) {
@@ -136,14 +142,17 @@ const ProductForm = (function () {
                 let errorMessage = 'Something went wrong.';
                 if (xhr.status === 422) {
                     const errors = xhr.responseJSON.errors;
-                    // Show first error only for cleaner toastr
-                    const firstError = Object.values(errors).flat()[0];
-                    errorMessage = firstError || 'Validation failed.';
+                    errorMessage = Object.values(errors).flat().join('<br>');
                 } else if (xhr.responseJSON && xhr.responseJSON.message) {
                     errorMessage = xhr.responseJSON.message;
                 }
 
-                toastr.error(errorMessage);
+                Swal.fire({
+                    title: 'Error!',
+                    html: errorMessage,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
             }
         });
     }
@@ -191,7 +200,7 @@ const ProductForm = (function () {
 
         if (totalCurrent + newFiles.length > config.maxImages) {
             alert(`You can only upload a maximum of ${config.maxImages} images (including existing ones).`);
-            input.files = galleryFiles.files;
+            input.files = galleryFiles.files; // Reset
             return;
         }
 

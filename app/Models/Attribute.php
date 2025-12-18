@@ -35,32 +35,17 @@ class Attribute extends Model
         });
     }
 
-    /**
-     * Get the category associated with the attribute.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    /**
-     * Get the options for the attribute.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function options(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function options()
     {
         return $this->hasMany(AttributeOption::class)->orderBy('sort_order');
     }
 
-    /**
-     * Get the product values for the attribute.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function productValues(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function productValues()
     {
         return $this->hasMany(ProductAttributeValue::class);
     }
