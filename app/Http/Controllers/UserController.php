@@ -9,7 +9,6 @@ use App\Services\DataTableService;
 use \Illuminate\Http\JsonResponse;
 use \Illuminate\Contracts\View\View;
 use \Illuminate\Http\RedirectResponse;
-use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 

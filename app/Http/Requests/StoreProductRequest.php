@@ -39,6 +39,21 @@ class StoreProductRequest extends FormRequest
             'deal_enabled' => 'boolean',
             'deal_start' => 'nullable|date',
             'deal_end' => 'nullable|date|after_or_equal:deal_start',
+            'deal_price' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) {
+                    $price = request()->input('price');
+                    if ($value && $price && $value >= $price) {
+                        $fail('Deal price must be less than the regular price.');
+                    }
+                },
+            ],
+            'display_price' => 'nullable|numeric|min:0',
+            'percentage_off' => 'nullable|numeric|min:0|max:100',
+            'is_out_of_stock' => 'boolean',
+            'sort_order' => 'nullable|integer|min:0',
             // Specifications
             'weight' => 'nullable|numeric|min:0',
             'weight_unit' => 'nullable|in:g,kg,lb,oz',
@@ -52,14 +67,11 @@ class StoreProductRequest extends FormRequest
             'variants.*.sku' => 'nullable|string|max:255',
             'variants.*.price' => 'required_with:variants|numeric|min:0',
             'variants.*.stock' => 'nullable|integer|min:0',
-            'variants.*.attributes' => 'nullable|array',
+            'variants.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'variants.*.attributes' => 'nullable|array',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'images' => 'nullable|array|max:9',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'faqs' => 'nullable|array',
-            'faqs.*.question' => 'required_with:faqs|string|max:255',
-            'faqs.*.answer' => 'required_with:faqs|string',
         ];
     }
 
@@ -76,6 +88,14 @@ class StoreProductRequest extends FormRequest
             'deal_end' => 'deal end date',
             'weight_unit' => 'weight unit',
             'dimension_unit' => 'dimension unit',
+        ];
+    }
+
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'The Title field is required.',
         ];
     }
 }

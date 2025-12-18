@@ -13,12 +13,12 @@ class UpdateBrandRequest extends FormRequest
 
     public function rules(): array
     {
+        $brandId = $this->route('brand') ? $this->route('brand')->id : $this->id;
+
         return [
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:brands,slug,' . $this->route('brand')->id,
-            'description' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
-            'is_active' => 'boolean',
+            'name' => 'required|string|max:255|unique:brands,name,' . $brandId,
+            'slug' => 'nullable|string|max:255|unique:brands,slug,' . $brandId,
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ];
     }
 }
