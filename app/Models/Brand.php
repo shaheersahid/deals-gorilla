@@ -35,9 +35,11 @@ class Brand extends Model
 
     /**
      * Get the products for the brand.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->belongsToMany(\App\Models\Product::class);
+        return $this->hasMany(\App\Models\Product::class);
     }
 }

@@ -15,10 +15,12 @@ class Category extends Model
         'parent_id',
         'description',
         'is_active',
+        'show_on_homepage',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'show_on_homepage' => 'boolean',
     ];
 
     /**
@@ -37,24 +39,30 @@ class Category extends Model
 
     /**
      * Get the parent category.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function parent()
+    public function parent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
 
     /**
      * Get the child categories.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function children()
+    public function children(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
 
     /**
      * Get the products for the category.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function products()
+    public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Product::class);
     }

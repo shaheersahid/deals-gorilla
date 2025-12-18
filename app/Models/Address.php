@@ -28,6 +28,8 @@ class Address extends Model
 
     /**
      * Get the user that owns the address.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
