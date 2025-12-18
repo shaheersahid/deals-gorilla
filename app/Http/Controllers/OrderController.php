@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Services\DataTableService;
 use \Illuminate\Http\JsonResponse;
 use \Illuminate\Contracts\View\View;
 use \Illuminate\Http\RedirectResponse;

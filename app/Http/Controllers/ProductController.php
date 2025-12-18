@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Attribute;
 use App\Services\ProductService;
+use App\Services\DataTableService;
 use Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
 use \Illuminate\Contracts\View\View;

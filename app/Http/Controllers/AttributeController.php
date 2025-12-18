@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use \Illuminate\Http\JsonResponse;
 use \Illuminate\Contracts\View\View;
 use \Illuminate\Http\RedirectResponse;
+use App\Services\DataTableService;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreAttributeRequest;
 use App\Http\Requests\UpdateAttributeRequest;
