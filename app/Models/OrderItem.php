@@ -22,17 +22,32 @@ class OrderItem extends Model
         'total' => 'decimal:2',
     ];
 
-    public function order()
+    /**
+     * Get the order that owns this item.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function order(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
 
-    public function product()
+    /**
+     * Get the product for this item.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function variant()
+    /**
+     * Get the variant for this item.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function variant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(ProductVariant::class, 'variant_id');
     }

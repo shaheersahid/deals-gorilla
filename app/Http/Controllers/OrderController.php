@@ -4,38 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use \Illuminate\Http\JsonResponse;
+use \Illuminate\Contracts\View\View;
+use \Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 
 class OrderController extends Controller
 {
+    protected $dataTableService;
+
+    public function __construct(DataTableService $dataTableService)
+    {
+        $this->dataTableService = $dataTableService;
+    }
+
     /**
      * Display a listing of the resource.
+     * 
+     * @param Request $request
+     * @return View|JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): View|JsonResponse
     {
         if ($request->ajax()) {
             $orders = Order::with('user');
-            return DataTables::of($orders)
-                ->addColumn('customer', function ($order) {
-                    return $order->user ? $order->user->name : '<span class="text-muted">Guest</span>';
-                })
-                ->addColumn('total', function ($order) {
-                    return '$' . number_format($order->total_amount, 2);
-                })
-                ->addColumn('order_status', function ($order) {
-                    return '<span class="badge bg-' . $order->status_badge . '">' . ucfirst($order->status) . '</span>';
-                })
-                ->addColumn('payment', function ($order) {
-                    return '<span class="badge bg-' . $order->payment_badge . '">' . ucfirst($order->payment_status) . '</span>';
-                })
-                ->addColumn('date', function ($order) {
-                    return $order->created_at->format('M d, Y H:i');
-                })
-                ->addColumn('action', function ($order) {
-                    return view('admin.content.orders.action', compact('order'))->render();
-                })
-                ->rawColumns(['customer', 'order_status', 'payment', 'action'])
-                ->make(true);
+            return $this->dataTableService->ordersTable($orders);
         }
 
         return view('admin.content.orders.index');
@@ -43,8 +36,11 @@ class OrderController extends Controller
 
     /**
      * Display the specified resource.
+     * 
+     * @param Order $order
+     * @return View
      */
-    public function show(Order $order)
+    public function show(Order $order): View
     {
         $order->load(['user', 'items.product', 'items.variant', 'shippingAddress', 'billingAddress']);
         $statuses = Order::getStatuses();
@@ -55,8 +51,12 @@ class OrderController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * 
+     * @param Request $request
+     * @param Order $order
+     * @return RedirectResponse
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Order $order): RedirectResponse
     {
         $validated = $request->validate([
             'status' => 'required|in:pending,processing,shipped,delivered,cancelled,refunded',
@@ -74,8 +74,11 @@ class OrderController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 
+     * @param Order $order
+     * @return RedirectResponse
      */
-    public function destroy(Order $order)
+    public function destroy(Order $order): RedirectResponse
     {
         $order->items()->delete();
         $order->delete();

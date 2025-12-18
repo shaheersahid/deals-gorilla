@@ -15,7 +15,12 @@ class ProductFaq extends Model
         'answer',
     ];
 
-    public function product()
+    /**
+     * Get the product associated with this FAQ.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Product::class);
     }

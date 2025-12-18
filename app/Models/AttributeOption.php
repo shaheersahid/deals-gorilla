@@ -15,17 +15,32 @@ class AttributeOption extends Model
         'sort_order',
     ];
 
-    public function attribute()
+    /**
+     * Get the attribute that owns this option.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function attribute(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Attribute::class);
     }
 
-    public function productAttributeValues()
+    /**
+     * Get the product attribute values for this option.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function productAttributeValues(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ProductAttributeValue::class);
     }
 
-    public function variantAttributeValues()
+    /**
+     * Get the variant attribute values for this option.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function variantAttributeValues(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(VariantAttributeValue::class);
     }

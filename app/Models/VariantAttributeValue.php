@@ -12,17 +12,32 @@ class VariantAttributeValue extends Model
         'attribute_option_id',
     ];
 
-    public function variant()
+    /**
+     * Get the variant associated with this value.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function variant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 
-    public function attribute()
+    /**
+     * Get the attribute associated with this value.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function attribute(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Attribute::class);
     }
 
-    public function option()
+    /**
+     * Get the option associated with this value.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function option(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(AttributeOption::class, 'attribute_option_id');
     }

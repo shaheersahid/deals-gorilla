@@ -33,8 +33,9 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="sku" class="form-label">SKU <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('sku') is-invalid @enderror" id="sku" name="sku" value="{{ old('sku', $product->sku) }}" required>
+                                        <label for="sku" class="form-label">SKU</label>
+                                        <input type="text" class="form-control @error('sku') is-invalid @enderror" id="sku" name="sku" value="{{ old('sku', $product->sku) }}" placeholder="Auto-generated if left empty">
+                                        <small class="text-muted">Leave empty to auto-generate</small>
                                         @error('sku')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -74,7 +75,7 @@
                         </div>
 
                         <!-- Product Images -->
-                        <div class="card">
+                        <div class="card" id="product-images-section">
                             <div class="card-header">
                                 <h5 class="card-title mb-0">Product Images</h5>
                             </div>
@@ -90,7 +91,7 @@
                                     <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/*" onchange="ProductForm.handleThumbnailSelect(this)">
                                     <div class="mt-2" id="thumbnail-preview-container">
                                         <div class="position-relative d-inline-block" id="thumbnail-wrapper" style="{{ $mainImage ? '' : 'display: none;' }}">
-                                            <img id="thumbnail-preview" src="{{ $mainImage ? asset('storage/' . $mainImage->thumb_path) : '' }}" alt="Thumbnail Preview" class="img-thumbnail" style="max-height: 200px;">
+                                            <img id="thumbnail-preview" src="{{ $mainImage ? $mainImage->url : '' }}" alt="Thumbnail Preview" class="img-thumbnail" style="max-height: 200px;">
                                             <!-- Note: For main thumbnail in edit, we don't usually "delete" it to null, just replace. But if user wants to delete: -->
                                             <!-- Simple replace logic is standard. If they want to just delete, we'd need a delete flag. -->
                                             <!-- For now, assuming replace only for main thumbnail or keep existing. -->
@@ -121,7 +122,7 @@
                                                 <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" onclick="ProductForm.removeExistingImage({{ $image->id }})" style="z-index: 5;">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
-                                                <img src="{{ asset('storage/' . $image->thumb_path) }}" class="card-img-top" alt="Product Image" style="height: 100px; object-fit: cover;">
+                                                <img src="{{ $image->url }}" class="card-img-top" alt="Product Image" style="height: 100px; object-fit: cover;">
                                             </div>
                                         </div>
                                         @endforeach
@@ -269,7 +270,7 @@
                                 <h5 class="card-title mb-0">Deal Settings</h5>
                             </div>
                             <div class="card-body">
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col-md-4">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="deal_enabled" name="deal_enabled" value="1" {{ old('deal_enabled', $product->deal_enabled) ? 'checked' : '' }}>
@@ -285,47 +286,45 @@
                                         <input type="date" class="form-control" id="deal_end" name="deal_end" value="{{ old('deal_end', $product->deal_end?->format('Y-m-d')) }}">
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- FAQs -->
-                        <div class="card" id="faqs-section">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">Product FAQs</h5>
-                                <button type="button" class="btn btn-sm btn-primary" id="add-faq">
-                                    <i class="fa fa-plus"></i> Add FAQ
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <div id="faqs-container">
-                                    @forelse($product->faqs as $index => $faq)
-                                    <div class="row mb-3 faq-row border-bottom pb-3">
-                                        <div class="col-md-11">
-                                            <div class="mb-2">
-                                                <label class="form-label">Question</label>
-                                                <input type="text" class="form-control" name="faqs[{{ $index }}][question]" value="{{ $faq->question }}" placeholder="Enter question" required>
-                                            </div>
-                                            <div>
-                                                <label class="form-label">Answer</label>
-                                                <textarea class="form-control" name="faqs[{{ $index }}][answer]" rows="2" placeholder="Enter answer" required>{{ $faq->answer }}</textarea>
-                                            </div>
-                                            <!-- Hidden ID for updating existing -->
-                                            <input type="hidden" name="faqs[{{ $index }}][id]" value="{{ $faq->id }}">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="deal_price" class="form-label">Deal Price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" step="0.01" class="form-control @error('deal_price') is-invalid @enderror" id="deal_price" name="deal_price" value="{{ old('deal_price', $product->deal_price) }}">
                                         </div>
-                                        <div class="col-md-1 d-flex align-items-center justify-content-center">
-                                            <button type="button" class="btn btn-outline-danger remove-faq">
-                                                <i class="fa fa-times"></i>
-                                            </button>
+                                        <small class="text-muted">Discounted price for deals section</small>
+                                        @error('deal_price')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="display_price" class="form-label">Display Price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" step="0.01" class="form-control @error('display_price') is-invalid @enderror" id="display_price" name="display_price" value="{{ old('display_price', $product->display_price) }}">
                                         </div>
+                                        <small class="text-muted">Override for display price</small>
+                                        @error('display_price')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    @empty
-                                    <div class="text-center text-muted p-3" id="no-faqs-message">
-                                        No FAQs added yet.
+                                    <div class="col-md-4">
+                                        <label for="percentage_off" class="form-label">Percentage Off</label>
+                                        <div class="input-group">
+                                            <input type="number" step="0.01" class="form-control @error('percentage_off') is-invalid @enderror" id="percentage_off" name="percentage_off" value="{{ old('percentage_off', $product->percentage_off) }}" min="0" max="100">
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                        <small class="text-muted">Discount percentage for deals</small>
+                                        @error('percentage_off')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    @endforelse
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
 
                     <!-- Sidebar -->
@@ -344,10 +343,17 @@
                                     <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" value="1" {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="is_featured">Featured Product</label>
                                 </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="is_out_of_stock" name="is_out_of_stock" value="1" {{ old('is_out_of_stock', $product->is_out_of_stock) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="is_out_of_stock">Mark as Out of Stock</label>
+                                </div>
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-save me-1"></i> Update Product
                                     </button>
+                                    <a href="{{ route('products.seo.edit', $product->id) }}" class="btn btn-outline-info">
+                                        <i class="fa fa-search me-1"></i> Edit SEO Settings
+                                    </a>
                                     <a href="{{ route('products.index') }}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center">Cancel</a>
                                 </div>
                             </div>
@@ -415,18 +421,25 @@
                 </div>
                 @endforeach
             </div>
-            <div class="row">
-                <div class="col-md-4">
+            <div class="row mb-3">
+                <div class="col-md-3">
                     <label class="form-label">SKU</label>
                     <input type="text" class="form-control variant-sku" name="variants[__INDEX__][sku]" placeholder="Variant SKU">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label">Price <span class="text-danger">*</span></label>
                     <input type="number" step="0.01" class="form-control variant-price" name="variants[__INDEX__][price]" required>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label">Stock</label>
                     <input type="number" class="form-control variant-stock" name="variants[__INDEX__][stock]" value="0" min="0">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Variant Image</label>
+                    <input type="file" class="form-control variant-image-input" name="variants[__INDEX__][image]" accept="image/*">
+                    <div class="mt-1 variant-image-preview" style="display:none;">
+                        <img class="img-thumbnail" src="" style="max-height: 100px;">
+                    </div>
                 </div>
             </div>
         </div>
@@ -451,6 +464,7 @@
 @endsection
 
 @push('admin-scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
 <script src="{{ asset('admin/assets/js/products.js') }}"></script>
 <script>
 $(function() {
@@ -462,6 +476,38 @@ $(function() {
         redirectUrl: "{{ route('products.index') }}",
         maxImages: 9
     });
+    
+    // Toggle product images section based on has_variants
+    $('#has_variants').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('#product-images-section').slideUp();
+        } else {
+            $('#product-images-section').slideDown();
+        }
+    });
+    
+    // Initial state on page load
+    if ($('#has_variants').is(':checked')) {
+        $('#product-images-section').hide();
+    }
+    
+    // Initialize CKEditor for short description
+    ClassicEditor
+        .create(document.querySelector('#short_desc'), {
+            toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList']
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    
+    // Initialize CKEditor for description
+    ClassicEditor
+        .create(document.querySelector('#description'), {
+            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo']
+        })
+        .catch(error => {
+            console.error(error);
+        });
 
     // Load existing variants (Specific to Edit View)
     @if($product->has_variants && $product->variants->count() > 0)
@@ -476,6 +522,10 @@ $(function() {
             $row.find('.variant-sku').val('{{ $variant->sku }}');
             $row.find('.variant-price').val('{{ $variant->price }}');
             $row.find('.variant-stock').val('{{ $variant->stock }}');
+            @if($variant->image)
+            $row.find('.variant-image-preview img').attr('src', '{{ $variant->image_url }}');
+            $row.find('.variant-image-preview').show();
+            @endif
             @foreach($variant->attributeValues as $attrVal)
             $row.find('.variant-attr-{{ $attrVal->attribute_id }}').val('{{ $attrVal->attribute_option_id }}');
             @endforeach
