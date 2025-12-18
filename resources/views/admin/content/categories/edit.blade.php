@@ -68,11 +68,18 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label class="form-label d-block">Status</label>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', $category->is_active) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="is_active">Active</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label d-block">Home Page</label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="show_on_homepage" name="show_on_homepage" value="1" {{ old('show_on_homepage', $category->show_on_homepage) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="show_on_homepage">Show on Home Page</label>
                                         </div>
                                     </div>
                                 </div>

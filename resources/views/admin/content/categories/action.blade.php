@@ -2,6 +2,9 @@
     <a href="{{ route('categories.edit', $category) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center" title="Edit">
         <i class="fa fa-edit"></i>
     </a>
+    <a href="{{ route('categories.products', $category) }}" class="btn btn-sm btn-info d-inline-flex align-items-center" title="View Products">
+        <i class="fa fa-eye"></i>
+    </a>
     <form action="{{ route('categories.destroy', $category) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');">
         @csrf
         @method('DELETE')

@@ -21,23 +21,23 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Canonical</label>
-                                    <input type="text" class="form-control" name="canonical" value="{{ data_get($product->seo, 'meta_fields.canonical') }}" placeholder="Enter Meta Canonical">
+                                    <input type="text" class="form-control" name="meta_fields[canonical]" value="{{ data_get($product->seo, 'meta_fields.canonical') }}" placeholder="Enter Meta Canonical">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Robots</label>
-                                    <input type="text" class="form-control" name="robots" value="{{ data_get($product->seo, 'meta_fields.robots') }}" placeholder="Enter Meta Robots">
+                                    <input type="text" class="form-control" name="meta_fields[robots]" value="{{ data_get($product->seo, 'meta_fields.robots') }}" placeholder="Enter Meta Robots">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label class="form-label fw-bold">Keywords</label>
-                                    <input type="text" class="form-control" name="meta_keywords" value="{{ data_get($product->seo, 'meta_fields.keywords') }}" placeholder="Enter Meta Keywords">
+                                    <input type="text" class="form-control" name="meta_fields[keywords]" value="{{ data_get($product->seo, 'meta_fields.keywords') }}" placeholder="Enter Meta Keywords">
                                 </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="col-md-12">
                                     <label class="form-label fw-bold">Description</label>
-                                    <textarea class="form-control" name="meta_description" rows="3" placeholder="Enter Meta Description">{{ data_get($product->seo, 'meta_fields.description') }}</textarea>
+                                    <textarea class="form-control" name="meta_fields[description]" rows="3" placeholder="Enter Meta Description">{{ data_get($product->seo, 'meta_fields.description') }}</textarea>
                                 </div>
                             </div>
 
@@ -46,21 +46,21 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Title</label>
-                                    <input type="text" class="form-control" name="og_title" value="{{ data_get($product->seo, 'open_graph_fields.title') }}" placeholder="Enter graph title">
+                                    <input type="text" class="form-control" name="open_graph_fields[title]" value="{{ data_get($product->seo, 'open_graph_fields.title') }}" placeholder="Enter graph title">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Type</label>
-                                    <input type="text" class="form-control" name="og_type" value="{{ data_get($product->seo, 'open_graph_fields.type') }}" placeholder="Enter graph type">
+                                    <input type="text" class="form-control" name="open_graph_fields[type]" value="{{ data_get($product->seo, 'open_graph_fields.type') }}" placeholder="Enter graph type">
                                 </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Image</label>
-                                    <input type="text" class="form-control" name="og_image" value="{{ data_get($product->seo, 'open_graph_fields.image') }}" placeholder="Enter graph image">
+                                    <input type="text" class="form-control" name="open_graph_fields[image]" value="{{ data_get($product->seo, 'open_graph_fields.image') }}" placeholder="Enter graph image">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Url</label>
-                                    <input type="text" class="form-control" name="og_url" value="{{ data_get($product->seo, 'open_graph_fields.url') }}" placeholder="Enter graph url">
+                                    <input type="text" class="form-control" name="open_graph_fields[url]" value="{{ data_get($product->seo, 'open_graph_fields.url') }}" placeholder="Enter graph url">
                                 </div>
                             </div>
 
@@ -69,29 +69,29 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Card</label>
-                                    <input type="text" class="form-control" name="twitter_card" value="{{ data_get($product->seo, 'twitter_cards.card') }}" placeholder="Enter card summary">
+                                    <input type="text" class="form-control" name="twitter_cards[card]" value="{{ data_get($product->seo, 'twitter_cards.card') }}" placeholder="Enter card summary">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Site</label>
-                                    <input type="text" class="form-control" name="twitter_site" value="{{ data_get($product->seo, 'twitter_cards.site') }}" placeholder="Enter card site">
+                                    <input type="text" class="form-control" name="twitter_cards[site]" value="{{ data_get($product->seo, 'twitter_cards.site') }}" placeholder="Enter card site">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label class="form-label fw-bold">Title</label>
-                                    <input type="text" class="form-control" name="twitter_title" value="{{ data_get($product->seo, 'twitter_cards.title') }}" placeholder="Enter card title">
+                                    <input type="text" class="form-control" name="twitter_cards[title]" value="{{ data_get($product->seo, 'twitter_cards.title') }}" placeholder="Enter card title">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label class="form-label fw-bold">Description</label>
-                                    <input type="text" class="form-control" name="twitter_description" value="{{ data_get($product->seo, 'twitter_cards.description') }}" placeholder="Enter card description">
+                                    <input type="text" class="form-control" name="twitter_cards[description]" value="{{ data_get($product->seo, 'twitter_cards.description') }}" placeholder="Enter card description">
                                 </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="col-md-12">
                                     <label class="form-label fw-bold">Image</label>
-                                    <input type="text" class="form-control" name="twitter_image" value="{{ data_get($product->seo, 'twitter_cards.image') }}" placeholder="Enter card image">
+                                    <input type="text" class="form-control" name="twitter_cards[image]" value="{{ data_get($product->seo, 'twitter_cards.image') }}" placeholder="Enter card image">
                                 </div>
                             </div>
 
@@ -99,7 +99,7 @@
                             <h4 class="mb-3 text-dark">Schemas</h4>
                             <div class="row mb-4">
                                 <div class="col-md-12">
-                                    <textarea class="form-control" name="schema_json" rows="4" placeholder="Enter Schema">{{ data_get($product->seo, 'schemas') ? json_encode(data_get($product->seo, 'schemas')) : '' }}</textarea>
+                                    <textarea class="form-control" name="schemas" rows="4" placeholder="Enter Schema">{{ data_get($product->seo, 'schemas') ? json_encode(data_get($product->seo, 'schemas')) : '' }}</textarea>
                                 </div>
                             </div>
 
