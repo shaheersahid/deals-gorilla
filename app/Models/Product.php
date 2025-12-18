@@ -79,6 +79,16 @@ class Product extends Model
     }
 
     /**
+     * Get the brands for the product.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function brands(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Brand::class);
+    }
+
+    /**
      * Get the product's SEO meta.
      */
     public function seo()

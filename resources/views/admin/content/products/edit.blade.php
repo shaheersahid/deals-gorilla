@@ -1,6 +1,22 @@
 @extends('admin.layouts.master')
 @section('page-title', 'Edit Product')
 
+@push('admin-styles')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--default .select2-selection--multiple {
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+        }
+        .select2-container .select2-selection--multiple {
+            min-height: 38px;
+        }
+        .select2-container .select2-search--inline .select2-search__field {
+            margin-top: 10px;
+        }
+    </style>
+@endpush
+
 @section('admin-content')
     <div class="page-content">
         <div class="container-fluid">
@@ -340,7 +356,7 @@
                                     <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', $product->is_active) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="is_active">Active</label>
                                 </div>
-                                <div class="form-check form-switch mb-3">
+                                <!-- <div class="form-check form-switch mb-3">
                                     <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" value="1" {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="is_featured">Featured Product</label>
                                 </div>
@@ -372,13 +388,15 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="brand_id" class="form-label">Brand</label>
-                                    <select class="form-select @error('brand_id') is-invalid @enderror" id="brand_id" name="brand_id">
-                                        <option value="">No Brand</option>
+                                    <label for="brand_ids" class="form-label">Brands</label>
+                                    <select class="form-control select2 @error('brand_ids') is-invalid @enderror" id="brand_ids" name="brand_ids[]" multiple>
                                         @foreach($brands as $brand)
-                                            <option value="{{ $brand->id }}" {{ old('brand_id', $product->brand_id) == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                                            <option value="{{ $brand->id }}" {{ in_array($brand->id, old('brand_ids', $product->brands->pluck('id')->toArray())) ? 'selected' : '' }}>{{ $brand->name }}</option>
                                         @endforeach
                                     </select>
+                                    @error('brand_ids')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-0">
                                     <label for="video" class="form-label">Video URL</label>
@@ -454,6 +472,10 @@
 <script src="{{ asset('admin/assets/js/products.js') }}"></script>
 <script>
 $(function() {
+    $('.select2').select2({
+        placeholder: "Select Brands",
+        allowClear: true
+    });
     ProductForm.init({
         variantIndex: {{ $product->variants->count() }},
         specIndex: {{ $spec && $spec->specs ? count($spec->specs) : 0 }},

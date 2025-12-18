@@ -30,7 +30,12 @@ class DataTableService
                 return '<a href="' . route('products.edit', $product->id) . '" class="fw-bold">' . $product->name . '</a><br><small class="text-muted">' . $product->sku . '</small>';
             })
             ->addColumn('brand_name', function ($product) {
-                return $product->brand ? '<span class="badge bg-light text-dark border">' . $product->brand->name . '</span>' : '<span class="text-muted">N/A</span>';
+                if ($product->brands->count() > 0) {
+                    return $product->brands->map(function($brand) {
+                        return '<span class="badge bg-light text-dark border">' . $brand->name . '</span>';
+                    })->implode(' ');
+                }
+                return '<span class="text-muted">N/A</span>';
             })
             ->addColumn('category_name', function ($product) {
                 return $product->category ? '<span class="badge bg-info bg-opacity-10 text-info">' . $product->category->name . '</span>' : '<span class="text-muted">N/A</span>';

@@ -1,6 +1,22 @@
 @extends('admin.layouts.master')
 @section('page-title', 'Create Product')
 
+@push('admin-styles')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--default .select2-selection--multiple {
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+        }
+        .select2-container .select2-selection--multiple {
+            min-height: 38px;
+        }
+        .select2-container .select2-search--inline .select2-search__field {
+            margin-top: 10px;
+        }
+    </style>
+@endpush
+
 @section('admin-content')
     <div class="page-content">
         <div class="container-fluid">
@@ -68,6 +84,41 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                          <!-- Product Images -->
+                        <div class="card" id="product-images-section">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Product Images</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Main Thumbnail -->
+                                <div class="mb-4">
+                                    <label for="thumbnail" class="form-label">Main Thumbnail</label>
+                                    <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/*" onchange="ProductForm.handleThumbnailSelect(this)">
+                                    <div class="mt-2" id="thumbnail-preview-container" style="display: none;">
+                                        <div class="position-relative d-inline-block">
+                                            <img id="thumbnail-preview" src="" alt="Thumbnail Preview" class="img-thumbnail" style="max-height: 200px;">
+                                            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" onclick="ProductForm.removeThumbnail()">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+
+                                <!-- Gallery Images -->
+                                <div class="mb-3">
+                                    <label for="images" class="form-label">Gallery Images <span class="text-muted">(Max 9)</span></label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="images" name="images[]" multiple accept="image/*" onchange="ProductForm.handleGallerySelect(this)">
+                                        <span class="input-group-text" id="gallery-count">0/9</span>
+                                    </div>
+                                    <small class="text-muted">Images will be appended. Click remove on preview to delete.</small>
+                                    <div class="row mt-2" id="gallery-preview"></div>
                                 </div>
                             </div>
                         </div>
@@ -276,7 +327,7 @@
                                     <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" @checked(old('is_active', true))>
                                     <label class="form-check-label" for="is_active">Active</label>
                                 </div>
-                                <div class="form-check form-switch mb-3">
+                                <!-- <div class="form-check form-switch mb-3">
                                     <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" value="1" @checked(old('is_featured'))>
                                     <label class="form-check-label" for="is_featured">Featured Product</label>
                                 </div>
@@ -308,13 +359,15 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="brand_id" class="form-label">Brand</label>
-                                    <select class="form-select @error('brand_id') is-invalid @enderror" id="brand_id" name="brand_id">
-                                        <option value="">No Brand</option>
+                                    <label for="brand_ids" class="form-label">Brands</label>
+                                    <select class="form-control select2 @error('brand_ids') is-invalid @enderror" id="brand_ids" name="brand_ids[]" multiple>
                                         @foreach($brands as $brand)
-                                            <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                                            <option value="{{ $brand->id }}" {{ (is_array(old('brand_ids')) && in_array($brand->id, old('brand_ids'))) ? 'selected' : '' }}>{{ $brand->name }}</option>
                                         @endforeach
                                     </select>
+                                    @error('brand_ids')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-0">
                                     <label for="video" class="form-label">Video URL</label>

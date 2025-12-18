@@ -17,14 +17,16 @@ class ProductService
      */
     public function getProductsQuery(array $filters): \Illuminate\Database\Eloquent\Builder
     {
-        $query = Product::with(['category', 'brand'])->select('products.*');
+        $query = Product::with(['category', 'brands'])->select('products.*');
 
         if (!empty($filters['category_id'])) {
             $query->where('category_id', $filters['category_id']);
         }
 
         if (!empty($filters['brand_id'])) {
-            $query->where('brand_id', $filters['brand_id']);
+            $query->whereHas('brands', function($q) use ($filters) {
+                $q->where('brands.id', $filters['brand_id']);
+            });
         }
 
         if (!empty($filters['stock_status'])) {
@@ -97,6 +99,11 @@ class ProductService
             $product->sort_order = $maxSortOrder !== null ? $maxSortOrder + 1 : 0;
             
             $product->save();
+
+            // Brands
+            if (!empty($data['brand_ids'])) {
+                $product->brands()->sync($data['brand_ids']);
+            }
 
             // Specifications
             $specs = parse_specs($data['specs'] ?? []);
@@ -213,6 +220,11 @@ class ProductService
             
             $product->save();
 
+            // Brands
+            if (isset($data['brand_ids'])) {
+                $product->brands()->sync($data['brand_ids']);
+            }
+
             // Specifications
             $specs = parse_specs($data['specs'] ?? []);
             $specData = [
@@ -231,16 +243,6 @@ class ProductService
                 $product->specification()->create($specData);
             }
 
-            // Clean up images if switching to variants
-            if ($product->has_variants && $wasSimpleProduct) {
-                foreach ($product->images as $image) {
-                    delete_file($image->orig_path);
-                    if ($image->thumb_path !== $image->orig_path) {
-                        delete_file($image->thumb_path);
-                    }
-                }
-                $product->images()->delete();
-            }
 
             // Variants management
             if ($product->has_variants) {
