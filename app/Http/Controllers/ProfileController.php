@@ -5,22 +5,29 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use \Illuminate\Contracts\View\View;
+use \Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
     /**
      * Display the admin profile.
+     * 
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         return view('admin.content.profile.index');
     }
 
     /**
      * Update the admin profile.
+     * 
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         $user = Auth::user();
 
@@ -58,8 +65,11 @@ class ProfileController extends Controller
 
     /**
      * Update the admin password.
+     * 
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function updatePassword(Request $request)
+    public function updatePassword(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'current_password' => 'required|current_password',

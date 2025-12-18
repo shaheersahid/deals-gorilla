@@ -7,43 +7,34 @@ use App\Models\AttributeOption;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use \Illuminate\Http\JsonResponse;
+use \Illuminate\Contracts\View\View;
+use \Illuminate\Http\RedirectResponse;
+use App\Services\DataTableService;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\StoreAttributeRequest;
+use App\Http\Requests\UpdateAttributeRequest;
 
 class AttributeController extends Controller
 {
+    protected $dataTableService;
+
+    public function __construct(DataTableService $dataTableService)
+    {
+        $this->dataTableService = $dataTableService;
+    }
+
     /**
      * Display a listing of the resource.
+     * 
+     * @param Request $request
+     * @return View|JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): View|JsonResponse
     {
         if ($request->ajax()) {
             $attributes = Attribute::with('category')->withCount('options');
-            return DataTables::of($attributes)
-                ->addColumn('type_badge', function ($attribute) {
-                    $badges = [
-                        'select' => 'primary',
-                        'text' => 'info',
-                        'number' => 'success',
-                        'color' => 'warning',
-                    ];
-                    return '<span class="badge bg-' . ($badges[$attribute->type] ?? 'secondary') . '">' . ucfirst($attribute->type) . '</span>';
-                })
-                ->addColumn('category_name', function ($attribute) {
-                    return $attribute->category ? $attribute->category->name : '<span class="text-muted">All Categories</span>';
-                })
-                ->addColumn('options_count', function ($attribute) {
-                    return $attribute->options_count . ' options';
-                })
-                ->addColumn('variant', function ($attribute) {
-                    return $attribute->is_variant 
-                        ? '<span class="badge bg-success">Yes</span>' 
-                        : '<span class="text-muted">No</span>';
-                })
-                ->addColumn('action', function ($attribute) {
-                    return view('admin.content.attributes.action', compact('attribute'))->render();
-                })
-                ->rawColumns(['type_badge', 'category_name', 'variant', 'action'])
-                ->make(true);
+            return $this->dataTableService->attributesTable($attributes);
         }
 
         return view('admin.content.attributes.index');
@@ -51,8 +42,10 @@ class AttributeController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     * 
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         $categories = Category::where('is_active', true)->get();
         return view('admin.content.attributes.create', compact('categories'));
@@ -60,22 +53,13 @@ class AttributeController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * 
+     * @param StoreAttributeRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreAttributeRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:attributes,slug',
-            'type' => 'required|in:select,text,number,color',
-            'category_id' => 'nullable|exists:categories,id',
-            'is_variant' => 'boolean',
-            'is_filterable' => 'boolean',
-            'is_visible' => 'boolean',
-            'options' => 'nullable|array',
-            'options.*.value' => 'required_with:options|string|max:255',
-            'options.*.label' => 'nullable|string|max:255',
-            'options.*.color_code' => 'nullable|string|max:10',
-        ]);
+        $validated = $request->validated();
 
         $attribute = Attribute::create([
             'name' => $validated['name'],
@@ -106,8 +90,11 @@ class AttributeController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * 
+     * @param Attribute $attribute
+     * @return View
      */
-    public function edit(Attribute $attribute)
+    public function edit(Attribute $attribute): View
     {
         $attribute->load('options');
         $categories = Category::where('is_active', true)->get();
@@ -116,19 +103,14 @@ class AttributeController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * 
+     * @param UpdateAttributeRequest $request
+     * @param Attribute $attribute
+     * @return RedirectResponse
      */
-    public function update(Request $request, Attribute $attribute)
+    public function update(UpdateAttributeRequest $request, Attribute $attribute): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:attributes,slug,' . $attribute->id,
-            'type' => 'required|in:select,text,number,color',
-            'category_id' => 'nullable|exists:categories,id',
-            'is_variant' => 'boolean',
-            'is_filterable' => 'boolean',
-            'is_visible' => 'boolean',
-            'options' => 'nullable|array',
-        ]);
+        $validated = $request->validated();
 
         $attribute->update([
             'name' => $validated['name'],
@@ -160,8 +142,11 @@ class AttributeController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 
+     * @param Attribute $attribute
+     * @return RedirectResponse
      */
-    public function destroy(Attribute $attribute)
+    public function destroy(Attribute $attribute): RedirectResponse
     {
         $attribute->options()->delete();
         $attribute->delete();
