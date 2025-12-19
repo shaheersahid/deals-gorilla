@@ -79,7 +79,7 @@ class ProductService
         return DB::transaction(function () use ($data, $thumbnail, $galleryImages, $variants) {
             $product = new Product();
             $product->name = $data['name'];
-            $product->slug = $data['slug'] ?? Str::slug($data['name']);
+            $product->slug = $data['slug'] ?? generate_slug($data['name'], 'products');
             $product->category_id = $data['category_id'];
             $product->short_desc = nullable_or_value($data['short_desc'] ?? null);
             $product->description = $data['description'];
