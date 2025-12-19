@@ -66,7 +66,7 @@ class StoreProductRequest extends FormRequest
             'variants.*.sku' => 'nullable|string|max:255',
             'variants.*.price' => 'required_with:variants|numeric|min:0',
             'variants.*.stock' => 'nullable|integer|min:0',
-            'variants.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'variants.*.image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'variants.*.attributes' => 'nullable|array',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'images' => 'nullable|array|max:9',

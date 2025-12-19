@@ -23,7 +23,7 @@ class DataTableService
         return DataTables::of($query)
             ->editColumn('name', function ($product) {
                 $imageUrl = $product->images->where('is_primary', true)->first()?->url
-                    ?? ($product->images->first()?->url ?? asset('admin/assets/images/no-image.png'));
+                    ?? ($product->images->first()?->url ?? asset('admin/assets/images/placeholder.svg'));
                 $image = '<img src="' . $imageUrl . '" alt="' . $product->name . '" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;">';
                 
                 return '<div class="d-flex align-items-center">' . $image . '<div><a href="' . route('products.edit', $product->id) . '" class="fw-bold">' . $product->name . '</a><br><small class="text-muted">' . $product->sku . '</small></div></div>';
@@ -186,10 +186,9 @@ class DataTableService
     {
         return DataTables::of($query)
             ->addColumn('logo_preview', function ($brand) {
-                if ($brand->logo) {
-                    return '<img src="' . asset('storage/' . $brand->logo) . '" alt="' . $brand->name . '" style="height: 40px;">';
-                }
-                return '<span class="text-muted">No logo</span>';
+                $image = asset('admin/assets/images/placeholder.svg');
+                if ($brand->logo) $image = asset('storage/' . $brand->logo);
+                return '<img src="' . $image . '" alt="' . $brand->name . '" style="height: 40px;">';
             })
             ->addColumn('action', function ($brand) {
                 return view('admin.content.brands.action', compact('brand'))->render();

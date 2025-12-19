@@ -30,6 +30,7 @@
                                         <th>Name</th>
                                         <th>Slug</th>
                                         <th>Logo</th>
+                                        <th>Created At</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -72,12 +73,19 @@
                         searchable: false
                     },
                     {
+                        data: 'created_at',
+                        name: 'created_at',
+                        visible: false,
+                        searchable: false
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         orderable: false,
                         searchable: false
                     },
-                ]
+                ],
+                order: [[3, 'desc']]
             });
 
         });

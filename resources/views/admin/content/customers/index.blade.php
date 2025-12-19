@@ -25,6 +25,7 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Registered</th>
+                                        <th>Created At</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -55,7 +56,8 @@
                     { data: 'created', name: 'created' },
                     { data: 'status', name: 'status', orderable: false, searchable: false },
                     { data: 'action', name: 'action', orderable: false, searchable: false },
-                ]
+                ],
+                order: [[2, 'desc']]
             });
         });
     </script>

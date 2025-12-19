@@ -5,7 +5,7 @@
     <a href="{{ route('categories.products', $category) }}" class="btn btn-sm btn-info d-inline-flex align-items-center" title="View Products">
         <i class="fa fa-eye"></i>
     </a>
-    <form action="{{ route('categories.destroy', $category) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');">
+    <form action="{{ route('categories.destroy', $category) }}" method="POST" class="del_confirm">
         @csrf
         @method('DELETE')
         <button type="submit" class="btn btn-sm btn-danger" title="Delete">

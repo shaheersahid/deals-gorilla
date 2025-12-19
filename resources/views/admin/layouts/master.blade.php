@@ -75,7 +75,7 @@
     <script src="{{ asset('admin/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
         $(document.body).on("click", ".del_confirm", function(e) {
-            var form = $(this).find("form");
+            var form = $(this);
             e.preventDefault();
             Swal.fire({
                 title: "Are you sure?",

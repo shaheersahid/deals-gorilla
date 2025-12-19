@@ -31,6 +31,7 @@
                                         <th>Total Products</th>
                                         <th>Shown on Home</th>
                                         <th>Status</th>
+                                        <th>Created At</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -85,12 +86,19 @@
                         className: 'text-center'
                     },
                     {
+                        data: 'created_at',
+                        name: 'created_at',
+                        visible: false,
+                        searchable: false
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         orderable: false,
                         searchable: false
                     },
-                ]
+                ],
+                order: [[5, 'desc']]
             });
 
             // Toggle Status/Homepage

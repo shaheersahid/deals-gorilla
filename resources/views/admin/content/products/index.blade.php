@@ -125,6 +125,7 @@
                                         <th>Deal</th>
                                         <th style="width: 80px;">Featured</th>
                                         <th style="width: 80px;">Active</th>
+                                        <th>Created At</th>
                                         <th style="width: 100px;">Actions</th>
                                     </tr>
                                 </thead>
@@ -208,9 +209,10 @@
                     { data: 'deal', name: 'deal', orderable: false, searchable: false, responsivePriority: 6, className: 'text-center' },
                     { data: 'featured', name: 'featured', orderable: false, searchable: false, responsivePriority: 7, className: 'text-center' },
                     { data: 'status', name: 'status', orderable: false, searchable: false, responsivePriority: 8, className: 'text-center' },
+                    { data: 'created_at', name: 'created_at', visible: false, searchable: false },
                     { data: 'action', name: 'action', orderable: false, searchable: false, responsivePriority: 0, className: 'text-center' },
                 ],
-                order: [[1, 'asc']]
+                order: [[8, 'desc']]
             });
 
             // Toggle Status/Featured

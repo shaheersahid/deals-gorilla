@@ -72,7 +72,7 @@ class ProductController extends Controller
                 $request->validated(),
                 $request->file('thumbnail'),
                 $request->file('images', []),
-                $request->input('variants', [])
+                $request->all()['variants'] ?? []
             );
 
             return response()->json([
@@ -132,7 +132,7 @@ class ProductController extends Controller
                 $request->validated(),
                 $request->file('thumbnail'),
                 $request->file('images', []),
-                $request->input('variants', []),
+                $request->all()['variants'] ?? [],
                 $request->input('delete_image_ids', [])
             );
 

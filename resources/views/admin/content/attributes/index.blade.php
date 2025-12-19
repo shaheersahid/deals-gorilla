@@ -28,6 +28,7 @@
                                         <th>Category</th>
                                         <th>Options</th>
                                         <th>Variant</th>
+                                        <th>Created At</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -57,8 +58,10 @@
                     { data: 'category_name', name: 'category_name' },
                     { data: 'options_count', name: 'options_count', orderable: false, searchable: false },
                     { data: 'variant', name: 'variant', orderable: false, searchable: false },
+                    { data: 'created_at', name: 'created_at', visible: false, searchable: false },
                     { data: 'action', name: 'action', orderable: false, searchable: false },
-                ]
+                ],
+                order: [[5, 'desc']]
             });
         });
     </script>

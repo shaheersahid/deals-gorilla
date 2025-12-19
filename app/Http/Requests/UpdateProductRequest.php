@@ -69,7 +69,7 @@ class UpdateProductRequest extends FormRequest
             'variants.*.price' => 'required_with:variants|numeric|min:0',
             'variants.*.stock' => 'nullable|integer|min:0',
             'variants.*.attributes' => 'nullable|array',
-            'variants.*.attributes' => 'nullable|array',
+            'variants.*.image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'images' => 'nullable|array|max:9',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
