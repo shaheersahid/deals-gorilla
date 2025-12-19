@@ -24,9 +24,18 @@ class ProductService
         }
 
         if (!empty($filters['brand_id'])) {
-            $query->whereHas('brands', function($q) use ($filters) {
-                $q->where('brands.id', $filters['brand_id']);
+            $brandIds = is_array($filters['brand_id']) ? $filters['brand_id'] : [$filters['brand_id']];
+            
+            // remove 'all' from array
+            $brandIds = array_filter($brandIds, function($value) {
+                return $value !== 'all';
             });
+
+            if (!empty($brandIds)) {
+                $query->whereHas('brands', function($q) use ($brandIds) {
+                    $q->whereIn('brands.id', $brandIds);
+                });
+            }
         }
 
         if (!empty($filters['stock_status'])) {
@@ -72,7 +81,6 @@ class ProductService
             $product->name = $data['name'];
             $product->slug = $data['slug'] ?? Str::slug($data['name']);
             $product->category_id = $data['category_id'];
-            $product->brand_id = nullable_or_value($data['brand_id'] ?? null);
             $product->short_desc = nullable_or_value($data['short_desc'] ?? null);
             $product->description = $data['description'];
             
@@ -81,11 +89,13 @@ class ProductService
             }
             
             $product->price = nullable_or_value($data['price'] ?? null);
+            $product->compare_price = nullable_or_value($data['compare_price'] ?? null);
             $product->cost_price = nullable_or_value($data['cost_price'] ?? null);
             $product->video = nullable_or_value($data['video'] ?? null);
             $product->stock = $data['stock'] ?? 0;
             $product->is_featured = !empty($data['is_featured']);
             $product->is_active = !empty($data['is_active']);
+            $product->is_out_of_stock = !empty($data['is_out_of_stock']);
             $product->has_variants = !empty($data['has_variants']);
             $product->deal_enabled = !empty($data['deal_enabled']);
             $product->deal_start = nullable_or_value($data['deal_start'] ?? null);
@@ -195,7 +205,6 @@ class ProductService
             $product->name = $data['name'];
             $product->slug = $data['slug'] ?? generate_slug($data['name'], 'products');
             $product->category_id = $data['category_id'];
-            $product->brand_id = nullable_or_value($data['brand_id'] ?? null);
             $product->short_desc = nullable_or_value($data['short_desc'] ?? null);
             $product->description = $data['description'];
             
@@ -204,6 +213,7 @@ class ProductService
             }
             
             $product->price = nullable_or_value($data['price'] ?? null);
+            $product->compare_price = nullable_or_value($data['compare_price'] ?? null);
             $product->cost_price = nullable_or_value($data['cost_price'] ?? null);
             $product->video = nullable_or_value($data['video'] ?? null);
             $product->stock = $data['stock'] ?? 0;

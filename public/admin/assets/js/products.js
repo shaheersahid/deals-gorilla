@@ -14,7 +14,33 @@ const ProductForm = (function () {
     function init(userConfig) {
         config = { ...config, ...userConfig };
         bindEvents();
+        initEditors();
         updateGalleryCount();
+    }
+
+    function initEditors() {
+        if (typeof tinymce !== 'undefined') {
+            tinymce.init({
+                selector: '#description, #short_desc',
+                min_height: 250,
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'help', 'wordcount', 'autoresize'
+                ],
+                toolbar: 'undo redo | blocks | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | help',
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+                autoresize_bottom_margin: 20,
+                setup: function (editor) {
+                    editor.on('change', function () {
+                        editor.save();
+                    });
+                }
+            });
+        }
     }
 
     function bindEvents() {
@@ -113,6 +139,10 @@ const ProductForm = (function () {
         const originalBtnText = submitBtn.text();
 
         submitBtn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
+
+        if (typeof tinymce !== 'undefined') {
+            tinymce.triggerSave();
+        }
 
         const formData = new FormData(this);
 

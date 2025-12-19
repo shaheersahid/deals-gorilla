@@ -29,6 +29,8 @@
                                         <th>Name</th>
                                         <th>Parent Category</th>
                                         <th>Total Products</th>
+                                        <th>Shown on Home</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -69,12 +71,60 @@
                         name: 'totalProducts'
                     },
                     {
+                        data: 'homepage',
+                        name: 'homepage',
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center'
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         orderable: false,
                         searchable: false
                     },
                 ]
+            });
+
+            // Toggle Status/Homepage
+            $(document).on('change', '.toggle-status', function() {
+                var id = $(this).data('id');
+                var type = $(this).data('type');
+                var value = $(this).is(':checked') ? 1 : 0;
+
+                $.ajax({
+                    url: "{{ route('categories.toggle-status') }}",
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id,
+                        type: type,
+                        value: value
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                        } else {
+                            toastr.error(response.message);
+                            table.draw(false);
+                        }
+                    },
+                    error: function(xhr) {
+                         let message = 'Something went wrong!';
+                         if(xhr.responseJSON && xhr.responseJSON.message) {
+                             message = xhr.responseJSON.message;
+                         }
+                        toastr.error(message);
+                        table.draw(false);
+                    }
+                });
             });
 
         });

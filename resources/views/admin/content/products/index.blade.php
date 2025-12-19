@@ -4,6 +4,7 @@
 @push('admin-styles')
     <link href="{{ asset('admin/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('admin/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
+     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         @media (max-width: 768px) {
             .dt-responsive.nowrap {
@@ -24,6 +25,16 @@
             background-color: #556ee6 !important;
             border: none !important;
             box-shadow: none !important;
+        }
+        .select2-container--default .select2-selection--multiple {
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+        }
+        .select2-container .select2-selection--multiple {
+            min-height: 38px;
+        }
+        .select2-container .select2-search--inline .select2-search__field {
+            margin-top: 10px;
         }
     </style>
 @endpush
@@ -49,8 +60,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Brand</label>
-                                    <select id="filter-brand" class="form-select">
-                                        <option value="">All Brands</option>
+                                    <select id="filter-brand" class="form-select select2" multiple="multiple" data-placeholder="All Brands">
+                                        <option value="all" selected>All Brands</option>
                                         @foreach(\App\Models\Brand::orderBy('name')->get() as $brand)
                                             <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                         @endforeach
@@ -106,9 +117,9 @@
                             <table id="products-table" class="table table-hover table-bordered table-striped dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="table-light">
                                     <tr>
-                                        <th style="width: 50px;">Image</th>
                                         <th>Product Details</th>
-                                        <th>Brand/Category</th>
+                                        <th>Brand</th>
+                                        <th>Category</th>
                                         <th>Price Range</th>
                                         <th>Stock</th>
                                         <th>Deal</th>
@@ -129,12 +140,49 @@
 @endsection
 
 @push('admin-scripts')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ asset('admin/assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('admin/assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('admin/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('admin/assets/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
     <script type="text/javascript">
         $(function() {
+            var brandSelect = $('#filter-brand');
+            brandSelect.select2({
+                placeholder: "All Brands",
+                allowClear: true,
+                width: '100%'
+            });
+
+            // Smart Multi-Select Logic
+            brandSelect.on('select2:select', function (e) {
+                var selectedValue = e.params.data.id;
+                var currentValues = brandSelect.val(); // array of strings
+
+                if (selectedValue === 'all') {
+                    // User clicked "All Brands". Clear any other selections.
+                    if (currentValues.length > 1) {
+                        brandSelect.val(['all']).trigger('change');
+                    }
+                } else {
+                    // User clicked a specific brand.
+                    // If "all" is currently in the list, remove it.
+                    if (currentValues.includes('all')) {
+                        var newValues = currentValues.filter(v => v !== 'all');
+                        brandSelect.val(newValues).trigger('change');
+                    }
+                }
+                table.draw(); // Trigger table redraw
+            });
+            
+            // Also redraw on unselect
+            brandSelect.on('select2:unselect', function (e) {
+                 if (brandSelect.val().length === 0) {
+                     brandSelect.val(['all']).trigger('change');
+                 }
+                 table.draw();
+            });
+
             var table = $('#products-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -144,16 +192,17 @@
                     url: "{{ route('products.index') }}",
                     data: function(d) {
                         d.category_id = $('#filter-category').val();
-                        d.brand_id = $('#filter-brand').val();
+                        d.category_id = $('#filter-category').val();
+                        d.brand_id = $('#filter-brand').val(); // This will now be an array
                         d.stock_status = $('#filter-stock').val();
                         d.deal_status = $('#filter-deal').val();
                         d.status = $('#filter-status').val();
                     }
                 },
                 columns: [
-                    { data: 'image', name: 'image', orderable: false, searchable: false, responsivePriority: 1 },
-                    { data: 'name_link', name: 'name', responsivePriority: 2 },
-                    { data: 'brand_name', name: 'brand.name', responsivePriority: 4 },
+                    { data: 'name', name: 'name', responsivePriority: 2 },
+                    { data: 'brand_name', name: 'brand_name', orderable: false, searchable: false, responsivePriority: 4 },
+                    { data: 'category_name', name: 'category_name', orderable: false, searchable: false, responsivePriority: 4 },
                     { data: 'price_display', name: 'price', searchable: false, responsivePriority: 3 },
                     { data: 'stock_display', name: 'stock', responsivePriority: 5, className: 'text-center' },
                     { data: 'deal', name: 'deal', orderable: false, searchable: false, responsivePriority: 6, className: 'text-center' },
@@ -201,7 +250,8 @@
 
             // Reset filters
             $('#reset-filters').on('click', function() {
-                $('#filter-category, #filter-brand, #filter-stock, #filter-deal, #filter-status').val('');
+                $('#filter-category, #filter-stock, #filter-deal, #filter-status').val('');
+                $('#filter-brand').val(['all']).trigger('change'); // Reset Select2 to All
                 table.draw();
             });
         });

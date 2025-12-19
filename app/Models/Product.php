@@ -11,7 +11,6 @@ class Product extends Model
         'name',
         'slug',
         'category_id',
-        'brand_id',
         'short_desc',
         'description',
         'sku',
@@ -83,13 +82,13 @@ class Product extends Model
     }
 
     /**
-     * Get the brand.
+     * Get the brands for the product.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function brand(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function brands(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsToMany(Brand::class);
     }
 
     /**

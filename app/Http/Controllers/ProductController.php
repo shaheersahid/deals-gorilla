@@ -96,7 +96,7 @@ class ProductController extends Controller
      */
     public function show(Product $product): View
     {
-        $product->load(['category', 'brand', 'specification', 'variants.attributeValues.option', 'attributeValues.attribute', 'attributeValues.option']);
+        $product->load(['category', 'brands', 'specification', 'variants.attributeValues.option', 'attributeValues.attribute', 'attributeValues.option']);
         return view('admin.content.products.show', compact('product'));
     }
 

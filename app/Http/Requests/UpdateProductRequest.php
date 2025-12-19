@@ -23,7 +23,6 @@ class UpdateProductRequest extends FormRequest
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:products,slug,' . $this->route('product')->id,
             'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'nullable|exists:brands,id',
             'brand_ids' => 'nullable|array',
             'brand_ids.*' => 'exists:brands,id',
             'short_desc' => 'nullable|string',
@@ -39,6 +38,22 @@ class UpdateProductRequest extends FormRequest
             'deal_enabled' => 'boolean',
             'deal_start' => 'nullable|date',
             'deal_end' => 'nullable|date|after_or_equal:deal_start',
+            'deal_price' => [
+                'nullable',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) {
+                    $price = request()->input('price');
+                    if ($value && $price && $value >= $price) {
+                        $fail('Deal price must be less than the regular price.');
+                    }
+                },
+            ],
+            'compare_price' => 'nullable|numeric|min:0',
+            'display_price' => 'nullable|numeric|min:0',
+            'percentage_off' => 'nullable|numeric|min:0|max:100',
+            'is_out_of_stock' => 'boolean',
+            'sort_order' => 'nullable|integer|min:0',
             // Specifications
             'weight' => 'nullable|numeric|min:0',
             'weight_unit' => 'nullable|in:g,kg,lb,oz',
@@ -58,9 +73,6 @@ class UpdateProductRequest extends FormRequest
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'images' => 'nullable|array|max:9',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'faqs' => 'nullable|array',
-            'faqs.*.question' => 'required_with:faqs|string|max:255',
-            'faqs.*.answer' => 'required_with:faqs|string',
         ];
     }
 
@@ -71,7 +83,7 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'category_id' => 'category',
-            'brand_id' => 'brand',
+            'brand_ids' => 'brands',
             'short_desc' => 'short description',
             'deal_start' => 'deal start date',
             'deal_end' => 'deal end date',

@@ -21,13 +21,12 @@ class DataTableService
     public function productsTable($query): \Illuminate\Http\JsonResponse
     {
         return DataTables::of($query)
-            ->addColumn('image', function ($product) {
+            ->editColumn('name', function ($product) {
                 $imageUrl = $product->images->where('is_primary', true)->first()?->url
                     ?? ($product->images->first()?->url ?? asset('admin/assets/images/no-image.png'));
-                return '<img src="' . $imageUrl . '" alt="' . $product->name . '" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">';
-            })
-            ->addColumn('name_link', function ($product) {
-                return '<a href="' . route('products.edit', $product->id) . '" class="fw-bold">' . $product->name . '</a><br><small class="text-muted">' . $product->sku . '</small>';
+                $image = '<img src="' . $imageUrl . '" alt="' . $product->name . '" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;">';
+                
+                return '<div class="d-flex align-items-center">' . $image . '<div><a href="' . route('products.edit', $product->id) . '" class="fw-bold">' . $product->name . '</a><br><small class="text-muted">' . $product->sku . '</small></div></div>';
             })
             ->addColumn('brand_name', function ($product) {
                 if ($product->brands->count() > 0) {
@@ -83,7 +82,7 @@ class DataTableService
             ->addColumn('action', function ($product) {
                 return view('admin.content.products.action', compact('product'))->render();
             })
-            ->rawColumns(['image', 'name_link', 'price_display', 'stock_display', 'deal', 'status', 'featured', 'action', 'brand_name', 'category_name'])
+            ->rawColumns(['name', 'price_display', 'stock_display', 'deal', 'status', 'featured', 'action', 'brand_name', 'category_name'])
             ->make(true);
     }
 

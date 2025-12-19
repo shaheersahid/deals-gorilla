@@ -23,7 +23,6 @@ class StoreProductRequest extends FormRequest
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:products,slug',
             'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'nullable|exists:brands,id',
             'brand_ids' => 'nullable|array',
             'brand_ids.*' => 'exists:brands,id',
             'short_desc' => 'nullable|string',
@@ -72,6 +71,7 @@ class StoreProductRequest extends FormRequest
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'images' => 'nullable|array|max:9',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'compare_price' => 'nullable|numeric|min:0',
         ];
     }
 
@@ -82,7 +82,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'category_id' => 'category',
-            'brand_id' => 'brand',
+            'brand_ids' => 'brands',
             'short_desc' => 'short description',
             'deal_start' => 'deal start date',
             'deal_end' => 'deal end date',

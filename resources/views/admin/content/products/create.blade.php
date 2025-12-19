@@ -48,13 +48,14 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="sku" class="form-label">SKU <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('sku') is-invalid @enderror" id="sku" name="sku" value="{{ old('sku') }}" required>
+                                        <label for="sku" class="form-label">SKU</label>
+                                        <input type="text" class="form-control @error('sku') is-invalid @enderror" id="sku" name="sku" value="{{ old('sku') }}" placeholder="Auto-generated if left empty">
                                         @error('sku')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
+
 
                                 <div class="row mb-3">
                                     <div class="col-12">
@@ -134,7 +135,7 @@
                             </div>
                             <div class="card-body" id="simple-pricing">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text">$</span>
@@ -144,7 +145,17 @@
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <label for="compare_price" class="form-label">Compare Price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" step="0.01" class="form-control @error('compare_price') is-invalid @enderror" id="compare_price" name="compare_price" value="{{ old('compare_price') }}">
+                                        </div>
+                                        @error('compare_price')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-4">
                                         <label for="cost_price" class="form-label">Cost Price</label>
                                         <div class="input-group">
                                             <span class="input-group-text">$</span>
@@ -183,41 +194,7 @@
                             </div>
                         </div>
 
-                                                <!-- Product Images -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Product Images</h5>
-                            </div>
-                            <div class="card-body">
-                                <!-- Main Thumbnail -->
-                                <div class="mb-4">
-                                    <label for="thumbnail" class="form-label">Main Thumbnail</label>
-                                    <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/*" onchange="ProductForm.handleThumbnailSelect(this)">
-                                    <div class="mt-2" id="thumbnail-preview-container" style="display: none;">
-                                        <div class="position-relative d-inline-block">
-                                            <img id="thumbnail-preview" src="" alt="Thumbnail Preview" class="img-thumbnail" style="max-height: 200px;">
-                                            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" onclick="ProductForm.removeThumbnail()">
-                                                <i class="fa fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <hr>
-
-                                <!-- Gallery Images -->
-                                <div class="mb-3">
-                                    <label for="images" class="form-label">Gallery Images <span class="text-muted">(Max 9)</span></label>
-                                    <div class="input-group">
-                                        <input type="file" class="form-control" id="images" name="images[]" multiple accept="image/*" onchange="ProductForm.handleGallerySelect(this)">
-                                        <span class="input-group-text" id="gallery-count">0/9</span>
-                                    </div>
-                                    <small class="text-muted">Images will be appended. Click remove on preview to delete.</small>
-                                    <div class="row mt-2" id="gallery-preview"></div>
-                                </div>
-                            </div>
-                        </div>
-
+                        
                         <!-- Specifications -->
                         <div class="card">
                             <div class="card-header">
@@ -279,40 +256,49 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-check form-switch">
+                                    <div class="col-md-3">
+                                        <div class="form-check form-switch mt-4">
                                             <input class="form-check-input" type="checkbox" id="deal_enabled" name="deal_enabled" value="1" {{ old('deal_enabled') ? 'checked' : '' }}>
                                             <label class="form-check-label" for="deal_enabled">Enable Deal</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
+                                        <label for="deal_price" class="form-label">Deal Price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" step="0.01" class="form-control @error('deal_price') is-invalid @enderror" id="deal_price" name="deal_price" value="{{ old('deal_price') }}">
+                                        </div>
+                                        @error('deal_price')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-3">
                                         <label for="deal_start" class="form-label">Start Date</label>
                                         <input type="date" class="form-control" id="deal_start" name="deal_start" value="{{ old('deal_start') }}">
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label for="deal_end" class="form-label">End Date</label>
                                         <input type="date" class="form-control" id="deal_end" name="deal_end" value="{{ old('deal_end') }}">
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label for="display_price" class="form-label">Price After Percentage Off (Optional)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" step="0.01" class="form-control @error('display_price') is-invalid @enderror" id="display_price" name="display_price" value="{{ old('display_price') }}">
+                                        </div>
+                                        <small class="text-muted">Manually override the display price</small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="percentage_off" class="form-label">Percentage Off (%)</label>
+                                        <input type="number" step="0.01" class="form-control @error('percentage_off') is-invalid @enderror" id="percentage_off" name="percentage_off" value="{{ old('percentage_off') }}">
+                                        <small class="text-muted">Used for "Deals" section display</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- FAQs -->
-                        <div class="card" id="faqs-section">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">Product FAQs</h5>
-                                <button type="button" class="btn btn-sm btn-primary" id="add-faq">
-                                    <i class="fa fa-plus"></i> Add FAQ
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <div id="faqs-container">
-                                    <div class="text-center text-muted p-3 d-none" id="no-faqs-message">
-                                        No FAQs added yet.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Sidebar -->
@@ -330,6 +316,10 @@
                                 <!-- <div class="form-check form-switch mb-3">
                                     <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" value="1" @checked(old('is_featured'))>
                                     <label class="form-check-label" for="is_featured">Featured Product</label>
+                                </div> -->
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="is_out_of_stock" name="is_out_of_stock" value="1" @checked(old('is_out_of_stock'))>
+                                    <label class="form-check-label" for="is_out_of_stock">Out of Stock</label>
                                 </div>
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary">
@@ -439,9 +429,15 @@
 @endsection
 
 @push('admin-scripts')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{{ asset('admin/assets/libs/tinymce/tinymce.min.js') }}"></script>
 <script src="{{ asset('admin/assets/js/products.js') }}"></script>
 <script>
     $(function() {
+        $('.select2').select2({
+            placeholder: "Select Brands",
+            allowClear: true
+        });
         ProductForm.init({
             variantIndex: 0,
             specIndex: 0,
