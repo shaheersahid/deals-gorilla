@@ -181,7 +181,7 @@
             </p>
         </div>
 
-        <div class="bg-white rounded p-4 shadow-sm">
+        <div class="bg-white rounded p-4">
             <div class="swiper brands-swiper">
                 <div class="swiper-wrapper">
 
@@ -226,7 +226,7 @@
                 <a href="#" class="group block rounded-lg overflow-hidden shadow-md h-full">
                     <div class="relative h-[400px] sm:h-[430px] lg:h-[530px] bg-gray-900">
                         <!-- Replace src with your large product image -->
-                        <img src="assets/images/product001.Png" alt="PlayStation 5" class="absolute inset-0 w-full h-full object-cover" />
+                        <img src="assets/images/product001.Png" alt="PlayStation 5" class="absolute inset-0 w-full h-full object-cover drop-shadow-xl" />
                         <!-- overlay content -->
                         <div class="absolute left-4 bottom-4 right-4 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4 rounded-md">
                             <div class="text-white text-sm font-semibold uppercase tracking-wide">PlayStation 5</div>
@@ -247,7 +247,7 @@
                 <div class="row-span-2">
                     <a href="#" class="group block rounded-lg overflow-hidden shadow-md h-full">
                         <div class="relative h-full bg-gray-800">
-                            <img src="assets/images/product002.Png" alt="Women's Collections" class="absolute inset-0 w-full h-full object-cover" />
+                            <img src="assets/images/product002.Png" alt="Women's Collections" class="absolute inset-0 w-full h-full object-cover drop-shadow-xl" />
                             <div class="absolute left-4 bottom-4 right-4 bg-gradient-to-t from-black/60 p-4 rounded-md">
                                 <div class="text-white text-lg font-semibold">Women's Collections</div>
                                 <p class="text-white/90 text-sm mt-2 hidden sm:block">Featured woman collections that give you another vibe.</p>
@@ -265,7 +265,7 @@
                 <div class="grid grid-cols-2 gap-6">
                     <a href="#" class="group block rounded-lg overflow-hidden shadow-md">
                         <div class="relative h-40 bg-gray-800">
-                            <img src="assets/images/product003.Png" alt="Speakers" class="absolute inset-0 w-full h-full object-cover" />
+                            <img src="assets/images/product003.Png" alt="Speakers" class="absolute inset-0 w-full h-full object-cover drop-shadow-lg" />
                             <div class="absolute left-3 bottom-3 bg-black/60 text-white px-3 py-2 rounded text-sm">
                                 <div class="font-semibold">Speakers</div>
                                 <div class="text-xs">Amazon wireless speakers</div>
@@ -281,7 +281,7 @@
 
                     <a href="#" class="group block rounded-lg overflow-hidden shadow-md">
                         <div class="relative h-40 bg-gray-800">
-                            <img src="assets/images/product004.Png" alt="Perfume" class="absolute inset-0 w-full h-full object-cover" />
+                            <img src="assets/images/product004.Png" alt="Perfume" class="absolute inset-0 w-full h-full object-cover drop-shadow-lg" />
                             <div class="absolute left-3 bottom-3 bg-black/60 text-white px-3 py-2 rounded text-sm">
                                 <div class="font-semibold">Perfume</div>
                                 <div class="text-xs">GUCCI INTENSE EDP</div>
@@ -348,7 +348,7 @@
 
                         <!-- image -->
                         <div class="w-full h-48 flex items-center justify-center mb-4 product-image rounded">
-                            <img src="{{ asset('assets/images/new_01.png') }}" class="object-contain max-h-full">
+                            <img src="{{ asset('assets/images/new_01.png') }}" class="object-contain max-h-full drop-shadow-md">
                         </div>
 
                         <p class="text-sm text-slate-500 mb-1">Cartify</p>
