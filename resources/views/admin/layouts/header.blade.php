@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
-<title>{{ View::yieldContent('page-title') . ' | ' . env('APP_NAME') }}</title>
+<title>{{ View::yieldContent('page-title') . ' | ' . config('app.name') }}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta content="On Time Packaging Dashboard" name="description" />
 <meta content="wahabSabir" name="author" />
