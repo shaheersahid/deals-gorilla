@@ -112,6 +112,18 @@ class Product extends Model
     }
 
     /**
+     * Get the collections this product belongs to.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function collections(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Collection::class)
+            ->withPivot('sort_order')
+            ->withTimestamps();
+    }
+
+    /**
      * Get the FAQS for the product.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

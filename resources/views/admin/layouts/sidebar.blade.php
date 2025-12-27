@@ -44,6 +44,14 @@
                         <span>Attributes</span>
                     </a>
                 </li>
+                <li
+                    class="{{ in_array(Route::currentRouteName(), ['collections.index', 'collections.create', 'collections.edit']) ? 'mm-active' : '' }}">
+                    <a href="{{ route('collections.index') }}"
+                        class="{{ in_array(Route::currentRouteName(), ['collections.index', 'collections.create', 'collections.edit']) ? 'active' : '' }}">
+                        <i class="fa fa-layer-group"></i>
+                        <span>Collections</span>
+                    </a>
+                </li>
                 <li class="{{ in_array(Route::currentRouteName(), ['orders.index', 'orders.show']) ? 'mm-active' : '' }}">
                     <a href="{{ route('orders.index') }}"
                         class="{{ in_array(Route::currentRouteName(), ['orders.index', 'orders.show']) ? 'active' : '' }}">

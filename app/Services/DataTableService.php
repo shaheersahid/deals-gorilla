@@ -256,4 +256,60 @@ class DataTableService
             ->rawColumns(['status', 'action'])
             ->make(true);
     }
+    /**
+     * Configuration for Collections DataTable.
+     * 
+     * @param mixed $query
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function collectionsTable($query): \Illuminate\Http\JsonResponse
+    {
+        return DataTables::of($query)
+            ->addColumn('products_count', function ($collection) {
+                return '<span class="badge bg-info">' . $collection->products_count . '</span>';
+            })
+            ->addColumn('type_badge', function ($collection) {
+                $class = $collection->type === 'slider' ? 'primary' : 'secondary';
+                return '<span class="badge bg-' . $class . '">' . ucfirst($collection->type) . '</span>';
+            })
+            ->addColumn('status', function ($collection) {
+                $checked = $collection->is_active ? 'checked' : '';
+                return '<div class="form-check form-switch d-flex justify-content-center">
+                            <input class="form-check-input toggle-status" type="checkbox" data-id="' . $collection->id . '" data-type="is_active" ' . $checked . '>
+                        </div>';
+            })
+            ->addColumn('action', function ($collection) {
+                return view('admin.content.collections.action', compact('collection'))->render();
+            })
+            ->rawColumns(['products_count', 'type_badge', 'status', 'action'])
+            ->make(true);
+    }
+
+    /**
+     * Configuration for Collection Products (reorder) DataTable.
+     * 
+     * @param mixed $query
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function collectionProductsTable($query): \Illuminate\Http\JsonResponse
+    {
+        return DataTables::of($query)
+            ->addColumn('image', function ($product) {
+                $imageUrl = $product->images->where('is_primary', true)->first()?->url
+                    ?? ($product->images->first()?->url ?? asset('admin/assets/images/no-image.png'));
+                return '<img src="' . $imageUrl . '" class="img-thumbnail" style="width: 40px; height: 40px; object-fit: cover;">';
+            })
+            ->addColumn('details', function ($product) {
+                return '<strong>' . $product->name . '</strong><br><small class="text-muted">' . $product->sku . '</small>';
+            })
+            ->addColumn('price', function ($product) {
+                return format_price($product->price);
+            })
+            ->addColumn('id', function ($product) {
+                return $product->id;
+            })
+            ->setRowId('id')
+            ->rawColumns(['image', 'details'])
+            ->make(true);
+    }
 }

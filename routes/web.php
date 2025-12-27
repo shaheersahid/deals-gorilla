@@ -9,6 +9,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CollectionController;
 
 Route::view('/', 'root.content.index')->name('home');
 Route::view('/product', 'root.content.product')->name('products');
@@ -42,6 +43,10 @@ Route::middleware(['auth', 'auth.admin'])->prefix('admin/dashboard')->group(func
     Route::resource('customers', UserController::class);
     Route::resource('brands', BrandController::class);
     Route::resource('attributes', AttributeController::class)->except(['show']);
+    Route::get('collections/{collection}/products', [CollectionController::class, 'products'])->name('collections.products');
+    Route::post('collections/reorder', [CollectionController::class, 'reorderProducts'])->name('collections.reorder');
+    Route::resource('collections', CollectionController::class);
+    Route::post('collections/toggle-status', [CollectionController::class, 'toggleStatus'])->name('collections.toggle-status');
 
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'index'])->name('admin.profile.index');
