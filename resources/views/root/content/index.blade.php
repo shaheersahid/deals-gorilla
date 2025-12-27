@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('root.layouts.app')
 @section('content')
 <!-- Slides Start -->
 <section class="relative max-w-[1920px] mx-auto">

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    @include('root.layouts.head')
+</head>
+
+<body class="antialiased text-gray-700  bg-white overflow-x-hidden">
+    @include('root.layouts.navbar')
+    @yield('content')
+    @include('root.layouts.footer')
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <!-- swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    @stack('page-scripts')
+</body>
+
+</html>

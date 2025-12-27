@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Deals Gorilla Register'])
+@extends('root.layouts.app', ['title' => 'Deals Gorilla Register'])
 
 @section('content')
     <main class="max-w-7xl mx-auto p-6 my-10">

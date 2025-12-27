@@ -10,12 +10,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\DashboardController;
 
-Route::view('/', 'welcome');
-Route::view('/product-detail', 'product-detail');
-Route::view('/product', 'product');
-Route::view('/cart', 'cart');
-Route::view('/wish-list', 'wish-list');
-Route::view('/checkout', 'checkout');
+Route::view('/', 'root.content.index')->name('home');
+Route::view('/product', 'root.content.product')->name('products');
+Route::view('/product-detail', 'root.content.product-detail')->name('product-detail');
+Route::view('/cart', 'root.content.cart')->name('cart');
+Route::view('/wish-list', 'root.content.wish-list')->name('wish-list');
+Route::view('/checkout', 'root.content.checkout')->name('checkout');
 
 
 // User Dashboard

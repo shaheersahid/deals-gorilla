@@ -22,7 +22,7 @@
         <div class="max-w-7xl mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                 <div>
-                    <img src="assets/images/logo.png" alt="logo" class="w-40 mb-4">
+                    <img src="{{asset('assets/images/logo.png')}}" alt="logo" class="w-40 mb-4">
                     <p class="text-gray-600 text-sm leading-relaxed">
                         When Looking At Its Layout. The Point Of Using Lorem Ipsum Is That It Has A More Less Normal Distribution
                         Of Letters.
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="flex justify-center md:justify-end">
-                    <img src="assets/images/map.png" alt="world map" class="w-56 md:w-64 object-contain">
+                    <img src="{{asset('assets/images/map.png')}}" alt="world map" class="w-56 md:w-64 object-contain">
                 </div>
             </div>
 
