@@ -171,35 +171,60 @@
 
         if (!$panel.length) return;
 
+        let isOpen = false;
+        let closeTimeout;
+
+
         function position() {
-            const nav = $('#site-nav')[0];
-            const rect = $nav.getBoundingClientRect();
-            const trg = $nav.querySelector('#mega-trigger').getBoundingClientRect();
+            const nav = document.querySelector('#site-nav');
+
+            const navRect = nav.getBoundingClientRect();
+            const panelWidth = Math.min(1215, navRect.width);
+
+            const left = navRect.left + (navRect.width - panelWidth) / 2;
+
             $panel.css({
-                top: rect.bottom + 8,
-                left: Math.max(8, trg.left),
-                width: Math.min(1215, window.innerWidth - trg.left - 12)
+                top: navRect.bottom + 8,
+                left: left,
+                width: panelWidth
             });
         }
 
+
         function open() {
+            clearTimeout(closeTimeout);
             position();
-            $panel.removeClass('opacity-0 pointer-events-none').addClass('open opacity-100');
+            $panel
+                .addClass('open opacity-100')
+                .removeClass('opacity-0 pointer-events-none');
+            isOpen = true;
         }
 
         function close() {
-            $panel.addClass('opacity-0 pointer-events-none').removeClass('open');
+            closeTimeout = setTimeout(() => {
+                $panel
+                    .addClass('opacity-0 pointer-events-none')
+                    .removeClass('open');
+                isOpen = false;
+            }, 150);
         }
 
+        // OPEN on hover
+        $trigger.on('mouseenter', open);
+        $nav.on('mouseenter', open);
+
+        // CLOSE only when leaving both trigger & panel
+        $trigger.on('mouseleave', close);
+        $panel.on('mouseleave', close);
+
+        // Prevent close when hovering panel
+        $panel.on('mouseenter', () => clearTimeout(closeTimeout));
+
+        // Click toggle (optional for mobile)
         $trigger.on('click', e => {
             e.preventDefault();
-            $panel.hasClass('open') ? close() : open();
+            isOpen ? close() : open();
         });
-
-        $nav.hover(
-            () => setTimeout(open, 60),
-            () => setTimeout(close, 200)
-        );
 
         $w.on('resize scroll', position);
     })();
@@ -248,4 +273,4 @@
         }));
     })();
 
-})();
+})(jQuery);
