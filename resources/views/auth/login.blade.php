@@ -37,9 +37,9 @@
                         @enderror
                     </div>
 
-                    <div class="space-y-3 mt-3">
-                        <label class="gap-3 text-sm text-slate-700 cursor-pointer flex items-center">
-                            <input type="checkbox" name="newsletter" class="custom-checkbox" />
+                    <div class="my-3">
+                        <label class="gap-3 text-sm text-slate-700 cursor-pointer inline-flex items-center">
+                            <input type="checkbox" name="remember" class="custom-checkbox" />
                             <span>Remember Me</span>
                         </label>
 
