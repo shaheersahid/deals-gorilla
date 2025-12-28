@@ -1,8 +1,12 @@
 @extends('root.layouts.app', ['title' => 'Deals Gorilla Login'])
 
 @section('content')
-    <main class="max-w-7xl mx-auto p-6 my-10">
-        <div class="bg-white panel content-card overflow-hidden lg:flex lg:shadow-lg rounded-md">
+<div class="bg-gray-50 py-8 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb -->
+        <x-breadcrumb :crumbs="[['label' => 'Login']]" />
+
+        <div class="bg-white panel content-card overflow-hidden lg:flex lg:shadow-lg rounded-md mt-6">
             <!-- Login form -->
             <div class="lg:w-1/2 px-8 py-10 md:px-12 md:py-14">
                 <h1 class="text-2xl sm:text-3xl font-extrabold mb-8">Login</h1>
@@ -34,8 +38,8 @@
                     </div>
 
                     <div class="space-y-3 mt-3">
-                        <label class="custom-checkbox gap-3 text-sm text-slate-700">
-                            <input type="checkbox" name="newsletter" />
+                        <label class="gap-3 text-sm text-slate-700 cursor-pointer flex items-center">
+                            <input type="checkbox" name="newsletter" class="custom-checkbox" />
                             <span>Remember Me</span>
                         </label>
 
@@ -70,8 +74,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="hidden lg:block absolute -left-6 top-0 bottom-0 w-6 bg-transparent"></div>
             </div>
         </div>
-    </main>
+    </div>
+</div>
 @endsection

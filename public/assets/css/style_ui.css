@@ -2,8 +2,9 @@
    GLOBAL / BASE
 ========================= */
 body {
-  overflow-x: hidden;
+    overflow-x: hidden;
 }
+
 .bg-nav {
     background: #EDEDED40;
     border-top: 1px solid #DEDEDE
@@ -68,16 +69,19 @@ body {
     pointer-events: auto;
     transform: translateY(0)
 }
+
 .input {
     width: 100%;
     padding: 0.75rem;
     border: 1px solid #e5e7eb;
     border-radius: 0.5rem;
     outline: none;
-  }
-  .input:focus {
+}
+
+.input:focus {
     border-color: #7c3aed;
-  }
+}
+
 /* =========================
    MOBILE MENU & SEARCH
 ========================= */
@@ -105,7 +109,7 @@ body {
    PROMO STRIP
 ========================= */
 .promo-strip {
-    background-image: linear-gradient(90deg, rgba(163, 28, 78, .45), rgba(192, 48, 100, .45) 40%, rgba(169, 30, 92, .45)), url("assets/images/shop_bg.png");
+    background-image: linear-gradient(90deg, rgba(163, 28, 78, .45), rgba(192, 48, 100, .45) 40%, rgba(169, 30, 92, .45)), url("../images/shop_bg.png");
     background-size: cover;
     background-position: center;
     padding: 8px 0;
@@ -187,35 +191,44 @@ body {
 #productGrid {
     transition: all .3s ease;
 }
+
 .product-card {
     transition: box-shadow .25s ease, transform .25s ease;
 }
+
 .product-card:hover {
-    box-shadow: 0 12px 28px rgba(0,0,0,.08);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .08);
     transform: translateY(-2px);
 }
+
 .product-image img {
     transition: transform .35s ease;
 }
+
 .product-card:hover .product-image img {
     transform: scale(1.05);
 }
+
 .add-cart-btn {
     transition: all .3s ease;
 }
+
 .product-card:hover .add-cart-btn {
     opacity: 1;
     transform: translateY(0);
 }
+
 .card-icons {
     opacity: 0;
     transform: translateX(6px);
     transition: all .25s ease;
 }
+
 .product-card:hover .card-icons {
     opacity: 1;
     transform: translateX(0);
 }
+
 #productGrid.list-view {
     grid-template-columns: 1fr;
 }
@@ -236,6 +249,7 @@ body {
 .product-card.list-view .product-content {
     width: 65%;
 }
+
 /* =========================
    BEAUTIFUL CUSTOM CHECKBOX
 ========================= */
@@ -244,7 +258,7 @@ body {
     appearance: none;
     width: 18px;
     height: 18px;
-    border: 2px solid #d1d5db; 
+    border: 2px solid #d1d5db;
     border-radius: 4px;
     background: #fff;
     cursor: pointer;
@@ -252,9 +266,11 @@ body {
     place-content: center;
     transition: all .2s ease;
 }
+
 .custom-checkbox:hover {
-    border-color: #7c3aed; 
+    border-color: #7c3aed;
 }
+
 .custom-checkbox::before {
     content: "";
     width: 8px;
@@ -264,34 +280,41 @@ body {
     transform: rotate(-45deg) scale(0);
     transition: transform .15s ease;
 }
+
 .custom-checkbox:checked {
-    background-color: #7c3aed; /* violet */
+    background-color: #7c3aed;
+    /* violet */
     border-color: #7c3aed;
 }
 
 .custom-checkbox:checked::before {
     transform: rotate(-45deg) scale(1);
 }
+
 .custom-checkbox:focus-visible {
     outline: 2px solid rgba(124, 58, 237, 0.4);
     outline-offset: 2px;
 }
+
 .custom-checkbox:disabled {
     background: #f3f4f6;
     border-color: #e5e7eb;
     cursor: not-allowed;
 }
+
 #cart-dropdown {
-  padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
 }
+
 /* =========================
    RESPONSIVE
 ========================= */
 
-#art-dropdown{
+#art-dropdown {
     position: absolute;
     z-index: 999;
 }
+
 /* =========================
    RESPONSIVE
 ========================= */

@@ -145,12 +145,14 @@
 
     function openMenu() {
         $mobileMenu.removeClass('-translate-x-full');
+        $mobileMenu.addClass('translate-x-0');
         $overlay.removeClass('opacity-0 pointer-events-none');
         lockScroll();
     }
 
     function closeMenu() {
         $mobileMenu.addClass('-translate-x-full');
+        $mobileMenu.removeClass('translate-x-0');
         $overlay.addClass('opacity-0 pointer-events-none');
         unlockScroll();
     }
@@ -160,6 +162,76 @@
     );
     $mobileClose.on('click', closeMenu);
     $overlay.on('click', closeMenu);
+
+
+    /* ===============================
+       MOBILE Search
+    =============================== */
+    const $mobileSearchBtn = $('#mobile-search-btn');
+    const $mobileSearchFull = $('#mobile-search-full');
+    const $mobileSearchClose = $('#mobile-search-close');
+    const $mobileSearchInput = $('#mobile-search-input');
+    let scrollLockPosition = 0;
+
+    $mobileSearchBtn.on('click', function () {
+
+        if ($mobileMenu.length && !$mobileMenu.hasClass('-translate-x-full')) {
+            closeMobileMenu();
+        }
+
+        if ($mobileSearchFull.length) {
+            $mobileSearchFull.removeClass('hidden');
+            setTimeout(() => {
+                $mobileSearchFull.addClass('opacity-100');
+            }, 10);
+
+            disableScroll();
+
+            setTimeout(() => {
+                if ($mobileSearchInput.length) {
+                    $mobileSearchInput.focus();
+                }
+            }, 120);
+        }
+    });
+
+    $mobileSearchClose.on('click', function () {
+        if ($mobileSearchFull.length) {
+            $mobileSearchFull.removeClass('opacity-100');
+            setTimeout(() => {
+                $mobileSearchFull.addClass('hidden');
+            }, 200);
+            enableScroll();
+        }
+    });
+
+    $mobileSearchInput.on('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closeMobileSearch();
+        }
+    });
+
+    function disableScroll() {
+        scrollLockPosition = $(window).scrollTop();
+
+        $('html').css({
+            position: 'fixed',
+            top: -scrollLockPosition,
+            width: '100%'
+        });
+    }
+
+    function enableScroll() {
+        $('html').css({
+            position: '',
+            top: '',
+            width: ''
+        });
+
+        $(window).scrollTop(scrollLockPosition);
+    }
+
+
 
     /* ===============================
        MEGA MENU

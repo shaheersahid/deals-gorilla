@@ -1,16 +1,11 @@
 @extends('root.layouts.app')
 @section('content')
 
-<!-- Breadcrumb Section -->
-<section class="w-full bg-white py-4 ">
+<div class="bg-white py-3">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav class="text-sm text-gray-400">
-            <a href="#" class="hover:text-gray-600">Home</a>
-            <span class="mx-1">></span>
-            <span class="text-gray-500">Product Detail Page</span>
-        </nav>
+        <x-breadcrumb :crumbs="[['label' => 'Product', 'url' => route('products')], ['label' => 'Product Detail Page']]" />
     </div>
-</section>
+</div>
 
 <main class="max-w-7xl mx-auto p-6">
     <!--  products Detail Start-->

@@ -6,7 +6,11 @@
 </head>
 
 <body class="antialiased text-gray-700  bg-white overflow-x-hidden">
+    @include('root.layouts.top-header')
     @include('root.layouts.navbar')
+    @include('root.layouts.mobile-overlay')
+    @include('root.layouts.mobile-search')
+
     @yield('content')
     @include('root.layouts.footer')
 
